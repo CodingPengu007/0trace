@@ -123,8 +123,29 @@ try:
     ### ------------------------ ###
     
     ### Check if essential system files exist ###
-    if not game.sys.file_mngr.check(os.path.join(main_dir, "Otrace", "local", "etc", "hostname")):
+    print("")
+    print("Checking if essential system files exist:")
+    print("")
+    
+    files_to_check = [
+        ("hostname", os.path.join(main_dir, "Otrace", "local", "etc", "hostname")),
+        ("username", os.path.join(main_dir, "Otrace", "local", "etc", "passwd")),
+        ("password", os.path.join(main_dir, "Otrace", "local", "etc", "shadow")),
+        ("sudoers", os.path.join(main_dir, "Otrace", "local", "etc", "sudoers")),
+    ]
+    
+    for file_desc, file_path in files_to_check:
+        print(f"Checking for {file_desc} file")
+        if not game.sys.file_mngr.check(file_path):
+            print(f"(!) {file_desc} file not found")
+            print(f"Creating {file_desc} file...")
+            game.sys.file_mngr.create(file_path)
+            print(f"{file_desc} file created successfully.")
+        else:
+            print(f"{file_desc} file found.")
         
+    print("")
+    ### ------------------------------------ ###
 
     ### Check if a hostname exists ###
     print("")
