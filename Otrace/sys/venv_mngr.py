@@ -17,16 +17,16 @@ def activate(venv_dir):
     activate_command = f'source {activate_script}' if os.name != 'nt' else activate_script
     subprocess.call(activate_command, shell=True)
 
-def install_bcrypt(venv_dir):
+def pip_install(venv_dir, program):
     # Install bcrypt in the virtual environment
     pip_executable = os.path.join(venv_dir, 'bin', 'pip') if os.name != 'nt' else os.path.join(venv_dir, 'Scripts', 'pip.exe')
-    subprocess.call([pip_executable, 'install', 'bcrypt'])
+    subprocess.call([pip_executable, 'install', program])
     
 def setup(main_dir, venv_dir):
     # Create a virtual environment, activate it, and install bcrypt
     create(main_dir, venv_dir)
     activate(venv_dir)
-    install_bcrypt(venv_dir)
+    pip_install(venv_dir, "bcrypt")
     
 def deactivate(venv_dir):
     # Deactivate the virtual environment

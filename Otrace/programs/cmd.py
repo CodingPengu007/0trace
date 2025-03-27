@@ -27,6 +27,9 @@ def line(username, hostname, current_dir, local_dir):
                 alias, command = line.strip().split("=", 1)
                 aliases[alias] = command
 
+    get_command = True
+    sudo = False
+
     while True:
         show_dir = "/" + os.path.relpath(current_dir, local_dir)
         if show_dir == f"/home/{username}":
@@ -34,16 +37,20 @@ def line(username, hostname, current_dir, local_dir):
         elif show_dir == "/.":
             show_dir = "/"
             
-        full_cmd = input(f"| ({username}@{hostname})-[{show_dir}]\n| $ ").split()
-        if not full_cmd:
-            continue
-        cmd = full_cmd[0]
-
-        # Check if the command is an alias
-        if cmd in aliases:
-            full_cmd = aliases[cmd].split() + full_cmd[1:]
+        if get_command == True:
+            full_cmd = input(f"| ({username}@{hostname})-[{show_dir}]\n| $ ").split()
+            if not full_cmd:
+                continue
             cmd = full_cmd[0]
+
+            # Check if the command is an alias
+            if cmd in aliases:
+                full_cmd = aliases[cmd].split() + full_cmd[1:]
+                cmd = full_cmd[0]
         
+        else:
+            get_command = True
+            
         print("")
         
         if cmd == "help":
@@ -157,7 +164,24 @@ def line(username, hostname, current_dir, local_dir):
         elif cmd == "clear":
             os.system('clear' if os.name == 'posix' else 'cls')
         elif cmd == "exit":
+            if len(full_cmd) > 1:
+                print("Command doesn't take any arguments.")
             break
+        elif cmd == "sudo":
+            if len(full_cmd) < 2:
+                print("Usage: sudo <command>")
+            else:
+                get_command = False
+                sudo = True
+                full_cmd.pop(0)
+        elif cmd == "apt":
+            if not len(full_cmd) == 3:
+                print("Usage: apt <option> <program>")
+            elif sudo == False:
+                print("Permission denied.")
+            else:
+                if full_cmd[1] == "add":
+                    author = full_cmd[3]
         else:
             print("Invalid command. Type 'help' for a list of commands.")
             

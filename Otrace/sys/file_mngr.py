@@ -32,5 +32,9 @@ def remove_pycache(directory):
                 pycache_path = os.path.join(root, dir_name)
                 shutil.rmtree(pycache_path)
                 print(f"Removed: {pycache_path}")
+                
+def create_empty_file(file_path):
+    with open(file_path, 'w') as file:
+        pass
 
 #################################################################################

@@ -28,12 +28,13 @@ def login_or_signup():
             print("| (!) Invalid choice. Please try again.")
             print("")
     
-def signup(main_dir):
+def signup(main_dir, sudo):
     
     import bcrypt
     
     password_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "shadow")
     username_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "passwd")
+    sudo_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "sudoers")
     
     while True:
         os.system("cls" if os.name == "nt" else "clear")
@@ -66,6 +67,11 @@ def signup(main_dir):
                     pw_file.write(pw_hash + b"\n")
                 
                 os.mkdir(os.path.join(main_dir, "Otrace", "local", "home", username))
+                
+                if sudo == True:
+                    print("| Created new SUDO Account (admin)")
+                    with open(sudo_file_path, "w") as sudo_file:
+                        sudo_file.write(username + "\n")
                 
                 input("| Account created successfully. Press Enter to continue.")
             except Exception as e:

@@ -121,6 +121,10 @@ try:
         print("Removed __pycache__ directories.")
         print("")
     ### ------------------------ ###
+    
+    ### Check if essential system files exist ###
+    if not game.sys.file_mngr.check(os.path.join(main_dir, "Otrace", "local", "etc", "hostname")):
+        
 
     ### Check if a hostname exists ###
     print("")
@@ -144,7 +148,7 @@ try:
         print("(!) No account found.")
         print("")
         print("Starting account creation...")
-        game.sys.accnt_mngr.signup(main_dir)
+        game.sys.accnt_mngr.signup(main_dir, True)
         print("Account created successfully.")
     print("")
     ### ------------------------ ###
