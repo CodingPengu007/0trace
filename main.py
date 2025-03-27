@@ -83,6 +83,7 @@ try:
         print("Setting up virtual environment...")
         venv_mngr.setup(main_dir, venv_dir)
         print("Virtual environment setup complete.")
+        venv_mngr.activate(venv_dir)
         print("Virtual environment activated.")
     else:
         print("Virtual environment found.")
