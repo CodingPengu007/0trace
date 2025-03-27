@@ -46,7 +46,7 @@ def signup(main_dir):
         username = input("| Username: ")
         if username in usernames:
             print("")
-            input("| (!) This username is already taken, please try an other one. Press Enter to try again.")
+            input("| (!) This username is already taken, please try another one. Press Enter to try again.")
             continue
                     
         pw1 = getpass.getpass("| Password: ", stream=None)
