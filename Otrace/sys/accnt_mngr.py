@@ -35,15 +35,14 @@ def signup(main_dir):
     password_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "shadow")
     username_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "passwd")
     
-    existing_usernames = []
-    existing_usernames = game.sys.file_mngr.list_load(username_file_path)
-    
     while True:
         os.system("cls" if os.name == "nt" else "clear")
         print("")
         print("| Sign Up")
         print("|")
         username = input("| Username: ")
+        
+        existing_usernames = [username.strip() for username in game.sys.file_mngr.list_load(username_file_path)]
         if username in existing_usernames:
             print("")
             input("| (!) This username is already taken, please try another one. Press Enter to try again.")
