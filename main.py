@@ -6,14 +6,15 @@ import os
 import sys
 import time
 
-import Otrace as game
+import Otrace.sys.file_mngr as file_mngr
+import Otrace.sys.venv_mngr as venv_mngr
 
 #################################################################################
 try:
-
+    
     os.system("cls" if os.name == "nt" else "clear")
     skip_warning = False
-    if game.sys.file_mngr.check(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning")):
+    if file_mngr.check(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning")):
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"), "r") as file:
             skip_warning = bool(file.read(1) == "n")
 
@@ -67,6 +68,32 @@ try:
     main_dir = os.path.dirname(os.path.abspath(__file__))
     venv_dir = os.path.join(main_dir, 'Otrace_venv')
 
+    ### Virtual Environment Check ###
+    print("")
+    print("Checking virtual environment:")
+    if not venv_mngr.check(venv_dir):
+        print("(!) Virtual environment not found. (This is normal when starting for the first time)")
+        print("")
+        print("--------------------------------------------------------------------------------------")
+        print("This is the first time you are running this program, thanks for that!")
+        print("But please be aware that the first time will take a little bit longer than usual. :)")
+        print("So please wait while the virtual environment is set up:")
+        print("--------------------------------------------------------------------------------------")
+        print("")
+        print("Setting up virtual environment...")
+        venv_mngr.setup(main_dir, venv_dir)
+        print("Virtual environment setup complete.")
+        print("Virtual environment activated.")
+    else:
+        print("Virtual environment found.")
+        print("Activating virtual environment...")
+        venv_mngr.activate(venv_dir)
+        print("Virtual environment activated.")
+    print("")
+    ### ------------------------ ###
+    
+    import Otrace as game
+
     ### Check for the cache directory ###
     print("")
     print("Checking for cache directory:")
@@ -87,30 +114,6 @@ try:
     game.sys.file_mngr.remove_pycache(main_dir)
     print("")
     print("Removed __pycache__ directories.")
-    print("")
-    ### ------------------------ ###
-
-    ### Virtual Environment Check ###
-    print("")
-    print("Checking virtual environment:")
-    if not game.sys.venv_mngr.check(venv_dir):
-        print("(!) Virtual environment not found. (This is normal when starting for the first time)")
-        print("")
-        print("--------------------------------------------------------------------------------------")
-        print("This is the first time you are running this program, thanks for that!")
-        print("But please be aware that the first time will take a little bit longer than usual. :)")
-        print("So please wait while the virtual environment is set up:")
-        print("--------------------------------------------------------------------------------------")
-        print("")
-        print("Setting up virtual environment...")
-        game.sys.venv_mngr.setup(main_dir, venv_dir)
-        print("Virtual environment setup complete.")
-        print("Virtual environment activated.")
-    else:
-        print("Virtual environment found.")
-        print("Activating virtual environment...")
-        game.sys.venv_mngr.activate(venv_dir)
-        print("Virtual environment activated.")
     print("")
     ### ------------------------ ###
 

@@ -123,8 +123,9 @@ def line(username, hostname, current_dir, local_dir):
                 print("Usage: mkdir <dir>")
             else:
                 try:
-                    os.makedirs(full_cmd[1], exist_ok=True)
-                    print(f"Directory '{full_cmd[1]}' created.")
+                    target_dir = os.path.join(current_dir, full_cmd[1])
+                    os.makedirs(target_dir, exist_ok=True)
+                    print(f"Directory '{target_dir}' created.")
                 except Exception as e:
                     print(f"Error creating directory: {e}")
         elif cmd == "nano":
