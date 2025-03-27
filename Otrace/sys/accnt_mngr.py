@@ -42,13 +42,13 @@ def signup(main_dir):
         os.system("cls" if os.name == "nt" else "clear")
         print("")
         print("| Sign Up")
+        print("|")
         username = input("| Username: ")
         if username in usernames:
             print("")
             input("| (!) This username is already taken, please try an other one. Press Enter to try again.")
             continue
                     
-        print("|")
         pw1 = getpass.getpass("| Password: ", stream=None)
         print("|")
         pw2 = getpass.getpass("| Confirm Password: ", stream=None)
