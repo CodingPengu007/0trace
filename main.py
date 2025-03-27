@@ -71,7 +71,9 @@ try:
     ### Virtual Environment Check ###
     print("")
     print("Checking virtual environment:")
+    venv_exists = None
     if not venv_mngr.check(venv_dir):
+        venv_exists = False
         print("(!) Virtual environment not found. (This is normal when starting for the first time)")
         print("")
         print("--------------------------------------------------------------------------------------")
@@ -86,6 +88,7 @@ try:
         venv_mngr.activate(venv_dir)
         print("Virtual environment activated.")
     else:
+        venv_exists = True
         print("Virtual environment found.")
         print("Activating virtual environment...")
         venv_mngr.activate(venv_dir)
@@ -109,13 +112,14 @@ try:
     ### ------------------------ ###
 
     ### Remove __pycache__ directories ###
-    print("")
-    print("Removing __pycache__ directories:")
-    print("")
-    game.sys.file_mngr.remove_pycache(main_dir)
-    print("")
-    print("Removed __pycache__ directories.")
-    print("")
+    if venv_exists == True:
+        print("")
+        print("Removing __pycache__ directories:")
+        print("")
+        game.sys.file_mngr.remove_pycache(main_dir)
+        print("")
+        print("Removed __pycache__ directories.")
+        print("")
     ### ------------------------ ###
 
     ### Check if a hostname exists ###
