@@ -1,6 +1,5 @@
 #################################################################################
 
-import bcrypt
 import os
 import Otrace as game
 import getpass
@@ -30,6 +29,8 @@ def login_or_signup():
             print("")
     
 def signup(main_dir):
+    
+    import bcrypt
     
     password_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "shadow")
     username_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "passwd")
@@ -71,6 +72,8 @@ def signup(main_dir):
 
     
 def login(main_dir):
+    
+    import bcrypt
     
     password_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "shadow")
     username_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "passwd")
