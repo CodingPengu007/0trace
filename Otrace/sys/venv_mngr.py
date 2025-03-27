@@ -20,7 +20,7 @@ def activate(venv_dir):
 def install_bcrypt(venv_dir):
     # Install bcrypt in the virtual environment
     pip_executable = os.path.join(venv_dir, 'bin', 'pip') if os.name != 'nt' else os.path.join(venv_dir, 'Scripts', 'pip.exe')
-    subprocess.check_call([pip_executable, "install", "bcrypt"])
+    subprocess.call(f'{pip_executable} install bcrypt')
     
 def setup(main_dir, venv_dir):
     # Create a virtual environment, activate it, and install bcrypt
