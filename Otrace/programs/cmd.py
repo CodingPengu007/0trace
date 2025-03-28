@@ -12,6 +12,7 @@ def line(username, hostname, current_dir, local_dir):
     aliases = {}
     alias_file_path = os.path.join(local_dir, "home", username, "cache", "aliases")
     cache_path = os.path.join(local_dir, "home", username, "cache")
+    sudo_file_path = os.path.join(local_dir, "etc", "sudoers")
     
     if not gm.sys.file_mngr.check(cache_path):
         os.makedirs(cache_path, exist_ok=True)
@@ -41,7 +42,6 @@ def line(username, hostname, current_dir, local_dir):
             full_cmd = input(f"| ({username}@{hostname})-[{show_dir}]\n| $ ").split()
             if not full_cmd:
                 continue
-            cmd = full_cmd[0]
 
             # Check if the command is an alias
             if cmd in aliases:
@@ -50,6 +50,8 @@ def line(username, hostname, current_dir, local_dir):
         
         else:
             get_command = True
+            
+        cmd = full_cmd[0]
             
         print("")
         
@@ -171,9 +173,13 @@ def line(username, hostname, current_dir, local_dir):
             if len(full_cmd) < 2:
                 print("Usage: sudo <command>")
             else:
-                get_command = False
-                sudo = True
-                full_cmd.pop(0)
+                sudoers = [username.strip() for username in gm.sys.file_mngr.list_load(sudo_file_path)]
+                if username in sudoers:
+                    get_command = False
+                    sudo = True
+                    full_cmd.pop(0)
+                else:
+                    print(f"{username} is not in the sudoers file.")
         elif cmd == "apt":
             if not len(full_cmd) == 3:
                 print("Usage: apt <option> <program>")
@@ -181,7 +187,7 @@ def line(username, hostname, current_dir, local_dir):
                 print("Permission denied.")
             else:
                 if full_cmd[1] == "add":
-                    author = full_cmd[3]
+                    author = full_cmd[2]
         else:
             print("Invalid command. Type 'help' for a list of commands.")
             

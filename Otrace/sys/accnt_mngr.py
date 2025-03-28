@@ -68,7 +68,7 @@ def signup(main_dir, sudo):
                 
                 os.mkdir(os.path.join(main_dir, "Otrace", "local", "home", username))
                 
-                if sudo == True:
+                if sudo:
                     print("| Created new SUDO Account (admin)")
                     with open(sudo_file_path, "w") as sudo_file:
                         sudo_file.write(username + "\n")
