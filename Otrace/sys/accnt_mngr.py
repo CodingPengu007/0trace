@@ -68,10 +68,13 @@ def signup(main_dir, sudo):
                 
                 os.mkdir(os.path.join(main_dir, "Otrace", "local", "home", username))
                 
-                if sudo:
+                if sudo == "sudo":
                     print("| Created new SUDO Account (admin)")
-                    with open(sudo_file_path, "w") as sudo_file:
-                        sudo_file.write(username + "\n")
+                    try:
+                        with open(sudo_file_path, "a") as sudo_file:
+                            sudo_file.write(username + "\n")
+                    except Exception as e:
+                        print(f"| (!) Failed to update sudoers file: {e}")
                 
                 input("| Account created successfully. Press Enter to continue.")
             except Exception as e:

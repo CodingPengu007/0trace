@@ -1,11 +1,12 @@
 #################################################################################
 
 import os
+
 import Otrace as gm
 
 #################################################################################
 
-def line(username, hostname, current_dir, local_dir):
+def line(username, hostname, current_dir, local_dir, main_dir):
     full_cmd = []
     cmd = ""
 
@@ -48,12 +49,14 @@ def line(username, hostname, current_dir, local_dir):
                 full_cmd = aliases[cmd].split() + full_cmd[1:]
                 cmd = full_cmd[0]
         
+            print("")
+            
         else:
             get_command = True
             
+        
         cmd = full_cmd[0]
-            
-        print("")
+        skip_line = False
         
         if cmd == "help":
             if len(full_cmd) > 1:
@@ -77,8 +80,18 @@ def line(username, hostname, current_dir, local_dir):
                         print(f"  {alias} -> {command}")
                 else:
                     print("No aliases defined.")
+            elif len(full_cmd) == 3 and full_cmd[1] == "delete":
+                alias_to_delete = full_cmd[2]
+                if alias_to_delete in aliases:
+                    del aliases[alias_to_delete]
+                    with open(alias_file_path, 'w') as file:
+                        for alias, command in aliases.items():
+                            file.write(f"{alias}={command}\n")
+                    print(f"Alias '{alias_to_delete}' deleted.")
+                else:
+                    print(f"Alias '{alias_to_delete}' does not exist.")
             elif len(full_cmd) != 3:
-                print("Usage: alias <command> <new_alias> or alias show")
+                print("Usage: alias <command> <new_alias>, alias show, or alias delete <alias_name>")
             else:
                 command, alias = full_cmd[1], full_cmd[2]
                 if alias in aliases:
@@ -98,8 +111,13 @@ def line(username, hostname, current_dir, local_dir):
                 if len(full_cmd) == 2:
                     target_dir = current_dir + "/" + target_dir
                 try:
-                    for item in os.listdir(target_dir):
-                        print(item)
+                    items = os.listdir(target_dir)
+                    if not items:
+                        skip_line = True
+                    else:
+                        for item in items:
+                            print(item)
+                    
                 except FileNotFoundError:
                     print(f"No such file or directory: '{target_dir}'")
         elif cmd == "cd":
@@ -108,16 +126,30 @@ def line(username, hostname, current_dir, local_dir):
             else:
                 try:
                     new_dir = os.path.expanduser(full_cmd[1])
+                    if not os.path.isabs(new_dir):
+                        new_dir = os.path.normpath(os.path.join(current_dir, new_dir))
                     if new_dir == "..":
                         new_dir = os.path.dirname(current_dir)
+                    try:
                         if os.path.commonpath([new_dir, local_dir]) != local_dir:
                             print("Permission denied.")
                             print("")
                             continue
-                    os.chdir(new_dir)
-                    current_dir = os.getcwd()
+                    except ValueError:
+                        print("Invalid path comparison.")
+                        print("")
+                        continue
+                    try:
+                        os.chdir(new_dir)
+                        current_dir = os.getcwd()
+                    except FileNotFoundError:
+                        print(f"No such file or directory: '{full_cmd[1]}'")
                 except FileNotFoundError:
                     print(f"No such file or directory: '{full_cmd[1]}'")
+                except Exception as e:
+                    print(f"An error occurred: {e}")
+                    
+                skip_line = True
         elif cmd == "cat":
             if len(full_cmd) != 2:
                 print("Usage: cat <file>")
@@ -181,6 +213,8 @@ def line(username, hostname, current_dir, local_dir):
                 else:
                     print(f"{username} is not in the sudoers file.")
         elif cmd == "apt":
+            sources_file_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
+            
             if not len(full_cmd) == 3:
                 print("Usage: apt <option> <program>")
             elif sudo == False:
@@ -188,9 +222,12 @@ def line(username, hostname, current_dir, local_dir):
             else:
                 if full_cmd[1] == "add":
                     author = full_cmd[2]
+                    with open(sources_file_path, 'a') as file:
+                        file.write(author = "\n")
         else:
             print("Invalid command. Type 'help' for a list of commands.")
             
-        print("")
+        if not skip_line == True:
+            print("")
         
 #################################################################################

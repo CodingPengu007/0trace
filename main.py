@@ -4,10 +4,9 @@
 
 import os
 import sys
-import time
+import subprocess
 
 import Otrace.sys.file_mngr as file_mngr
-import Otrace.sys.venv_mngr as venv_mngr
 
 #################################################################################
 try:
@@ -59,7 +58,21 @@ try:
     os.system("cls" if os.name == "nt" else "clear")
     print("Starting up...")
     print("")
-
+    
+    os_name = sys.platform
+    if os_name.startswith('win'):
+        client_os = "Windows"
+        script_file_ending = "bat"
+    elif os_name.startswith('darwin'):
+        client_os = "MacOS"
+        script_file_ending = "sh"
+    elif os_name.startswith('linux'):
+        client_os = "Linux"
+        script_file_ending = "sh"
+    else:
+        client_os = "Unknown"
+        script_file_ending = "unknown"
+        
     version = "0.01"
     author = "CodingPengu007"
     program = "0trace"
@@ -67,13 +80,14 @@ try:
 
     main_dir = os.path.dirname(os.path.abspath(__file__))
     venv_dir = os.path.join(main_dir, 'Otrace_venv')
+    shell_script_path = os.path.join(main_dir, "Otrace", "scripts", f"start_{client_os.lower()}.{script_file_ending}")
+    
+    print(f"Detected operating system: {client_os}")
 
-    ### Virtual Environment Check ###
+    ### Virtual Environment Management ###
     print("")
     print("Checking virtual environment:")
-    venv_exists = None
-    if not venv_mngr.check(venv_dir):
-        venv_exists = False
+    if not file_mngr.check(venv_dir):
         print("(!) Virtual environment not found. (This is normal when starting for the first time)")
         print("")
         print("--------------------------------------------------------------------------------------")
@@ -82,19 +96,24 @@ try:
         print("So please wait while the virtual environment is set up:")
         print("--------------------------------------------------------------------------------------")
         print("")
-        print("Setting up virtual environment...")
-        venv_mngr.setup(main_dir, venv_dir)
-        print("Virtual environment setup complete.")
-        venv_mngr.activate(venv_dir)
-        print("Virtual environment activated.")
     else:
-        venv_exists = True
-        print("Virtual environment found.")
-        print("Activating virtual environment...")
-        venv_mngr.activate(venv_dir)
-        print("Virtual environment activated.")
+        print("The virtual environment exists and has been found!")
     print("")
-    ### ------------------------ ###
+    print(f"Running shell script for: {client_os}")
+    print(f"-> start_{client_os.lower()}.{script_file_ending}")
+    try:
+        result = subprocess.run(["bash", shell_script_path], capture_output=True, text=True)
+        print(result.stdout)
+        print(result.stderr)
+        if result.returncode != 0:
+            print(f"Shell script exited with non-zero status: {result.returncode}")
+            print("Please check the script for errors.")
+    except subprocess.CalledProcessError as e:
+        print(f"An error occurred while running the shell script: {e}")
+        print(f"Script output: {e.output}")
+        print(f"Script error: {e.stderr}")
+    print("")
+    ### ----------------------------- ###
     
     import Otrace as game
 
@@ -112,14 +131,13 @@ try:
     ### ------------------------ ###
 
     ### Remove __pycache__ directories ###
-    if venv_exists == True:
-        print("")
-        print("Removing __pycache__ directories:")
-        print("")
-        game.sys.file_mngr.remove_pycache(main_dir)
-        print("")
-        print("Removed __pycache__ directories.")
-        print("")
+    print("")
+    print("Removing __pycache__ directories:")
+    print("")
+    game.sys.file_mngr.remove_pycache(main_dir)
+    print("")
+    print("Removed __pycache__ directories.")
+    print("")
     ### ------------------------ ###
     
     ### Check if essential system files exist ###
@@ -147,6 +165,17 @@ try:
     print("")
     ### ------------------------------------ ###
 
+    ### Check if apt sources file exists ###
+    print("")
+    print("Checking for apt sources file:")
+    if not game.sys.file_mngr.check(os.path.join(main_dir, "Otrace", "programs", "apt", "sources")):
+        print("(!) apt sources file not found.")
+        print("sources file created successfully.")
+    else:
+        print("apt sources file found.")
+    print("")
+    ### ----------------------------------- ###
+
     ### Check if a hostname exists ###
     print("")
     print("Checking for hostname:")
@@ -169,7 +198,7 @@ try:
         print("(!) No account found.")
         print("")
         print("Starting account creation...")
-        game.sys.accnt_mngr.signup(main_dir, True)
+        game.sys.accnt_mngr.signup(main_dir, "sudo")
         print("Account created successfully.")
     print("")
     ### ------------------------ ###
@@ -238,7 +267,6 @@ try:
 
 except KeyboardInterrupt:
     print("Exiting...")
-    game.sys.venv_mngr.deactivate(venv_dir)
     os.system("cls" if os.name == "nt" else "clear")
     sys.exit(0)
 except Exception as e:
@@ -258,7 +286,6 @@ except Exception as e:
     print("")
     input("Press Enter to exit...")
     os.system("cls" if os.name == "nt" else "clear")
-    game.sys.venv_mngr.deactivate(venv_dir)
     sys.exit(1)
 
 print("Startup complete.")
@@ -276,14 +303,12 @@ os.system("cls" if os.name == "nt" else "clear")
 #################################################################################
 
 try:
-    game.prgms.cmd.line(username, hostname, current_dir, local_dir)
+    game.prgms.cmd.line(username, hostname, current_dir, local_dir, main_dir)
 except KeyboardInterrupt:
     print("Exiting...")
-    game.sys.venv_mngr.deactivate(venv_dir)
     os.system("cls" if os.name == "nt" else "clear")
     sys.exit(0)
 except Exception as e:
     print(f"An error occurred: {e}")
-    game.sys.venv_mngr.deactivate(venv_dir)
     
 #################################################################################
