@@ -16,11 +16,21 @@ try:
     if file_mngr.check(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning")):
         with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"), "r") as file:
             skip_warning = bool(file.read(1) == "n")
+    else:
+        file_mngr.create(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"))
 
     if skip_warning == True:
         print("--- Welcome to 0trace ---")
         print("")
         print("The program is automatically starting up and skipping the routine warning.")
+        print("")
+    elif skip_warning == False:
+        print("--- Welcome to 0trace ---")
+        print("")
+        print("The program is about to start up,")
+        print("please don't interrupt the process.")
+        print("")
+        input("Press enter to continue...")
         print("")
     else:
         print("--- Welcome to 0trace ---")
@@ -30,6 +40,8 @@ try:
         print("")
         answer = input("Should we warn you again next time? (y/n): ")
         if answer.lower() == "y":
+            with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"), "w") as file:
+                file.write("y")
             print("")
             print("(*) Warning enabled.")
             print("")
@@ -53,7 +65,11 @@ try:
             print("(!) Invalid input. Warning enabled by default.")
             print("(*) Warning enabled.")
             print("")
+            print("-> We will ask you again at the next start")
+            print("")
             input("Press Enter to continue...")
+
+
 
     os.system("cls" if os.name == "nt" else "clear")
     print("Starting up...")
