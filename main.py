@@ -80,7 +80,12 @@ try:
 
     main_dir = os.path.dirname(os.path.abspath(__file__))
     venv_dir = os.path.join(main_dir, 'Otrace_venv')
+    
     shell_script_path = os.path.join(main_dir, "Otrace", "scripts", f"start_{client_os.lower()}.{script_file_ending}")
+    home_dir_path = os.path.join(main_dir, "Otrace", "local", "home")
+    passwd_path = os.path.join(main_dir, "Otrace", "etc", "passwd")
+    shadow_path = os.path.join(main_dir, "Otrace", "etc", "shadow")
+    hostname_path = os.path.join(main_dir, "Otrace", "etc", "hostname")
     
     print(f"Detected operating system: {client_os}")
 
@@ -95,6 +100,21 @@ try:
         print("But please be aware that the first time will take a little bit longer than usual. :)")
         print("So please wait while the virtual environment is set up:")
         print("--------------------------------------------------------------------------------------")
+        print("")
+        
+        print("(!) Program starting up for the first time! Removing saves of developers...")
+        print("Removing user directories...")
+        file_mngr.remove_lower(home_dir_path)
+        print("User directories removed.")
+        print("Flushing all files storing user data...")
+        with open(passwd_path, 'w') as file:
+            file.flush
+        with open(shadow_path, 'w') as file:
+            file.flush        
+        with open(hostname_path, 'w') as file:
+            file.flush
+        print("Flushed all files!")
+        
         print("")
     else:
         print("The virtual environment exists and has been found!")

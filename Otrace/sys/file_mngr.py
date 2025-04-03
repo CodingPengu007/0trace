@@ -37,4 +37,12 @@ def create(file_path):
     with open(file_path, 'w') as file:
         pass
 
+def remove_lower(dir_path):
+    for root, dirs, files in os.walk(dir, topdown=False):
+        for file_name in files:
+            file_path = os.path.join(root, file_name)
+            os.remove(file_path)
+        for dir_name in dirs:
+            dir_path = os.path.join(root, dir_name)
+            os.rmdir(dir_path)
 #################################################################################
