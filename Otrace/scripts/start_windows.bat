@@ -23,5 +23,6 @@ call Otrace_venv\Scripts\activate
 
 :: Install dependencies
 pip install bcrypt
+pip install pyedit
 pip install --upgrade pip
 for /f "delims=" %%i in ('pip list --outdated --format=freeze ^| find "="') do pip install --upgrade %%i

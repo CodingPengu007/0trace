@@ -3,6 +3,7 @@
 import os
 
 import Otrace as gm
+import pyedit
 
 #################################################################################
 
@@ -173,28 +174,11 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             if len(full_cmd) != 2:
                 print("Usage: nano <file>")
             else:
-                file_path = os.path.join(current_dir, full_cmd[1])
                 try:
-                    if not os.path.exists(file_path):
-                        with open(file_path, 'w') as file:
-                            pass
-                    os.system('clear' if os.name == 'posix' else 'cls')
-                    print(f"Editing file: {file_path}")
-                    print("Enter your text below. Press Ctrl+D (EOF) to save and exit.")
-                    print("")
-                    with open(file_path, 'a') as file:
-                        try:
-                            lines = []
-                            while True:
-                                line = input()
-                                lines.append(line + "\n")
-                        except EOFError:
-                            print("\nEnd of input detected. Saving file...")
-                            file.writelines(lines)
-                    print(f"File '{file_path}' saved.")
-                    os.system('clear' if os.name == 'posix' else 'cls')
+                    file_path = os.path.join(current_dir, full_cmd[1])
+                    pyedit.edit(file_path)
                 except Exception as e:
-                    print(f"Error editing file: {e}")
+                    print(f"Error using text editor: {e}")
         elif cmd == "clear":
             os.system('clear' if os.name == 'posix' else 'cls')
         elif cmd == "exit":
