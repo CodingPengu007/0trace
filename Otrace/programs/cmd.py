@@ -172,22 +172,27 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"Error creating directory: {e}")
         elif cmd == "nano":
             import texteditor
-            
+
             if len(full_cmd) != 2:
                 print("Usage: nano <file>")
             else:
                 try:
                     file_path = os.path.join(current_dir, full_cmd[1])
-                    if os.path.exists(file_path):
-                        texteditor.texteditor(file_path)
-                    else:
+                    
+                    if not os.path.exists(file_path):
                         with open(file_path, 'w') as file:
                             pass
-                        texteditor.texteditor(file_path)
-                except Exception as e:
-                    print(f"Error using texteditor: {e}")
+                    
+                    edited_content = texteditor.open(filename=file_path)
+                    
+                    # If you want to write content programmatically (optional):
+                    # with open(file_path, 'w') as file:
+                    #     file.write(edited_content)
+                    
                 except FileNotFoundError:
                     print(f"No such file: '{full_cmd[1]}'")
+                except Exception as e:
+                    print(f"Error using texteditor: {e}")
                     
         elif cmd == "rm":
             if len(full_cmd) < 2 or len(full_cmd) > 3:
