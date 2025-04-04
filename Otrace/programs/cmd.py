@@ -185,9 +185,8 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     
                     edited_content = texteditor.open(filename=file_path)
                     
-                    # If you want to write content programmatically (optional):
-                    # with open(file_path, 'w') as file:
-                    #     file.write(edited_content)
+                    with open(file_path, 'w') as file:
+                        file.write(edited_content)
                     
                 except FileNotFoundError:
                     print(f"No such file: '{full_cmd[1]}'")
