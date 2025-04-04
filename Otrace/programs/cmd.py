@@ -15,13 +15,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
     alias_file_path = os.path.join(local_dir, "home", username, "cache", "aliases")
     cache_path = os.path.join(local_dir, "home", username, "cache")
     sudo_file_path = os.path.join(local_dir, "etc", "sudoers")
-    
-    if not gm.sys.file_mngr.check(cache_path):
-        os.makedirs(cache_path, exist_ok=True)
-    
-    if not gm.sys.file_mngr.check(alias_file_path):
-        with open(alias_file_path, 'w') as file:
-            pass
+    log_file_path = os.path.join(local_dir, "home", username, "cache", "local_logs")
 
     # Load aliases from file if it exists
     if os.path.exists(alias_file_path):
@@ -45,11 +39,25 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             if not full_cmd:
                 continue
 
+            if not gm.sys.file_mngr.check(cache_path):
+                os.makedirs(cache_path, exist_ok=True)
+            
+            if not gm.sys.file_mngr.check(alias_file_path):
+                with open(alias_file_path, 'w') as file:
+                    pass
+                
+            if not gm.sys.file_mngr.check(log_file_path):
+                with open(log_file_path, 'w') as file:
+                    pass       
+                      
             # Check if the command is an alias
             if cmd in aliases:
                 full_cmd = aliases[cmd].split() + full_cmd[1:]
                 cmd = full_cmd[0]
-        
+            
+            with open(log_file_path, 'a') as file:
+                file.write(cmd + "\n")
+            
             print("")
             
         else:
@@ -64,15 +72,15 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Command doesn't take any arguments.")
             else:
                 print("Commands:")
-                print("  help - Display this help message.")
-                print("  ls [dir] - List files in current or specified directory.")
-                print("  cd <dir> - Change directory.")
-                print("  cat <file> - Print file contents.")
-                print("  mkdir <dir> - Create a new directory.")
-                print("  clear - Clear the terminal screen.")
-                print("  alias <command> <new_alias> - Create an alias for a command.")
-                print("  nano <file> - Create or edit a file using a simple text editor.")
-                print("  exit - Exit the shell.")
+                print("  help                           - Display this help message.")
+                print("  ls [dir]                       - List files in current or specified directory.")
+                print("  cd <dir>                       - Change directory.")
+                print("  cat <file>                     - Print file contents.")
+                print("  mkdir <dir>                    - Create a new directory.")
+                print("  clear                          - Clear the terminal screen.")
+                print("  alias <command> <new_alias>    - Create an alias for a command.")
+                print("  nano <file>                    - Create or edit a file using a simple text editor.")
+                print("  exit                           - Exit the shell.")
         elif cmd == "alias":
             if len(full_cmd) == 2 and full_cmd[1] == "show":
                 if aliases:
