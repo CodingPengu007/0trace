@@ -1,6 +1,7 @@
 #################################################################################
 
 import os
+import shutil
 
 import Otrace as gm
 
@@ -171,14 +172,55 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"Error creating directory: {e}")
         elif cmd == "nano":
             import texteditor
+            
             if len(full_cmd) != 2:
                 print("Usage: nano <file>")
             else:
                 try:
                     file_path = os.path.join(current_dir, full_cmd[1])
-                    texteditor.edit(file_path)
+                    if os.path.exists(file_path):
+                        texteditor.texteditor(file_path)
+                    else:
+                        with open(file_path, 'w') as file:
+                            pass
+                        texteditor.texteditor(file_path)
                 except Exception as e:
-                    print(f"Error using text editor: {e}")
+                    print(f"Error using texteditor: {e}")
+                except FileNotFoundError:
+                    print(f"No such file: '{full_cmd[1]}'")
+                    
+        elif cmd == "rm":
+            if len(full_cmd) < 2 or len(full_cmd) > 3:
+                print("Usage: rm <file> or rm -rf <folder>")
+            elif len(full_cmd) == 2:
+                try:
+                    file_path = os.path.join(current_dir, full_cmd[1])
+                    if os.path.isdir(file_path):
+                        if not os.listdir(file_path):
+                            os.rmdir(file_path)
+                            print(f"Empty folder '{full_cmd[1]}' removed.")
+                        else:
+                            print(f"Folder '{full_cmd[1]}' is not empty. Use 'rm -rf <folder>' to remove with all contents.")
+                    os.remove(file_path)
+                    print(f"File '{full_cmd[1]}' removed.")
+                except FileNotFoundError:
+                    print(f"No such file or directory: '{full_cmd[1]}'")
+                except Exception as e:
+                    print(f"Error removing file or folder: {e}")
+                    
+            elif len(full_cmd) == 3 and full_cmd[1] == "-rf":
+                try:
+                    folder_path = os.path.join(current_dir, full_cmd[2])
+                    if os.path.isdir(folder_path):
+                        shutil.rmtree(folder_path)
+                        print(f"Folder '{full_cmd[2]}' and its contents removed.")
+                    else:
+                        print(f"'{full_cmd[2]}' is not a folder.")
+                except FileNotFoundError:
+                    print(f"No such folder: '{full_cmd[2]}'")
+                except Exception as e:
+                    print(f"Error force removing folder: {e}")
+                    
         elif cmd == "clear" or cmd == "cls":
             os.system('clear' if os.name == 'posix' else 'cls')
         elif cmd == "exit":
