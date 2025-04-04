@@ -45,4 +45,5 @@ def remove_lower(dir_path):
         for dir_name in dirs:
             dir_path = os.path.join(root, dir_name)
             os.rmdir(dir_path)
+            
 #################################################################################

@@ -3,7 +3,6 @@
 import os
 
 import Otrace as gm
-import pyedit
 
 #################################################################################
 
@@ -171,15 +170,16 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 except Exception as e:
                     print(f"Error creating directory: {e}")
         elif cmd == "nano":
+            import texteditor
             if len(full_cmd) != 2:
                 print("Usage: nano <file>")
             else:
                 try:
                     file_path = os.path.join(current_dir, full_cmd[1])
-                    pyedit.edit(file_path)
+                    texteditor.edit(file_path)
                 except Exception as e:
                     print(f"Error using text editor: {e}")
-        elif cmd == "clear":
+        elif cmd == "clear" or cmd == "cls":
             os.system('clear' if os.name == 'posix' else 'cls')
         elif cmd == "exit":
             if len(full_cmd) > 1:

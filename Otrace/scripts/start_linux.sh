@@ -21,6 +21,6 @@ source Otrace_venv/bin/activate
 
 # Install dependencies
 pip install bcrypt
-pip install pyedit
+pip install texteditor
 pip install --upgrade pip
 pip list --outdated --format=freeze | cut -d '=' -f 1 | xargs -n1 pip install --upgrade
