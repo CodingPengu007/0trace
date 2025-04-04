@@ -156,7 +156,8 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Usage: cat <file>")
             else:
                 try:
-                    with open(full_cmd[1], 'r') as file:
+                    file_path = os.path.join(current_dir, full_cmd[1])
+                    with open(file_path, 'r') as file:
                         print(file.read())
                 except FileNotFoundError:
                     print(f"No such file: '{full_cmd[1]}'")
@@ -178,15 +179,13 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             else:
                 try:
                     file_path = os.path.join(current_dir, full_cmd[1])
-                    
                     if not os.path.exists(file_path):
                         with open(file_path, 'w') as file:
                             pass
-                    
                     edited_content = texteditor.open(filename=file_path)
-                    
                     with open(file_path, 'w') as file:
                         file.write(edited_content)
+                    skip_line = True
                     
                 except FileNotFoundError:
                     print(f"No such file: '{full_cmd[1]}'")
