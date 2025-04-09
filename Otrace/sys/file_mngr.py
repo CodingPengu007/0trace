@@ -36,14 +36,23 @@ def remove_pycache(directory):
 def create(file_path):
     with open(file_path, 'w') as file:
         pass
-
+    
 def remove_lower(dir_path):
-    for root, dirs, files in os.walk(dir, topdown=False):
+    for root, dirs, files in os.walk(dir_path, topdown=False):
         for file_name in files:
             file_path = os.path.join(root, file_name)
-            os.remove(file_path)
+            try:
+                os.remove(file_path)
+                print(f"Removed file: {file_path}")
+            except OSError as e:
+                print(f"Error removing file {file_path}: {e}")
+
         for dir_name in dirs:
-            dir_path = os.path.join(root, dir_name)
-            os.rmdir(dir_path)
+            dir_path_full = os.path.join(root, dir_name)
+            try:
+                os.rmdir(dir_path_full)
+                print(f"Removed directory: {dir_path_full}")
+            except OSError as e:
+                print(f"Error removing directory {dir_path_full}: {e}")
             
 #################################################################################

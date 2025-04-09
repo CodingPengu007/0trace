@@ -8,6 +8,7 @@ import Otrace as gm
 #################################################################################
 
 def line(username, hostname, current_dir, local_dir, main_dir):
+    script = []
     full_cmd = []
     cmd = ""
 
@@ -26,6 +27,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
 
     get_command = True
     sudo = False
+    script_active = False
 
     while True:
         show_dir = "/" + os.path.relpath(current_dir, local_dir)
@@ -33,36 +35,42 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             show_dir = "~"
         elif show_dir == "/.":
             show_dir = "/"
-            
+        
+        if script_active:
+            if script_line <= script_lines:
+                full_cmd = script[script_line].split()
+                cmd = full_cmd[0]
+                get_command = False
+                skip_line = False
+                script_line += 1
+            else:
+                script_active = False
+                script_line = 0
+                script_lines = 0
+                script = []
+                get_command = True
+        
         if get_command == True:
             full_cmd = input(f"| ({username}@{hostname})-[{show_dir}]\n| $ ").split()
+            print("")
             if not full_cmd:
                 continue
-
             if not gm.sys.file_mngr.check(cache_path):
                 os.makedirs(cache_path, exist_ok=True)
-            
             if not gm.sys.file_mngr.check(alias_file_path):
                 with open(alias_file_path, 'w') as file:
                     pass
-                
             if not gm.sys.file_mngr.check(log_file_path):
                 with open(log_file_path, 'w') as file:
                     pass       
-                      
             # Check if the command is an alias
             if cmd in aliases:
                 full_cmd = aliases[cmd].split() + full_cmd[1:]
                 cmd = full_cmd[0]
-            
             with open(log_file_path, 'a') as file:
                 file.write(cmd + "\n")
-            
-            print("")
-            
         else:
             get_command = True
-            
         
         cmd = full_cmd[0]
         skip_line = False
@@ -81,6 +89,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("  alias <command> <new_alias>    - Create an alias for a command.")
                 print("  nano <file>                    - Create or edit a file using a simple text editor.")
                 print("  exit                           - Exit the shell.")
+                print("  rm <file>                      - Remove a file.")
+                print("  bash <file>                    - Run a script file with the file ending .sh")
+                
         elif cmd == "alias":
             if len(full_cmd) == 2 and full_cmd[1] == "show":
                 if aliases:
@@ -96,17 +107,17 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     with open(alias_file_path, 'w') as file:
                         for alias, command in aliases.items():
                             file.write(f"{alias}={command}\n")
-                    print(f"Alias '{alias_to_delete}' deleted.")
+                    print(f"Alias {alias_to_delete} deleted.")
                 else:
-                    print(f"Alias '{alias_to_delete}' does not exist.")
+                    print(f"Alias {alias_to_delete} does not exist.")
             elif len(full_cmd) != 3:
                 print("Usage: alias <command> <new_alias>, alias show, or alias delete <alias_name>")
             else:
                 command, alias = full_cmd[1], full_cmd[2]
                 if alias in aliases:
-                    print(f"Alias '{alias}' already exists for command '{aliases[alias]}'.")
+                    print(f"Alias {alias} already exists for command {aliases[alias]}.")
                 elif command in aliases.values():
-                    print(f"Command '{command}' is already aliased to '{list(aliases.keys())[list(aliases.values()).index(command)]}'.")
+                    print(f"Command {command} is already aliased to {list(aliases.keys())[list(aliases.values()).index(command)]}.")
                 else:
                     aliases[alias] = command
                     with open(alias_file_path, 'a') as file:
@@ -175,17 +186,17 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             else:
                 try:
                     target_dir = os.path.join(current_dir, full_cmd[1])
+                    dir_name = full_cmd[1]
                     os.makedirs(target_dir, exist_ok=True)
-                    print(f"Directory '{target_dir}' created.")
+                    print(f"Directory {dir_name} created.")
                 except Exception as e:
                     print(f"Error creating directory: {e}")
         elif cmd == "nano":
-            import texteditor
-
             if len(full_cmd) != 2:
                 print("Usage: nano <file>")
             else:
                 try:
+                    import texteditor
                     file_path = os.path.join(current_dir, full_cmd[1])
                     if not os.path.exists(file_path):
                         with open(file_path, 'w') as file:
@@ -194,13 +205,13 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     with open(file_path, 'w') as file:
                         file.write(edited_content)
                     skip_line = True
-                    
                 except FileNotFoundError:
                     print(f"No such file: '{full_cmd[1]}'")
                 except Exception as e:
                     print(f"Error using texteditor: {e}")
                     
         elif cmd == "rm":
+            not_empty_detected = False
             if len(full_cmd) < 2 or len(full_cmd) > 3:
                 print("Usage: rm <file> or rm -rf <folder>")
             elif len(full_cmd) == 2:
@@ -209,22 +220,24 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     if os.path.isdir(file_path):
                         if not os.listdir(file_path):
                             os.rmdir(file_path)
-                            print(f"Empty folder '{full_cmd[1]}' removed.")
+                            print(f"Empty folder {full_cmd[1]} removed.")
                         else:
-                            print(f"Folder '{full_cmd[1]}' is not empty. Use 'rm -rf <folder>' to remove with all contents.")
+                            not_empty_detected = True
+                            print(f"Folder {full_cmd[1]} is not empty. Use 'rm -rf <folder>' to remove with all contents.")
                     os.remove(file_path)
-                    print(f"File '{full_cmd[1]}' removed.")
+                    print(f"File {full_cmd[1]} removed.")
                 except FileNotFoundError:
                     print(f"No such file or directory: '{full_cmd[1]}'")
                 except Exception as e:
-                    print(f"Error removing file or folder: {e}")
+                    if not_empty_detected == False:
+                        print(f"Error removing file or folder: {e}")
                     
             elif len(full_cmd) == 3 and full_cmd[1] == "-rf":
                 try:
                     folder_path = os.path.join(current_dir, full_cmd[2])
                     if os.path.isdir(folder_path):
                         shutil.rmtree(folder_path)
-                        print(f"Folder '{full_cmd[2]}' and its contents removed.")
+                        print(f"Folder {full_cmd[2]} and all its contents removed.")
                     else:
                         print(f"'{full_cmd[2]}' is not a folder.")
                 except FileNotFoundError:
@@ -247,8 +260,10 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     get_command = False
                     sudo = True
                     full_cmd.pop(0)
+
                 else:
                     print(f"{username} is not in the sudoers file.")
+                    
         elif cmd == "apt":
             sources_file_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
             
@@ -261,8 +276,26 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     author = full_cmd[2]
                     with open(sources_file_path, 'a') as file:
                         file.write(author = "\n")
-        else:
-            print("Invalid command. Type 'help' for a list of commands.")
+                        
+        elif cmd == "bash":
+            if len(full_cmd) < 2:
+                print("Usage: bash <file>")
+            elif not full_cmd[1].endswith(".sh"):
+                print("File must have a .sh extension.")
+            elif len(full_cmd) >= 2:
+                file_path = os.path.join(current_dir, full_cmd[1])
+                if os.path.exists(file_path):
+                    try:
+                        with open(file_path, 'r') as file:
+                            script_active = True
+                            script = file.readlines()
+                            script_lines = len(script) - 1
+                            script_line = 0
+                            get_command = False
+                    except Exception as e:
+                        print(f"Error reading script: {e}")
+                else:
+                    print(f"No such file: '{full_cmd[1]}'")
             
         if not skip_line == True:
             print("")

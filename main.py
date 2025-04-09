@@ -18,6 +18,9 @@ try:
             skip_warning = bool(file.read(1) == "n")
     else:
         file_mngr.create(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"))
+        
+    if file_mngr.empty(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning")):
+        skip_warning = None
 
     if skip_warning == True:
         print("--- Welcome to 0trace ---")
@@ -193,15 +196,19 @@ try:
     author = "CodingPengu007"
     program = "0trace"
     publicity = "Closed Early Alpha"
+    github_link = "https://github.com/CodingPengu007/Otrace"
 
     main_dir = os.path.dirname(os.path.abspath(__file__))
     venv_dir = os.path.join(main_dir, 'Otrace_venv')
     
-    shell_script_path = os.path.join(main_dir, "Otrace", "scripts", f"start_{client_os.lower()}.{script_file_ending}")
+    shell_script_path = os.path.join(main_dir, f"start_{client_os.lower()}.{script_file_ending}")
     home_dir_path = os.path.join(main_dir, "Otrace", "local", "home")
     passwd_path = os.path.join(main_dir, "Otrace", "etc", "passwd")
     shadow_path = os.path.join(main_dir, "Otrace", "etc", "shadow")
     hostname_path = os.path.join(main_dir, "Otrace", "etc", "hostname")
+    warning_path = os.path.join(main_dir, "Otrace", "cache", "warning")
+    del_pycache_path = os.path.join(main_dir, "Otrace", "cache", "del_pycache")
+    venv_dir = os.path.join(main_dir, 'Otrace_venv')
     
     print(f"Detected operating system: {client_os}")
 
@@ -223,33 +230,64 @@ try:
         file_mngr.remove_lower(home_dir_path)
         print("User directories removed.")
         print("Flushing all files storing user data...")
-        with open(passwd_path, 'w') as file:
-            file.flush
-        with open(shadow_path, 'w') as file:
-            file.flush        
-        with open(hostname_path, 'w') as file:
-            file.flush
+        file_paths = [passwd_path, shadow_path, hostname_path, warning_path, del_pycache_path]
+        for file_path in file_paths:
+            try:
+                with open(file_path, 'w') as file:
+                    pass
+            except IOError as e:
+                print(f"Error opening or writing to {file_path}: {e}")        
         print("Flushed all files!")
-        
         print("")
     else:
         print("The virtual environment exists and has been found!")
     print("")
-    print(f"Running shell script for: {client_os}")
-    print(f"-> start_{client_os.lower()}.{script_file_ending}")
-    try:
-        result = subprocess.run(["bash", shell_script_path], capture_output=True, text=True)
-        print(result.stdout)
-        print(result.stderr)
-        if result.returncode != 0:
-            print(f"Shell script exited with non-zero status: {result.returncode}")
-            print("Please check the script for errors.")
-    except subprocess.CalledProcessError as e:
-        print(f"An error occurred while running the shell script: {e}")
-        print(f"Script output: {e.output}")
-        print(f"Script error: {e.stderr}")
-    print("")
     ### ----------------------------- ###
+    
+    ### Running the startup script ###
+    print("")
+    print("Running the startup script...")
+    try:
+        if client_os == "Windows":
+            subprocess.run(["cmd", "/c", shell_script_path], check=True)
+        elif client_os in ["MacOS", "Linux"]:
+            subprocess.run(["bash", shell_script_path], check=True)
+        else:
+            print("Unsupported operating system. Skipping script execution.")
+    except subprocess.CalledProcessError as e:
+        print(f"Error occurred while running the script: {e}")
+    print("Startup script executed successfully.")
+    print("")
+    ### ------------------------- ###
+    
+    ### Testing Imports ###
+    print("")
+    print("Testing imports...")
+    try:
+        import bcrypt
+        import texteditor
+    except ImportError as e:
+        os.system('clear' if os.name == 'posix' else 'cls')
+        print("")
+        print("(!) An error occurred when importing modules!")
+        print(f"(!) {e}")
+        print("")
+        print("(!) Please ensure that the virtual environment is activated and all dependencies are installed.")
+        print("(!) You can do this by running the following command:")
+        print("")
+        if client_os == "Windows":
+            print(f"{venv_dir}/Scripts/activate")
+        elif client_os == "Unknown":
+            print(f"(!)You are using an unknown operating system, please create an issue on GitHub ({github_link}).")
+        else:
+            print(f"source {venv_dir}/bin/activate")
+        print("")
+        print("Please activate the virtual environment and run the program again.")
+        print("")
+        sys.exit(1)
+    print("All imports successful.")
+    print("")
+    ### -------------- ###
     
     import Otrace as game
 
@@ -415,10 +453,10 @@ except Exception as e:
     print("----------------------------")
     print("")
     print("")
-    print("(!) Please report this issue to the developer.")
+    print("(!) Please report this issue to the developers.")
     print("")
-    print("--> You can reach out to the dev on Github:")
-    print("--> https://github.com/CodingPengu007")
+    print("--> Please create an issue on Github:")
+    print(f"--> {github_link}")
     print("")
     print("")
     input("Press Enter to exit...")
@@ -446,6 +484,8 @@ except KeyboardInterrupt:
     os.system("cls" if os.name == "nt" else "clear")
     sys.exit(0)
 except Exception as e:
-    print(f"An error occurred: {e}")
+    print(f"(!) An error occurred: {e}")
+    print("")
+    print(f"(!) Please report this bug to the developers and create an issue on GitHub ({github_link}).")
     
 #################################################################################
