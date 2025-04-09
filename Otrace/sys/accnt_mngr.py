@@ -67,6 +67,12 @@ def signup(main_dir, sudo):
                     pw_file.write(pw_hash + b"\n")
                 
                 os.mkdir(os.path.join(main_dir, "Otrace", "local", "home", username))
+                os.mkdir(os.path.join(main_dir, "Otrace", "local", "home", username, "Documents"))
+                os.mkdir(os.path.join(main_dir, "Otrace", "local", "home", username, "Downloads"))
+                os.mkdir(os.path.join(main_dir, "Otrace", "local", "home", username, "Desktop"))
+                os.mkdir(os.path.join(main_dir, "Otrace", "local", "home", username, "Pictures"))
+                os.mkdir(os.path.join(main_dir, "Otrace", "local", "home", username, "Videos"))
+                os.mkdir(os.path.join(main_dir, "Otrace", "local", "home", username, "Music"))
                 
                 if sudo == "sudo":
                     print("| Created new SUDO Account (admin)")

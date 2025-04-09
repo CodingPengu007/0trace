@@ -2,6 +2,7 @@
 
 import os
 import shutil
+import subprocess
 
 import Otrace as gm
 
@@ -292,23 +293,60 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                             authors = [author.strip() for author in gm.sys.file_mngr.list_load(sources_file_path)]
                         for url, author in zip(urls, authors):
                             url = url.strip()
-                            if url.startswith("https://github.com/"):
-                                try:
-                                    response = requests.head(url, timeout=5)
-                                    if response.status_code == 200:
-                                        print(f"[checked] {author}")
-                                    else:
-                                        print("")
-                                        print(f"[!] {author} is not reachable.")
-                                        print("")
-                                except requests.RequestException as e:
-                                    print(f"Error checking {url}: {e}")
-                            else:
-                                print(f"{url} is not a valid GitHub URL.")
+                            try:
+                                response = requests.head(url, timeout=5)
+                                if response.status_code == 200:
+                                    print(f"[checked] {author}")
+                                else:
+                                    print("")
+                                    print(f"[!] {author} is not reachable.")
+                                    print("")
+                            except requests.RequestException as e:
+                                print(f"Error checking {url}: {e}")
                     except FileNotFoundError:
                         print("Sources file not found.")
                     except Exception as e:
                         print(f"Error checking URLs: {e}")
+                        
+                elif full_cmd[1] == "install":
+                    import requests
+                    program = full_cmd[2]
+                    try:
+                        with open(sources_file_path, 'r') as file:
+                            authors = [author.strip() for author in file.readlines()]
+                        found = False
+                        for author in authors:
+                            repo_url = f"https://github.com/{author}/{program}.git"
+                            print(f"Checking repository: {repo_url}")  # Log the URL being checked
+                            try:
+                                response = requests.head(repo_url, allow_redirects=True, timeout=5)
+                                if response.status_code == 200:
+                                    found = True
+                                    print(f"Cloning {program} from {repo_url}...")
+                                    target_folder = os.path.join(local_dir, "opt", program)
+                                    os.makedirs(target_folder, exist_ok=True)
+                                    subprocess.run(["git", "clone", repo_url, target_folder], check=True)
+                                    print(f"{program} installed successfully.")
+                                    break
+                                else:
+                                    print(f"Repository {repo_url} returned status code {response.status_code}.")
+                            except requests.RequestException as e:
+                                print(f"Error checking {repo_url}: {e}")
+                        if not found:
+                            print(f"Program {program} not found in sources. Ensure the program name and author are correct.")
+                    except FileNotFoundError:
+                        print("Sources file not found. Ensure the sources contain valid authors.")
+                    except Exception as e:
+                        print(f"Error installing program: {e}")
+                
+                elif full_cmd[1] == "remove":
+                    program = full_cmd[2]
+                    target_folder = os.path.join(local_dir, "opt", program)
+                    if os.path.exists(target_folder):
+                        shutil.rmtree(target_folder)
+                        print(f"{program} removed successfully.")
+                    else:
+                        print(f"No such program: {program}")
                         
         elif cmd == "bash":
             if len(full_cmd) < 2:
