@@ -299,19 +299,6 @@ try:
     
     import Otrace as game
 
-    ### Check for the cache directory ###
-    print("")
-    print("Checking for cache directory:")
-    if not game.sys.file_mngr.check(os.path.join(main_dir, "Otrace", "cache")):
-        print("(!) Cache directory not found.")
-        print("Creating cache directory...")
-        os.mkdir(os.path.join(main_dir, "Otrace", "cache"))
-        print("Cache directory created.")
-    else:
-        print("Cache directory found.")
-    print("")
-    ### ------------------------ ###
-
     ### Remove __pycache__ directories ###
     if delete_pycache == True:
         print("")
@@ -333,6 +320,7 @@ try:
         ("username", os.path.join(main_dir, "Otrace", "local", "etc", "passwd")),
         ("password", os.path.join(main_dir, "Otrace", "local", "etc", "shadow")),
         ("sudoers", os.path.join(main_dir, "Otrace", "local", "etc", "sudoers")),
+        ("apt_sources", os.path.join(main_dir, "Otrace", "programs", "apt", "sources")),
     ]
     
     for file_desc, file_path in files_to_check:
@@ -347,30 +335,29 @@ try:
         
     print("")
     ### ------------------------------------ ###
-
-    ### Check if apt sources file exists ###
+    
+    ### Check if essential system files exist ###
     print("")
-    print("Checking for apt sources file:")
-    if not game.sys.file_mngr.check(os.path.join(main_dir, "Otrace", "programs", "apt", "sources")):
-        print("(!) apt sources file not found.")
-        print("sources file created successfully.")
-    else:
-        print("apt sources file found.")
+    print("Checking if essential system files exist:")
     print("")
-    ### ----------------------------------- ###
-
-    ### Check if a hostname exists ###
+    
+    folders_to_check = [
+        ("opt", os.path.join(main_dir, "Otrace", "local", "opt")),
+        ("cache", os.path.join(main_dir, "Otrace", "cache")),
+    ]
+    
+    for folder_desc, folder_path in folders_to_check:
+        print(f"Checking for {folder_desc} folder")
+        if not game.sys.file_mngr.check(folder_path):
+            print(f"(!) {folder_desc} folder not found")
+            print(f"Creating {folder_desc} folder...")
+            game.sys.file_mngr.folder_create(folder_path)
+            print(f"{folder_desc} folder created successfully.")
+        else:
+            print(f"{folder_desc} folder found.")
+        
     print("")
-    print("Checking for hostname:")
-    if game.sys.file_mngr.empty(os.path.join(main_dir, "Otrace", "local", "etc", "hostname")):
-        print("(!) Hostname not found.")
-        print("Starting hostname creation...")
-        game.sys.accnt_mngr.create_hostname(main_dir)
-        print("Hostname created successfully.")
-    else:
-        print("Hostname found.")
-    print("")
-    ### ------------------------ ###
+    ### ------------------------------------ ###
 
     ### Check if an account exists ###
     print("")
