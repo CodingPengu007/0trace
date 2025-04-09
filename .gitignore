@@ -4,3 +4,5 @@ Otrace/local/etc/shadow
 Otrace/local/etc/passwd
 Otrace/local/etc/hostname
 Otrace/cache/
+Otrace/local/opt/
+Otrace/programs/apt/sources
