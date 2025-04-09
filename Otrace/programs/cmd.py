@@ -17,6 +17,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
     cache_path = os.path.join(local_dir, "home", username, "cache")
     sudo_file_path = os.path.join(local_dir, "etc", "sudoers")
     log_file_path = os.path.join(local_dir, "home", username, "cache", "local_logs")
+    sources_file_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
 
     # Load aliases from file if it exists
     if os.path.exists(alias_file_path):
@@ -27,7 +28,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
 
     get_command = True
     sudo = False
+    script_sudo = False
     script_active = False
+    sudo_protect = False
 
     while True:
         show_dir = "/" + os.path.relpath(current_dir, local_dir)
@@ -48,7 +51,11 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 script_line = 0
                 script_lines = 0
                 script = []
+                script_sudo = False
                 get_command = True
+                
+        elif script_sudo == True:
+            sudo = True
         
         if get_command == True:
             full_cmd = input(f"| ({username}@{hostname})-[{show_dir}]\n| $ ").split()
@@ -260,14 +267,13 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     get_command = False
                     sudo = True
                     full_cmd.pop(0)
-
+                    skip_line = True
+                    sudo_protect = True
                 else:
                     print(f"{username} is not in the sudoers file.")
                     
         elif cmd == "apt":
-            sources_file_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
-            
-            if not len(full_cmd) == 3:
+            if not len(full_cmd) > 1 or len(full_cmd) > 3:
                 print("Usage: apt <option> <program>")
             elif sudo == False:
                 print("Permission denied.")
@@ -275,7 +281,34 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 if full_cmd[1] == "add":
                     author = full_cmd[2]
                     with open(sources_file_path, 'a') as file:
-                        file.write(author = "\n")
+                        file.write(author + "\n")
+                    skip_line = False
+                        
+                elif full_cmd[1] == "update":
+                    try:
+                        import requests
+                        with open(sources_file_path, 'r') as file:
+                            urls = ["https://github.com/" + line.strip() for line in file.readlines()]
+                            authors = [author.strip() for author in gm.sys.file_mngr.list_load(sources_file_path)]
+                        for url, author in zip(urls, authors):
+                            url = url.strip()
+                            if url.startswith("https://github.com/"):
+                                try:
+                                    response = requests.head(url, timeout=5)
+                                    if response.status_code == 200:
+                                        print(f"[checked] {author}")
+                                    else:
+                                        print("")
+                                        print(f"[!] {author} is not reachable.")
+                                        print("")
+                                except requests.RequestException as e:
+                                    print(f"Error checking {url}: {e}")
+                            else:
+                                print(f"{url} is not a valid GitHub URL.")
+                    except FileNotFoundError:
+                        print("Sources file not found.")
+                    except Exception as e:
+                        print(f"Error checking URLs: {e}")
                         
         elif cmd == "bash":
             if len(full_cmd) < 2:
@@ -292,12 +325,26 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                             script_lines = len(script) - 1
                             script_line = 0
                             get_command = False
+                            skip_line = False
+                            if sudo == True:
+                                script_sudo = True
                     except Exception as e:
                         print(f"Error reading script: {e}")
                 else:
                     print(f"No such file: '{full_cmd[1]}'")
+                    
+        elif cmd == "echo":
+            if len(full_cmd) < 2:
+                print("Usage: echo <text>")
+            else:
+                print(full_cmd[1])
             
         if not skip_line == True:
             print("")
+            
+        if not sudo_protect == True:
+            sudo = False
+        else:
+            sudo_protect = False
         
 #################################################################################

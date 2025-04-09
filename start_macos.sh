@@ -6,9 +6,21 @@ function error_exit {
     exit 1
 }
 
+# Install git if not installed
+if ! command -v git &> /dev/null; then
+    echo "git is not installed. Installing git..."
+    sudo apt update && sudo apt install -y git || error_exit "Failed to install git."
+fi
+
+# Install python3 if not installed
+if ! command -v python3 &> /dev/null; then
+    echo "python3 is not installed. Installing python3..."
+    sudo apt update && sudo apt install -y python3 python3-venv python3-pip || error_exit "Failed to install Python 3."
+fi
+
 # Check if python3 is installed
 if ! command -v python3 &> /dev/null; then
-    error_exit "python3 could not be found. Please install Python 3."
+    error_exit "python3 could not be found even after installation. Please check your system."
 fi
 
 # Check if pip is installed
@@ -26,7 +38,7 @@ source Otrace_venv/bin/activate || error_exit "Failed to activate virtual enviro
 
 # Install dependencies
 pip install --upgrade pip || error_exit "Failed to upgrade pip."
-pip install bcrypt texteditor || error_exit "Failed to install required packages."
+pip install bcrypt texteditor requests || error_exit "Failed to install required packages."
 
 # Upgrade outdated packages if any
 outdated_packages=$(pip list --outdated --format=freeze | awk -F '==' '{print $1}')

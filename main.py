@@ -266,6 +266,7 @@ try:
     try:
         import bcrypt
         import texteditor
+        import requests
     except ImportError as e:
         os.system('clear' if os.name == 'posix' else 'cls')
         print("")
