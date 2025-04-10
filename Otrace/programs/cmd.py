@@ -377,7 +377,10 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Usage: echo <text>")
             else:
                 print(" ".join(full_cmd[1:]))
-            
+        
+        else:
+            print("Command not found.")
+        
         if not skip_line == True:
             print("")
             
