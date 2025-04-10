@@ -314,6 +314,27 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                         print("Sources file not found.")
                     except Exception as e:
                         print(f"Error checking URLs: {e}")
+                
+                elif full_cmd[1] == "upgrade":
+                    try:
+                        opt_dir = os.path.join(local_dir, "opt")
+                        if not os.path.exists(opt_dir):
+                            print("No programs installed to upgrade.")
+                        else:
+                            for program in os.listdir(opt_dir):
+                                program_path = os.path.join(opt_dir, program)
+                                if os.path.isdir(program_path):
+                                    print(f"Updating {program}...")
+                                    subprocess.run(["git", "-C", program_path, "pull"], check=True)
+                                    print(f"{program} updated successfully.")
+                    except Exception as e:
+                        print(f"Error upgrading programs: {e}")
+                    try:
+                        print(f"Updating {program}...")
+                        subprocess.run(["git", "-C", main_dir, "pull"], check=True)
+                        print(f"0trace updated successfully.")
+                    except Exception as e:
+                        print(f"Error upgrading 0trace")
                         
                 elif full_cmd[1] == "install":
                     import requests
