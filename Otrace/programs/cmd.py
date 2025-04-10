@@ -20,6 +20,8 @@ def line(username, hostname, current_dir, local_dir, main_dir):
     log_file_path = os.path.join(local_dir, "home", username, "cache", "local_logs")
     sources_file_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
     home_dir = os.path.join(local_dir, "home")
+    
+    commands = ["ls", "cd", "cat", "mkdir", "clear", "alias", "nano", "exit", "rm", "bash", "echo"]
 
     # Load aliases from file if it exists
     if os.path.exists(alias_file_path):
@@ -87,6 +89,18 @@ def line(username, hostname, current_dir, local_dir, main_dir):
         if cmd == "help":
             if len(full_cmd) > 1:
                 print("Command doesn't take any arguments.")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("help")
+                print("")
+                print("Description:")
+                print("Display help information for commands.")
+                print("")
+                print("Usage:")
+                print("help")
+                print("")
+                print("Examples:")
+                print("help")
             else:
                 print("Commands:")
                 print("  help                           - Display this help message.")
@@ -103,7 +117,26 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("  echo <text>                    - Print text to the terminal.")
                 
         elif cmd == "alias":
-            if len(full_cmd) == 2 and full_cmd[1] == "show":
+            if len(full_cmd) != 3:
+                print("Usage: alias <command> <new_alias>, alias show, or alias delete <alias_name>")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("alias")
+                print("")
+                print("Description:")
+                print("Create, show, or delete aiases for commands.")
+                print("Aliases are stored in the cache directory.")
+                print("")
+                print("Usage:")
+                print("alias <command> <new_alias>")
+                print("alias show")
+                print("alias delete <alias_name>")
+                print("")
+                print("Examples:")
+                print("alias ls list")
+                print("alias show")
+                print("alias delete list")
+            elif len(full_cmd) == 2 and full_cmd[1] == "show":
                 if aliases:
                     print("Aliases:")
                     for alias, command in aliases.items():
@@ -120,14 +153,14 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"Alias {alias_to_delete} deleted.")
                 else:
                     print(f"Alias {alias_to_delete} does not exist.")
-            elif len(full_cmd) != 3:
-                print("Usage: alias <command> <new_alias>, alias show, or alias delete <alias_name>")
             else:
                 command, alias = full_cmd[1], full_cmd[2]
                 if full_cmd[2] == "echo":
                     print("Echo can not be aliased.")
                 elif alias in aliases:
                     print(f"Alias {alias} already exists for command {aliases[alias]}.")
+                elif alias in commands:
+                    print(f"{alias} is a command and cannot be used as an alias.")
                 elif command in aliases.values():
                     print(f"Command {command} is already aliased to {list(aliases.keys())[list(aliases.values()).index(command)]}.")
                 else:
@@ -135,9 +168,23 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     with open(alias_file_path, 'a') as file:
                         file.write(f"{alias}={command}\n")
                     print(f"Alias '{alias}' created for command '{command}'.")
-        elif cmd == "ls":
+                    
+        elif cmd == "ls" or cmd == "dir":
             if len(full_cmd) > 2:
                 print("Usage: ls [dir]")
+            elif len(full_cmd) == "-h":
+                print("Command:")
+                print("ls, dir")
+                print("")
+                print("Description:")
+                print("List files and directories in the current or specified directory.")
+                print("")
+                print("Usage:")
+                print("ls [dir]")
+                print("")
+                print("Examples:")
+                print("ls")
+                print("ls Documents")
             else:
                 target_dir = current_dir if len(full_cmd) == 1 else full_cmd[1]
                 if len(full_cmd) == 2:
@@ -152,9 +199,24 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     
                 except FileNotFoundError:
                     print(f"No such file or directory: '{target_dir}'")
+                    
         elif cmd == "cd":
             if len(full_cmd) != 2:
                 print("Usage: cd <dir>")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("cd")
+                print("")
+                print("Description:")
+                print("Change the current working directory.")
+                print("")
+                print("Usage:")
+                print("cd <dir>")
+                print("")
+                print("Examples:")
+                print("cd /home/user/documents")
+                print("cd ..")
+                print("cd Downloads")
             else:
                 try:
                     new_dir = os.path.expanduser(full_cmd[1])
@@ -182,9 +244,22 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"An error occurred: {e}")
                     
                 skip_line = True
+                
         elif cmd == "cat":
             if len(full_cmd) != 2:
                 print("Usage: cat <file>")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("cat")
+                print("")
+                print("Description:")
+                print("Print the contents of a file.")
+                print("")
+                print("Usage:")
+                print("cat <file>")
+                print("")
+                print("Examples:")
+                print("cat file.txt")
             else:
                 try:
                     file_path = os.path.join(current_dir, full_cmd[1])
@@ -195,9 +270,22 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                             print(file.read())
                 except FileNotFoundError:
                     print(f"No such file: '{full_cmd[1]}'")
+                    
         elif cmd == "mkdir":
             if len(full_cmd) != 2:
                 print("Usage: mkdir <dir>")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("mkdir")
+                print("")
+                print("Description:")
+                print("Create a new directory.")
+                print("")
+                print("Usage:")
+                print("mkdir <dir>")
+                print("")
+                print("Examples:")
+                print("mkdir new_folder")
             else:
                 try:
                     target_dir = os.path.join(current_dir, full_cmd[1])
@@ -206,9 +294,22 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"Directory {dir_name} created.")
                 except Exception as e:
                     print(f"Error creating directory: {e}")
+                    
         elif cmd == "nano":
             if len(full_cmd) != 2:
                 print("Usage: nano <file>")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("nano")
+                print("")
+                print("Description:")
+                print("Create or edit a file using a simple text editor.")
+                print("")
+                print("Usage:")
+                print("nano <file>")
+                print("")
+                print("Examples:")
+                print("nano file.txt")
             else:
                 try:
                     import texteditor
@@ -225,10 +326,28 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 except Exception as e:
                     print(f"Error using texteditor: {e}")
                     
-        elif cmd == "rm":
+        elif cmd == "rm" or cmd == "del" or cmd == "remove":
             not_empty_detected = False
             if len(full_cmd) < 2 or len(full_cmd) > 3:
                 print("Usage: rm <file> or rm -rf <folder>")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("rm, del, remove")
+                print("")
+                print("Description:")
+                print("Remove a file or directory.")
+                print("")
+                print("Usage:")
+                print("rm <file>")
+                print("rm -rf <folder>")
+                print("")
+                print("Examples:")
+                print("rm file.txt")
+                print("rm -rf folder")
+            elif full_cmd[1] == "-rf":
+                if len(full_cmd) != 3:
+                    print("Usage: rm -rf <folder>")
+                    continue
             elif len(full_cmd) == 2:
                 try:
                     file_path = os.path.join(current_dir, full_cmd[1])
@@ -246,7 +365,6 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 except Exception as e:
                     if not_empty_detected == False:
                         print(f"Error removing file or folder: {e}")
-                    
             elif len(full_cmd) == 3 and full_cmd[1] == "-rf":
                 try:
                     folder_path = os.path.join(current_dir, full_cmd[2])
@@ -261,14 +379,56 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"Error force removing folder: {e}")
                     
         elif cmd == "clear" or cmd == "cls":
-            os.system('clear' if os.name == 'posix' else 'cls')
+            if len(full_cmd) > 1:
+                print("Command doesn't take any arguments.")
+            elif full_cmd[1] == "-h":
+                print("Commands:")
+                print("clear, cls")
+                print("")
+                print("Description:")
+                print("Clear the terminal screen.")
+                print("")
+                print("Usage:")
+                print("clear")
+                print("")
+                print("Examples:")
+                print("clear")
+            else:
+                os.system('clear' if os.name == 'posix' else 'cls')
+            
         elif cmd == "exit":
             if len(full_cmd) > 1:
                 print("Command doesn't take any arguments.")
-            break
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("exit")
+                print("")
+                print("Description:")
+                print("Exit the shell.")
+                print("")
+                print("Usage:")
+                print("exit")
+                print("")
+                print("Examples:")
+                print("exit")
+            else:
+                break
+        
         elif cmd == "sudo":
             if len(full_cmd) < 2:
                 print("Usage: sudo <command>")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("sudo")
+                print("")
+                print("Description:")
+                print("Execute a command with superuser privileges.")
+                print("")
+                print("Usage:")
+                print("sudo <command>")
+                print("")
+                print("Examples:")
+                print("sudo apt update")
             else:
                 sudoers = [username.strip() for username in gm.sys.file_mngr.list_load(sudo_file_path)]
                 if username in sudoers:
@@ -283,6 +443,19 @@ def line(username, hostname, current_dir, local_dir, main_dir):
         elif cmd == "apt":
             if not len(full_cmd) > 1 or len(full_cmd) > 3:
                 print("Usage: apt <option> <program>")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("apt")
+                print("")
+                print("Description:")
+                print("Package manager for installing, updating, and removing programs.")
+                print("(!) This command requires superuser privileges.")
+                print("")
+                print("Usage:")
+                print("apt <option> <program>")
+                print("")
+                print("Examples:")
+                print("sudo apt update")
             elif sudo == False:
                 print("Permission denied.")
             else:
@@ -379,6 +552,18 @@ def line(username, hostname, current_dir, local_dir, main_dir):
         elif cmd == "bash":
             if len(full_cmd) < 2:
                 print("Usage: bash <file>")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("bash")
+                print("")
+                print("Description:")
+                print("Run a script file with the file ending .sh")
+                print("")
+                print("Usage:")
+                print("bash <file>")
+                print("")
+                print("Examples:")
+                print("bash script.sh")
             elif not full_cmd[1].endswith(".sh"):
                 print("File must have a .sh extension.")
             elif len(full_cmd) >= 2:
@@ -402,6 +587,18 @@ def line(username, hostname, current_dir, local_dir, main_dir):
         elif cmd == "echo":
             if len(full_cmd) < 2:
                 print("Usage: echo <text>")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("echo")
+                print("")
+                print("Description:")
+                print("Print text to the terminal.")
+                print("")
+                print("Usage:")
+                print("echo <text>")
+                print("")
+                print("Examples:")
+                print("echo Hello World!")
             else:
                 print(" ".join(full_cmd[1:]))
         
