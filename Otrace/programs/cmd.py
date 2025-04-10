@@ -123,7 +123,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Usage: alias <command> <new_alias>, alias show, or alias delete <alias_name>")
             else:
                 command, alias = full_cmd[1], full_cmd[2]
-                if alias in aliases:
+                if full_cmd[2] == "echo":
+                    print("Echo can not be aliased.")
+                elif alias in aliases:
                     print(f"Alias {alias} already exists for command {aliases[alias]}.")
                 elif command in aliases.values():
                     print(f"Command {command} is already aliased to {list(aliases.keys())[list(aliases.values()).index(command)]}.")
