@@ -10,7 +10,6 @@ import Otrace.sys.file_mngr as file_mngr
 
 #################################################################################
 try:
-    
     os.system("cls" if os.name == "nt" else "clear")
     skip_warning = False
     if file_mngr.check(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning")):
@@ -48,7 +47,7 @@ try:
             print("")
             print("(*) Warning enabled.")
             print("")
-        if answer.lower() == "n":
+        elif answer.lower() == "n":
             try:
                 with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"), "w") as file:
                     file.write("n")
@@ -440,9 +439,10 @@ except KeyboardInterrupt:
     os.system("cls" if os.name == "nt" else "clear")
     sys.exit(0)
 except Exception as e:
+    print("")
     print("The Startup of 0trace failed.")
     print("")
-    print("Error report:")
+    print("Crash report:")
     print("----------------------------")
     print(f"ERROR: {e}")
     print("----------------------------")
