@@ -202,9 +202,9 @@ try:
     
     shell_script_path = os.path.join(main_dir, f"start_{client_os.lower()}.{script_file_ending}")
     home_dir_path = os.path.join(main_dir, "Otrace", "local", "home")
-    passwd_path = os.path.join(main_dir, "Otrace", "etc", "passwd")
-    shadow_path = os.path.join(main_dir, "Otrace", "etc", "shadow")
-    hostname_path = os.path.join(main_dir, "Otrace", "etc", "hostname")
+    passwd_path = os.path.join(main_dir, "Otrace", "local", "etc", "passwd")
+    shadow_path = os.path.join(main_dir, "Otrace", "local", "etc", "shadow")
+    hostname_path = os.path.join(main_dir, "Otrace", "local", "etc", "hostname")
     warning_path = os.path.join(main_dir, "Otrace", "cache", "warning")
     del_pycache_path = os.path.join(main_dir, "Otrace", "cache", "del_pycache")
     venv_dir = os.path.join(main_dir, 'Otrace_venv')
