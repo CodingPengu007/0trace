@@ -99,6 +99,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("  exit                           - Exit the shell.")
                 print("  rm <file>                      - Remove a file.")
                 print("  bash <file>                    - Run a script file with the file ending .sh")
+                print("  echo <text>                    - Print text to the terminal.")
                 
         elif cmd == "alias":
             if len(full_cmd) == 2 and full_cmd[1] == "show":
@@ -375,7 +376,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             if len(full_cmd) < 2:
                 print("Usage: echo <text>")
             else:
-                print(full_cmd[1])
+                print(" ".join(full_cmd[1:]))
             
         if not skip_line == True:
             print("")
