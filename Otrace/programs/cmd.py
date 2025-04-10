@@ -19,6 +19,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
     sudo_file_path = os.path.join(local_dir, "etc", "sudoers")
     log_file_path = os.path.join(local_dir, "home", username, "cache", "local_logs")
     sources_file_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
+    home_dir = os.path.join(local_dir, "home")
 
     # Load aliases from file if it exists
     if os.path.exists(alias_file_path):
@@ -162,7 +163,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     if new_dir == "..":
                         new_dir = os.path.dirname(current_dir)
                     try:
-                        if os.path.commonpath([new_dir, local_dir]) != local_dir:
+                        if os.path.commonpath([new_dir, home_dir]) != home_dir:
                             print("Permission denied.")
                             print("")
                             continue
@@ -187,8 +188,11 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             else:
                 try:
                     file_path = os.path.join(current_dir, full_cmd[1])
-                    with open(file_path, 'r') as file:
-                        print(file.read())
+                    if os.path.isdir(file_path):
+                        print(f"'{full_cmd[1]}' is a directory, not a file.")
+                    else:
+                        with open(file_path, 'r') as file:
+                            print(file.read())
                 except FileNotFoundError:
                     print(f"No such file: '{full_cmd[1]}'")
         elif cmd == "mkdir":
