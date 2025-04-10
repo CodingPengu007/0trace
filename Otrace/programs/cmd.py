@@ -379,8 +379,10 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"Error force removing folder: {e}")
                     
         elif cmd == "clear" or cmd == "cls":
-            if len(full_cmd) > 1:
-                print("Command doesn't take any arguments.")
+            if len(full_cmd) > 2:
+                print("Usage: clear or clear -h")
+            elif len(full_cmd) == 1:
+                os.system('clear' if os.name == 'posix' else 'cls')
             elif full_cmd[1] == "-h":
                 print("Commands:")
                 print("clear, cls")
@@ -393,12 +395,12 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("")
                 print("Examples:")
                 print("clear")
-            else:
-                os.system('clear' if os.name == 'posix' else 'cls')
             
         elif cmd == "exit":
-            if len(full_cmd) > 1:
-                print("Command doesn't take any arguments.")
+            if len(full_cmd) > 2:
+                print("Usage: exit or exit -h")
+            elif len(full_cmd) == 1:
+                break
             elif full_cmd[1] == "-h":
                 print("Command:")
                 print("exit")
@@ -411,8 +413,6 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("")
                 print("Examples:")
                 print("exit")
-            else:
-                break
         
         elif cmd == "sudo":
             if len(full_cmd) < 2:
@@ -452,18 +452,47 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("(!) This command requires superuser privileges.")
                 print("")
                 print("Usage:")
-                print("apt <option> <program>")
+                print("apt source add <author>")
+                print("apt source remove <author>")
+                print("apt source list")
+                print("apt update")
+                print("apt upgrade")
+                print("apt install <program>")
+                print("apt remove <program>")
                 print("")
                 print("Examples:")
                 print("sudo apt update")
             elif sudo == False:
                 print("Permission denied.")
             else:
-                if full_cmd[1] == "add":
+                if full_cmd[1] == "source" and full_cmd[2] == "add":
                     author = full_cmd[2]
                     with open(sources_file_path, 'a') as file:
                         file.write(author + "\n")
                     skip_line = False
+                
+                elif full_cmd[1] == "source" and full_cmd[2] == "remove":
+                    author = full_cmd[2]
+                    with open(sources_file_path, 'r') as file:
+                        lines = file.readlines()
+                    with open(sources_file_path, 'w') as file:
+                        for line in lines:
+                            if line.strip() != author:
+                                file.write(line)
+                    skip_line = False
+                
+                elif full_cmd[1] == "source" and full_cmd[2] == "list":
+                    try:
+                        with open(sources_file_path, 'r') as file:
+                            authors = [author.strip() for author in file.readlines()]
+                        if authors:
+                            print("Authors in sources:")
+                            for author in authors:
+                                print(f"  {author}")
+                        else:
+                            print("No authors found in sources.")
+                    except FileNotFoundError:
+                        print("Sources file not found.")
                         
                 elif full_cmd[1] == "update":
                     try:
@@ -474,7 +503,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                         for url, author in zip(urls, authors):
                             url = url.strip()
                             try:
-                                response = requests.head(url, timeout=5)
+                                response = requests.head(url, timeout=10)
                                 if response.status_code == 200:
                                     print(f"[checked] {author}")
                                 else:
@@ -494,12 +523,12 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                         if not os.path.exists(opt_dir):
                             print("No programs installed to upgrade.")
                         else:
-                            for program in os.listdir(opt_dir):
+                            programs = [program for program in os.listdir(opt_dir) if os.path.isdir(os.path.join(opt_dir, program))]
+                            for program in programs:
                                 program_path = os.path.join(opt_dir, program)
-                                if os.path.isdir(program_path):
-                                    print(f"Updating {program}...")
-                                    subprocess.run(["git", "-C", program_path, "pull"], check=True)
-                                    print(f"{program} updated successfully.")
+                                print(f"Updating {program}...")
+                                subprocess.run(["git", "-C", program_path, "pull"], check=True)
+                                print(f"{program} updated successfully.")
                     except Exception as e:
                         print(f"Error upgrading programs: {e}")
                     try:
@@ -522,12 +551,16 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                             try:
                                 response = requests.head(repo_url, allow_redirects=True, timeout=5)
                                 if response.status_code == 200:
-                                    found = True
-                                    print(f"Cloning {program} from {repo_url}...")
                                     target_folder = os.path.join(local_dir, "opt", program)
+                                    if os.path.exists(target_folder):
+                                        print(f"Program {program} is already installed.")
+                                        found = True
+                                        break
+                                    print(f"Cloning {program} from {repo_url}...")
                                     os.makedirs(target_folder, exist_ok=True)
                                     subprocess.run(["git", "clone", repo_url, target_folder], check=True)
                                     print(f"{program} installed successfully.")
+                                    found = True
                                     break
                                 else:
                                     print(f"Repository {repo_url} returned status code {response.status_code}.")
@@ -603,7 +636,25 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print(" ".join(full_cmd[1:]))
         
         else:
-            print("Command not found.")
+            if len(full_cmd) == 1 and gm.sys.file_mngr.check(os.path.join(local_dir, "opt", cmd)):
+                target_folder = os.path.join(local_dir, "opt", cmd)
+                if os.path.isdir(target_folder):
+                    os.chdir(target_folder)
+                    try:
+                        if os.name == 'nt':
+                            subprocess.run(["python", "-m", cmd], check=True)
+                        else:
+                            subprocess.run(["python3", "-m", cmd], check=True)
+                    except subprocess.CalledProcessError as e:
+                        print(f"(!) An error occurred: {e}")
+                    except Exception as e:
+                        print(f"(!) Unexpected error: {e}")
+                    finally:
+                        os.chdir(current_dir)
+                else:
+                    print(f"'{cmd}' is not a directory.")
+            else:
+                print("Command not found.")
         
         if not skip_line == True:
             print("")
