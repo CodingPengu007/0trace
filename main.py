@@ -234,7 +234,7 @@ try:
         for file_path in file_paths:
             try:
                 with open(file_path, 'w') as file:
-                    pass
+                    file.truncate()
             except IOError as e:
                 print(f"Error opening or writing to {file_path}: {e}")        
         print("Flushed all files!")
@@ -343,6 +343,7 @@ try:
     folders_to_check = [
         ("opt", os.path.join(main_dir, "Otrace", "local", "opt")),
         ("cache", os.path.join(main_dir, "Otrace", "cache")),
+        ("home", os.path.join(main_dir, "Otrace", "local", "home")),
     ]
     
     for folder_desc, folder_path in folders_to_check:
