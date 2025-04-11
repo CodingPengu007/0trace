@@ -1,6 +1,6 @@
 name: Add Issue to Project
 
-description: 'Automatically adds new issues to a GitHub project'
+description: 'Automatically adds new issues to the Collaborators Hub 👏 GitHub Project'
 
 inputs:
   project_name:
@@ -18,37 +18,37 @@ runs:
         script: |
           const issue = context.payload.issue;
           const projectName = '${{ inputs.project_name }}';
-          
-          // Fetch the repository's project boards
+
+          // Fetch the repository's projects (new GitHub Projects API)
           const projects = await github.rest.projects.listForRepo({
             owner: context.repo.owner,
-            repo: context.repo.repo
+            repo: context.repo.repo,
           });
 
           // Find the project by name (case-sensitive)
           const project = projects.data.find(p => p.name === projectName);
-          
+
           if (!project) {
             throw new Error(`Project "${projectName}" not found.`);
           }
-          
-          // Find a column to add the issue to. For example, you can add to the first column (usually "To Do").
+
+          // Fetch the columns for the selected project
           const columns = await github.rest.projects.listColumns({
-            project_id: project.id
+            project_id: project.id,
           });
-          
+
           if (columns.length === 0) {
             throw new Error(`No columns found for project "${projectName}".`);
           }
 
-          // Assuming you want to add the issue to the first column
+          // Add the issue to the first column (you can change this logic if needed)
           const columnId = columns[0].id;
-          
-          // Add the issue to the selected column
+
+          // Create a card in the selected column
           await github.rest.projects.createCard({
             column_id: columnId,
             content_id: issue.id,
-            content_type: 'Issue'
+            content_type: 'Issue',
           });
-          
+
           console.log(`Issue #${issue.number} has been added to the project "${projectName}".`);
