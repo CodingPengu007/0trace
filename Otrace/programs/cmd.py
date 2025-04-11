@@ -14,10 +14,10 @@ def line(username, hostname, current_dir, local_dir, main_dir):
     cmd = ""
 
     aliases = {}
-    alias_file_path = os.path.join(local_dir, "home", username, "cache", "aliases")
-    cache_path = os.path.join(local_dir, "home", username, "cache")
+    alias_file_path = os.path.join(local_dir, "home", username, "Cache", "aliases")
+    cache_path = os.path.join(local_dir, "home", username, "Cache")
     sudo_file_path = os.path.join(local_dir, "etc", "sudoers")
-    log_file_path = os.path.join(local_dir, "home", username, "cache", "local_logs")
+    log_file_path = os.path.join(local_dir, "home", username, "Cache", "local_logs")
     sources_file_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
     home_dir = os.path.join(local_dir, "home")
     
