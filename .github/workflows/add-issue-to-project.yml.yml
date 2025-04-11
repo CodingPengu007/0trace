@@ -1,6 +1,5 @@
 name: Add Issue to Project Board
 
-# This section defines the event that triggers the workflow
 on:
   issues:
     types: [opened]  # Trigger the workflow when an issue is opened
@@ -14,9 +13,8 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2  # This checks out the code in the repository
 
-      # Step 2: Add the new issue to the specified project
+      # Step 2: Add the new issue to the project
       - name: Add the new issue to the project
         uses: ./.github/actions/add-issue-to-project  # Path to the custom action you created
         with:
           project_name: 'Collaborators Hub 👏'  # The exact name of your project board
-          column_name: 'To Do'  # The exact name of the column in your project board
