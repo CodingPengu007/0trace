@@ -191,7 +191,7 @@ try:
         client_os = "Unknown"
         script_file_ending = "unknown"
         
-    version = "0.2.5.3"
+    version = "0.0.7.4"
     author = "CodingPengu007"
     program = "0trace"
     publicity = "Closed Early Alpha"
