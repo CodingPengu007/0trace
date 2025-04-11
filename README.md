@@ -28,13 +28,13 @@ cd 0trace
 
 #### On Linux / macOS
 ```bash
-python3 0trace.py
+python3 main.py
 ```
 
 #### On Windows
 Run the program with Python:
 ```bash
-python 0trace.py
+python main.py
 ```
 
 ### Step 3: Activate the venv and start the program again
@@ -42,14 +42,14 @@ python 0trace.py
 #### On Linux / macOS
 ```bash
 source Otrace_venv/bin/activate
-python3 0trace.py
+python3 main.py
 ```
 
 #### On Windows
 Run the program with Python:
 ```bash
 Otrace_venv/Scripts/activate
-python 0trace.py
+python main.py
 ```
 
 ---
@@ -57,8 +57,16 @@ python 0trace.py
 ## 🎮 Gameplay
 
 Launch the game with the following command:
+
+#### On Linux / macOS
 ```bash
-python3 0trace.py
+python3 main.py
+```
+
+#### On Windows
+Run the program with Python:
+```bash
+python main.py
 ```
 
 ---
