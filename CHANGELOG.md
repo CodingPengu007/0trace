@@ -1,51 +1,43 @@
 # Changelog 📜
 
-All notable changes to this project will be documented in this file.  
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/).
+## [IN PROGRESS] 🚧
+### Adding
+- Adding two new commands, **mv** and **cp**, to move and copy files
 
-## [Unreleased] 🚧
-### Added
-- List new features or functionalities you added.
+### Changing
+- Revising the startup progress of the program
 
-### Changed
-- Describe any changes to existing features or improvements.
+### Fixing
+- Fixing issues with the not working _start_windows.bat_ and restoring Windows compartibility
+- Fixing issue in the startup script of MacOS and Linux
 
-### Fixed
-- List bugs or issues that were fixed.
-
-### Deprecated
-- Anything that will be removed in future releases.
-
-### Removed
+### Removing
 - Features or functionalities that have been removed.
 
 ### Security
-- Mention any security updates or improvements.
+- ...
 
 ---
 
-## [1.0.0] - YYYY-MM-DD 🏁
+## [0.0.7.5] - YYYY-MM-DD 🏁
 ### Added
-- Initial release of the game, **0trace**! 🎮
-- Realistic Linux-based OS simulation.
-- Multiplayer mode for real-time hacking challenges.
+- ...
 
 ### Changed
-- Optimized performance for smooth gameplay across platforms (Linux, macOS, and Windows).
+- ...
 
 ### Fixed
-- Resolved an issue where the game wouldn't start on some Linux distributions.
-- Fixed a bug with NPCs not responding to certain commands.
+- ...
 
 ### Security
-- Added basic security measures to protect the game from exploits.
+- ...
 
 ---
 
-## [0.9.0] - YYYY-MM-DD 🚀
+## [0.0.7.4] - 2025-04-12 🚀
 ### Added
-- First gameplay prototype, featuring the main hacking mechanics.
-- Added customizable tools for hacking.
+- **Added the changelog** and began writing down changes
 
 ### Fixed
-- Fixed an issue where the tool UI wouldn't display on Windows.
+- Fixed several _list index out of bounds_ errors in the command line function.
+- Fixed an issue of the sudoers file not getting cleared and still containing dev data.
