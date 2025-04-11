@@ -209,6 +209,7 @@ try:
     del_pycache_path = os.path.join(main_dir, "Otrace", "cache", "del_pycache")
     venv_dir = os.path.join(main_dir, 'Otrace_venv')
     apt_sources_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
+    sudoers_path = os.path.join(main_dir, "Otrace", "local", "etc", "sudoers")
     
     print(f"Detected operating system: {client_os}")
 
@@ -230,7 +231,7 @@ try:
         file_mngr.remove_lower(home_dir_path)
         print("User directories removed.")
         print("Flushing all files storing user data...")
-        file_paths = [passwd_path, shadow_path, hostname_path, warning_path, del_pycache_path, apt_sources_path]
+        file_paths = [passwd_path, shadow_path, hostname_path, warning_path, del_pycache_path, apt_sources_path, sudoers_path]
         for file_path in file_paths:
             try:
                 with open(file_path, 'w') as file:

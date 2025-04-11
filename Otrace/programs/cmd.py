@@ -97,8 +97,8 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("  rm <file>                      - Remove a file.")
                 print("  bash <file>                    - Run a script file with the file ending .sh")
                 print("  echo <text>                    - Print text to the terminal.")
-                print("  visudo                         - Edit the sudoers file.                                            (!) Requires superuser privileges.")
-                print("  apt <option> <program>         - Package manager for installing, updating, and removing programs.  (!) Requires superuser privileges.")
+                print("  visudo                         - Edit the sudoers file.                                            (!) Requires sudo")
+                print("  apt <option> <program>         - Package manager for installing, updating, and removing programs.  (!) Requires sudo")
                 print("  sudo <command>                 - Execute a command with superuser privileges.")
                 
         elif cmd == "alias":
@@ -297,20 +297,25 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Examples:")
                 print("nano file.txt")
             else:
-                try:
-                    import texteditor
-                    file_path = os.path.join(current_dir, full_cmd[1])
-                    if not os.path.exists(file_path):
+                file_path = os.path.join(current_dir, full_cmd[1])
+                if os.path.isdir(file_path):
+                    print(f"{full_cmd[1]} is a directory, not a file.")
+                elif file_path == alias_file_path:
+                    print("Please use 'alias' command to edit aliases.")
+                else:
+                    try:
+                        import texteditor
+                        if not os.path.exists(file_path):
+                            with open(file_path, 'w') as file:
+                                pass
+                        edited_content = texteditor.open(filename=file_path)
                         with open(file_path, 'w') as file:
-                            pass
-                    edited_content = texteditor.open(filename=file_path)
-                    with open(file_path, 'w') as file:
-                        file.write(edited_content)
-                    skip_line = True
-                except FileNotFoundError:
-                    print(f"No such file: '{full_cmd[1]}'")
-                except Exception as e:
-                    print(f"Error using texteditor: {e}")
+                            file.write(edited_content)
+                        skip_line = True
+                    except FileNotFoundError:
+                        print(f"No such file: '{full_cmd[1]}'")
+                    except Exception as e:
+                        print(f"Error using texteditor: {e}")
                     
         elif cmd == "rm" or cmd == "del" or cmd == "delete" or cmd == "remove":
             not_empty_detected = False
@@ -435,6 +440,10 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("apt source add <author>      - Add an author to the sources.")
                 print("apt source remove <author>   - Remove an author from the sources.")
                 print("apt source list              - List all authors in the sources.")
+                print("--- or ---")
+                print("apt src add <author>         - Add an author to the sources.")
+                print("apt src rm <author>          - Remove an author from the sources.")
+                print("apt src ls                   - List all authors in the sources.")
                 print("")
                 print("apt update                   - Update the sources and check if the authors exist.")
                 print("apt upgrade                  - Upgrade all installed programs.")
@@ -443,25 +452,44 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("apt remove <program>         - Remove a program.")
                 print("")
                 print("Examples:")
-                print("apt source add CodingPengu007")
-                print("apt source remove CodingPengu007")
+                print("sudo apt source add CodingPengu007")
+                print("sudo apt source remove CodingPengu007")
                 print("apt source list")
+                print("--- or ---")
+                print("sudo apt src add CodingPengu007")
+                print("sudo apt src rm CodingPengu007")
+                print("apt src ls")
                 print("")
-                print("apt update")
-                print("apt upgrade")
+                print("sudo apt update")
+                print("sudo apt upgrade")
                 print("")
-                print("apt install pencrypt")
-                print("apt remove pencrypt")
+                print("sudo apt install pencrypt")
+                print("sudo apt remove pencrypt")
+
+            elif (full_cmd[1] == "source" or full_cmd[1] == "src") and (full_cmd[2] == "list" or full_cmd[2] == "ls"):
+                try:
+                    with open(sources_file_path, 'r') as file:
+                        authors = [author.strip() for author in file.readlines()]
+                    if authors:
+                        print("Authors in sources:")
+                        for author in authors:
+                            print(f"  {author}")
+                    else:
+                        print("No authors found in sources.")
+                except FileNotFoundError:
+                    print("Sources file not found.")
+
             elif sudo == False:
                 print("Permission denied.")
+                
             else:
-                if full_cmd[1] == "source" and full_cmd[2] == "add":
+                if (full_cmd[1] == "source" or full_cmd[1] == "src") and full_cmd[2] == "add":
                     author = full_cmd[2]
                     with open(sources_file_path, 'a') as file:
                         file.write(author + "\n")
                     skip_line = False
                 
-                elif full_cmd[1] == "source" and full_cmd[2] == "remove":
+                elif (full_cmd[1] == "source" or full_cmd[1] == "src") and (full_cmd[2] == "remove" or full_cmd[2] == "rm"):
                     author = full_cmd[2]
                     with open(sources_file_path, 'r') as file:
                         lines = file.readlines()
@@ -470,19 +498,6 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                             if line.strip() != author:
                                 file.write(line)
                     skip_line = False
-                
-                elif full_cmd[1] == "source" and full_cmd[2] == "list":
-                    try:
-                        with open(sources_file_path, 'r') as file:
-                            authors = [author.strip() for author in file.readlines()]
-                        if authors:
-                            print("Authors in sources:")
-                            for author in authors:
-                                print(f"  {author}")
-                        else:
-                            print("No authors found in sources.")
-                    except FileNotFoundError:
-                        print("Sources file not found.")
                         
                 elif full_cmd[1] == "update":
                     try:
@@ -647,13 +662,18 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     os.chdir(target_folder)
                     try:
                         if os.name == 'nt':
-                            subprocess.run(["python", "-m", cmd], check=True)
+                            subprocess.run(["python", "-m", "main.py"], check=True)
                         else:
-                            subprocess.run(["python3", "-m", cmd], check=True)
+                            subprocess.run(["python3", "-m", "main.py"], check=True)
                     except subprocess.CalledProcessError as e:
                         print(f"(!) An error occurred: {e}")
                     except Exception as e:
                         print(f"(!) Unexpected error: {e}")
+                    except KeyboardInterrupt:
+                        print("\n----------------------------------------\n")
+                        print(f"\nExiting {cmd}...")
+                    except Exception as e:
+                        print(f"An error occurred: {e}")
                     finally:
                         os.chdir(current_dir)
                 else:
