@@ -29,7 +29,6 @@ def login_or_signup():
             print("")
     
 def signup(main_dir, sudo):
-    
     import bcrypt
     
     password_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "shadow")

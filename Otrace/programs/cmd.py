@@ -21,9 +21,8 @@ def line(username, hostname, current_dir, local_dir, main_dir):
     sources_file_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
     home_dir = os.path.join(local_dir, "home")
     
-    commands = ["ls", "cd", "cat", "mkdir", "clear", "alias", "nano", "exit", "rm", "bash", "echo"]
+    commands = ["ls", "cd", "cat", "mkdir", "clear", "alias", "nano", "exit", "rm", "bash", "echo", "visudo", "apt", "sudo"]
 
-    # Load aliases from file if it exists
     if os.path.exists(alias_file_path):
         with open(alias_file_path, 'r') as file:
             for line in file:
@@ -42,7 +41,6 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             show_dir = "~"
         elif show_dir == "/.":
             show_dir = "/"
-        
         if script_active:
             if script_line <= script_lines:
                 full_cmd = script[script_line].split()
@@ -57,10 +55,8 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 script = []
                 script_sudo = False
                 get_command = True
-                
         elif script_sudo == True:
             sudo = True
-        
         if get_command == True:
             full_cmd = input(f"| ({username}@{hostname})-[{show_dir}]\n| $ ").split()
             print("")
@@ -73,8 +69,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     pass
             if not gm.sys.file_mngr.check(log_file_path):
                 with open(log_file_path, 'w') as file:
-                    pass       
-            # Check if the command is an alias
+                    pass
             if cmd in aliases:
                 full_cmd = aliases[cmd].split() + full_cmd[1:]
                 cmd = full_cmd[0]
@@ -82,25 +77,12 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 file.write(cmd + "\n")
         else:
             get_command = True
-        
         cmd = full_cmd[0]
         skip_line = False
         
         if cmd == "help":
             if len(full_cmd) > 1:
                 print("Command doesn't take any arguments.")
-            elif full_cmd[1] == "-h":
-                print("Command:")
-                print("help")
-                print("")
-                print("Description:")
-                print("Display help information for commands.")
-                print("")
-                print("Usage:")
-                print("help")
-                print("")
-                print("Examples:")
-                print("help")
             else:
                 print("Commands:")
                 print("  help                           - Display this help message.")
@@ -115,9 +97,12 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("  rm <file>                      - Remove a file.")
                 print("  bash <file>                    - Run a script file with the file ending .sh")
                 print("  echo <text>                    - Print text to the terminal.")
+                print("  visudo                         - Edit the sudoers file.                                            (!) Requires superuser privileges.")
+                print("  apt <option> <program>         - Package manager for installing, updating, and removing programs.  (!) Requires superuser privileges.")
+                print("  sudo <command>                 - Execute a command with superuser privileges.")
                 
         elif cmd == "alias":
-            if len(full_cmd) != 3:
+            if len(full_cmd) < 2 or len(full_cmd) > 3:
                 print("Usage: alias <command> <new_alias>, alias show, or alias delete <alias_name>")
             elif full_cmd[1] == "-h":
                 print("Command:")
@@ -128,9 +113,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Aliases are stored in the cache directory.")
                 print("")
                 print("Usage:")
-                print("alias <command> <new_alias>")
-                print("alias show")
-                print("alias delete <alias_name>")
+                print("alias <command> <new_alias>  - Create an alias for a command.")
+                print("alias show                   - Show all defined aliases.")
+                print("alias delete <alias_name>    - Delete an alias.")
                 print("")
                 print("Examples:")
                 print("alias ls list")
@@ -177,10 +162,11 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("ls, dir")
                 print("")
                 print("Description:")
-                print("List files and directories in the current or specified directory.")
+                print("List files and directories in the current (without any arguments 'ls') or specified directory (with the directory specified 'ls directory').")
                 print("")
                 print("Usage:")
-                print("ls [dir]")
+                print("ls <dir> - List files in the specified directory.")
+                print("ls       - List files in the current directory.")
                 print("")
                 print("Examples:")
                 print("ls")
@@ -196,7 +182,6 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     else:
                         for item in items:
                             print(item)
-                    
                 except FileNotFoundError:
                     print(f"No such file or directory: '{target_dir}'")
                     
@@ -211,7 +196,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Change the current working directory.")
                 print("")
                 print("Usage:")
-                print("cd <dir>")
+                print("cd <dir> - Change to the specified directory.")
+                print("cd ..    - Change to the parent directory.")
+                print("cd       - Change to the home directory.")
                 print("")
                 print("Examples:")
                 print("cd /home/user/documents")
@@ -242,7 +229,6 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"No such file or directory: '{full_cmd[1]}'")
                 except Exception as e:
                     print(f"An error occurred: {e}")
-                    
                 skip_line = True
                 
         elif cmd == "cat":
@@ -256,7 +242,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Print the contents of a file.")
                 print("")
                 print("Usage:")
-                print("cat <file>")
+                print("cat <file>   - Print the contents of the specified file.")
                 print("")
                 print("Examples:")
                 print("cat file.txt")
@@ -282,7 +268,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Create a new directory.")
                 print("")
                 print("Usage:")
-                print("mkdir <dir>")
+                print("mkdir <dir>  - Create a new directory with the specified name.")
                 print("")
                 print("Examples:")
                 print("mkdir new_folder")
@@ -306,7 +292,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Create or edit a file using a simple text editor.")
                 print("")
                 print("Usage:")
-                print("nano <file>")
+                print("nano <file>  - Create or edit the specified file.")
                 print("")
                 print("Examples:")
                 print("nano file.txt")
@@ -326,20 +312,20 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 except Exception as e:
                     print(f"Error using texteditor: {e}")
                     
-        elif cmd == "rm" or cmd == "del" or cmd == "remove":
+        elif cmd == "rm" or cmd == "del" or cmd == "delete" or cmd == "remove":
             not_empty_detected = False
             if len(full_cmd) < 2 or len(full_cmd) > 3:
                 print("Usage: rm <file> or rm -rf <folder>")
             elif full_cmd[1] == "-h":
                 print("Command:")
-                print("rm, del, remove")
+                print("rm, remove, del, delete")
                 print("")
                 print("Description:")
                 print("Remove a file or directory.")
                 print("")
                 print("Usage:")
-                print("rm <file>")
-                print("rm -rf <folder>")
+                print("rm <file>        - Remove the specified file.")
+                print("rm -rf <folder>  - Remove the specified folder and all its contents.")
                 print("")
                 print("Examples:")
                 print("rm file.txt")
@@ -377,25 +363,17 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"No such folder: '{full_cmd[2]}'")
                 except Exception as e:
                     print(f"Error force removing folder: {e}")
+            else:
+                print(f"Unknown argument: {full_cmd[1]}")
                     
         elif cmd == "clear" or cmd == "cls":
-            if len(full_cmd) > 2:
-                print("Usage: clear or clear -h")
+            if len(full_cmd) > 1:
+                print("Usage: clear")
             elif len(full_cmd) == 1:
                 os.system('clear' if os.name == 'posix' else 'cls')
-            elif full_cmd[1] == "-h":
-                print("Commands:")
-                print("clear, cls")
-                print("")
-                print("Description:")
-                print("Clear the terminal screen.")
-                print("")
-                print("Usage:")
-                print("clear")
-                print("")
-                print("Examples:")
-                print("clear")
-            
+            else:
+                print(f"Unknown argument: {full_cmd[1]}")
+                
         elif cmd == "exit":
             if len(full_cmd) > 2:
                 print("Usage: exit or exit -h")
@@ -413,6 +391,8 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("")
                 print("Examples:")
                 print("exit")
+            else:
+                print(f"Unknown argument: {full_cmd[1]}")
         
         elif cmd == "sudo":
             if len(full_cmd) < 2:
@@ -425,7 +405,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Execute a command with superuser privileges.")
                 print("")
                 print("Usage:")
-                print("sudo <command>")
+                print("sudo <command>   - Execute the specified command with superuser privileges.")
                 print("")
                 print("Examples:")
                 print("sudo apt update")
@@ -439,7 +419,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     sudo_protect = True
                 else:
                     print(f"{username} is not in the sudoers file.")
-                    
+    
         elif cmd == "apt":
             if not len(full_cmd) > 1 or len(full_cmd) > 3:
                 print("Usage: apt <option> <program>")
@@ -452,16 +432,26 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("(!) This command requires superuser privileges.")
                 print("")
                 print("Usage:")
-                print("apt source add <author>")
-                print("apt source remove <author>")
-                print("apt source list")
-                print("apt update")
-                print("apt upgrade")
-                print("apt install <program>")
-                print("apt remove <program>")
+                print("apt source add <author>      - Add an author to the sources.")
+                print("apt source remove <author>   - Remove an author from the sources.")
+                print("apt source list              - List all authors in the sources.")
+                print("")
+                print("apt update                   - Update the sources and check if the authors exist.")
+                print("apt upgrade                  - Upgrade all installed programs.")
+                print("")
+                print("apt install <program>        - Install a program from the sources.")
+                print("apt remove <program>         - Remove a program.")
                 print("")
                 print("Examples:")
-                print("sudo apt update")
+                print("apt source add CodingPengu007")
+                print("apt source remove CodingPengu007")
+                print("apt source list")
+                print("")
+                print("apt update")
+                print("apt upgrade")
+                print("")
+                print("apt install pencrypt")
+                print("apt remove pencrypt")
             elif sudo == False:
                 print("Permission denied.")
             else:
@@ -508,7 +498,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                                     print(f"[checked] {author}")
                                 else:
                                     print("")
-                                    print(f"[!] {author} is not reachable.")
+                                    print(f"[!] {author} does not exist.")
+                                    print(f"Account URL: {url}")
+                                    print(f"Status code: {response.status_code}")
                                     print("")
                             except requests.RequestException as e:
                                 print(f"Error checking {url}: {e}")
@@ -581,6 +573,8 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                         print(f"{program} removed successfully.")
                     else:
                         print(f"No such program: {program}")
+                else:
+                    print(f"Unknown argument: {full_cmd[1]}")
                         
         elif cmd == "bash":
             if len(full_cmd) < 2:
@@ -593,7 +587,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Run a script file with the file ending .sh")
                 print("")
                 print("Usage:")
-                print("bash <file>")
+                print("bash <file>  - Run the specified script file.")
                 print("")
                 print("Examples:")
                 print("bash script.sh")
@@ -615,7 +609,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     except Exception as e:
                         print(f"Error reading script: {e}")
                 else:
-                    print(f"No such file: '{full_cmd[1]}'")
+                    print(f"No such file: {full_cmd[1]}")
+            else:
+                print(f"Unknown argument: {full_cmd[1]}")
                     
         elif cmd == "echo":
             if len(full_cmd) < 2:
@@ -628,13 +624,22 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Print text to the terminal.")
                 print("")
                 print("Usage:")
-                print("echo <text>")
+                print("echo <text>  - Print the specified text to the terminal.")
                 print("")
                 print("Examples:")
                 print("echo Hello World!")
             else:
                 print(" ".join(full_cmd[1:]))
-        
+
+        elif cmd == "visudo":
+            if len(full_cmd) > 1:
+                print("Usage: visudo")
+            elif sudo == False:
+                print("Permission denied.")
+            else:
+                cmd = "nano"
+                full_cmd = [cmd, sudo_file_path]
+
         else:
             if len(full_cmd) == 1 and gm.sys.file_mngr.check(os.path.join(local_dir, "opt", cmd)):
                 target_folder = os.path.join(local_dir, "opt", cmd)
@@ -655,7 +660,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"'{cmd}' is not a directory.")
             else:
                 print("Command not found.")
-        
+                        
         if not skip_line == True:
             print("")
             

@@ -405,11 +405,11 @@ try:
         os.system("cls" if os.name == "nt" else "clear")
         print("Username loaded.")
         print("Login successful.")
-    else:
+    elif game.sys.accnt_mngr.login_or_signup() == "signup":
         os.system("cls" if os.name == "nt" else "clear")
         print("Starting sign up...")
         os.system("cls" if os.name == "nt" else "clear")
-        game.sys.accnt_mngr.signup(main_dir)
+        game.sys.accnt_mngr.signup(main_dir, "non_sudo")
         os.system("cls" if os.name == "nt" else "clear")
         print("Sign up successful.")
         
@@ -420,6 +420,20 @@ try:
         os.system("cls" if os.name == "nt" else "clear")
         print("Username loaded.")
         print("Login successful.")
+    else:
+        os.system("cls" if os.name == "nt" else "clear")
+        print("")
+        print("Crash report:")
+        print("----------------------------")
+        print(f"ERROR: Invalid output from login_or_signup function.")
+        print("----------------------------")
+        print("")
+        print("")
+        print("(!) Please report this issue to the developers.")
+        print("")
+        print("--> Please create an issue on Github:")
+        print(f"--> {github_link}")
+        print("")
         
     print("Loading hostname...")
     hostname = game.sys.accnt_mngr.load_hostname(main_dir)
