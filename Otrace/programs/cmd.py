@@ -79,6 +79,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             get_command = True
         cmd = full_cmd[0]
         skip_line = False
+        just_removed = False
         
         if cmd == "help":
             if len(full_cmd) > 1:
@@ -317,7 +318,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     except Exception as e:
                         print(f"Error using texteditor: {e}")
                     
-        elif cmd == "rm" or cmd == "del" or cmd == "delete" or cmd == "remove":
+        elif cmd in ["rm", "del", "delete", "remove"]:
             not_empty_detected = False
             if len(full_cmd) < 2 or len(full_cmd) > 3:
                 print("Usage: rm <file> or rm -rf <folder>")
@@ -335,37 +336,40 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Examples:")
                 print("rm file.txt")
                 print("rm -rf folder")
-            elif full_cmd[1] == "-rf":
-                if len(full_cmd) != 3:
-                    print("Usage: rm -rf <folder>")
-                    continue
             elif len(full_cmd) == 2:
                 try:
                     file_path = os.path.join(current_dir, full_cmd[1])
                     if os.path.isdir(file_path):
                         if not os.listdir(file_path):
+                            just_removed = True
                             os.rmdir(file_path)
                             print(f"Empty folder {full_cmd[1]} removed.")
                         else:
                             not_empty_detected = True
-                            print(f"Folder {full_cmd[1]} is not empty. Use 'rm -rf <folder>' to remove with all contents.")
-                    os.remove(file_path)
-                    print(f"File {full_cmd[1]} removed.")
+                            print(f"Folder {full_cmd[1]} is not empty. Use 'rm -rf {full_cmd[1]}' to remove it with all contents.")
+                    else:
+                        os.remove(file_path)
+                        print(f"File {full_cmd[1]} removed.")
                 except FileNotFoundError:
-                    print(f"No such file or directory: '{full_cmd[1]}'")
+                    if not just_removed:
+                        print(f"No such file or directory: '{full_cmd[1]}'")
+                except PermissionError:
+                    print(f"Permission denied: Unable to remove '{full_cmd[1]}'.")
                 except Exception as e:
                     if not_empty_detected == False:
                         print(f"Error removing file or folder: {e}")
             elif len(full_cmd) == 3 and full_cmd[1] == "-rf":
+                folder_path = os.path.join(current_dir, full_cmd[2])
                 try:
-                    folder_path = os.path.join(current_dir, full_cmd[2])
                     if os.path.isdir(folder_path):
-                        shutil.rmtree(folder_path)
+                        shutil.rmtree(folder_path)  # This should remove the folder and all its contents
                         print(f"Folder {full_cmd[2]} and all its contents removed.")
                     else:
                         print(f"'{full_cmd[2]}' is not a folder.")
                 except FileNotFoundError:
                     print(f"No such folder: '{full_cmd[2]}'")
+                except PermissionError:
+                    print(f"Permission denied: Unable to remove '{full_cmd[2]}'.")
                 except Exception as e:
                     print(f"Error force removing folder: {e}")
             else:
@@ -654,6 +658,65 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             else:
                 cmd = "nano"
                 full_cmd = [cmd, sudo_file_path]
+                
+        elif cmd == "mv":
+            if len(full_cmd) != 3:
+                print("Usage: mv <source> <destination>")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("mv")
+                print("")
+                print("Description:")
+                print("Move or rename a file or directory.")
+                print("")
+                print("Usage:")
+                print("mv <source> <destination>  - Move or rename the specified file or directory.")
+                print("")
+                print("Examples:")
+                print("mv file.txt new_file.txt")
+                print("mv folder /path/to/new_location")
+            else:
+                source = os.path.join(current_dir, full_cmd[1])
+                destination = os.path.join(current_dir, full_cmd[2])
+            try:
+                shutil.move(source, destination)
+                print(f"Moved '{full_cmd[1]}' to '{full_cmd[2]}'.")
+            except FileNotFoundError:
+                print(f"No such file or directory: '{full_cmd[1]}'")
+            except Exception as e:
+                print(f"Error moving file or directory: {e}")
+
+        elif cmd == "cp":
+            if len(full_cmd) != 3:
+                print("Usage: cp <source> <destination>")
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("cp")
+                print("")
+                print("Description:")
+                print("Copy a file or directory.")
+                print("")
+                print("Usage:")
+                print("cp <source> <destination>  - Copy the specified file or directory.")
+                print("")
+                print("Examples:")
+                print("cp file.txt copy_of_file.txt")
+                print("cp -r folder /path/to/new_location")
+            else:
+                source = os.path.join(current_dir, full_cmd[1])
+                destination = os.path.join(current_dir, full_cmd[2])
+            try:
+                if os.path.isdir(source):
+                    shutil.copytree(source, destination)
+                else:
+                    shutil.copy2(source, destination)
+                    print(f"Copied {full_cmd[1]} to {full_cmd[2]}.")
+            except FileNotFoundError:
+                print(f"No such file or directory: {full_cmd[1]}")
+            except FileExistsError:
+                print(f"Destination {full_cmd[2]} already exists.")
+            except Exception as e:
+                print(f"Error copying file or directory: {e}")
 
         else:
             if len(full_cmd) == 1 and gm.sys.file_mngr.check(os.path.join(local_dir, "opt", cmd)):
