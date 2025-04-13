@@ -49,6 +49,7 @@ import sys
 import subprocess
 
 import Otrace.sys.file_mngr as file_mngr
+import Otrace.sys.gui as gui
 
 #################################################################################
 try:
@@ -112,6 +113,10 @@ try:
             print("-> We will ask you again at the next start")
             print("")
             input("Press Enter to continue...")
+
+    os.system("cls" if os.name == "nt" else "clear")
+
+    gui.pycache()
 
     os.system("cls" if os.name == "nt" else "clear")
 
