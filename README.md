@@ -1,8 +1,3 @@
-Here's the well-formatted **LICENSE** section for your **README.md** file, with the integration of the BSD 3-Clause License for Tkinter Designer. I've also formatted the text to fit naturally into your README structure.
-
-### Updated `README.md`:
-
-```markdown
 # 🚀 0trace
 
 **0trace** is an immersive hacking simulation game where players navigate a virtual Linux-based operating system to hack NPCs or other players. The game combines strategy, problem-solving, and technical skills to create a realistic and engaging experience.
@@ -140,4 +135,3 @@ This game is for **entertainment purposes only**. Any resemblance to real-world 
 For questions or support, please open an issue on the [GitHub repository](https://github.com/CodingPengu007/0trace).
 
 ---
-
