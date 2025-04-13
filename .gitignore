@@ -6,3 +6,4 @@ Otrace/local/etc/hostname
 Otrace/cache/
 Otrace/local/opt/
 Otrace/programs/apt/sources
+**/__pycache__/
