@@ -14,12 +14,15 @@ def line(username, hostname, current_dir, local_dir, main_dir):
     cmd = ""
 
     aliases = {}
+    
+    etc_dir = os.path.join(local_dir, "etc")
+    home_dir = os.path.join(local_dir, "home")
+    
     alias_file_path = os.path.join(local_dir, "home", username, "Cache", "aliases")
     cache_path = os.path.join(local_dir, "home", username, "Cache")
     sudo_file_path = os.path.join(local_dir, "etc", "sudoers")
     log_file_path = os.path.join(local_dir, "home", username, "Cache", "local_logs")
     sources_file_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
-    home_dir = os.path.join(local_dir, "home")
     
     commands = ["ls", "cd", "cat", "mkdir", "clear", "alias", "nano", "exit", "rm", "bash", "echo", "visudo", "apt", "sudo"]
 
@@ -77,6 +80,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 file.write(cmd + "\n")
         else:
             get_command = True
+            
         cmd = full_cmd[0]
         skip_line = False
         just_removed = False
@@ -213,10 +217,26 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     if new_dir == "..":
                         new_dir = os.path.dirname(current_dir)
                     try:
-                        if os.path.commonpath([new_dir, home_dir]) != home_dir:
+                        if not os.path.commonpath([new_dir, local_dir]).startswith(local_dir):
                             print("Permission denied.")
                             print("")
                             continue
+                        if new_dir == etc_dir:
+                            print("Permission denied.")
+                            print("")
+                            continue
+                        if current_dir == home_dir and os.path.commonpath([new_dir, home_dir]) == home_dir:
+                            users = []
+                            try:
+                                users = gm.sys.file_mngr.list_load(os.path.join(etc_dir, "passwd"))
+                            except FileNotFoundError:
+                                print(f"No such file or directory: '{full_cmd[1]}'")
+                            except Exception as e:
+                                print(f"An error occurred: {e}")
+                            if new_dir in users and new_dir != username and sudo != True:
+                                print("Permission denied")
+                                print("")
+                                continue
                     except ValueError:
                         print("Invalid path comparison.")
                         print("")

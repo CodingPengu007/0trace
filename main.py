@@ -209,6 +209,7 @@ try:
         else:
             print("")
             print("(!) Invalid input. Deletion disabled by default.")
+            print("")
             print("(*) Deletion disabled.")
             print("")
             print("-> We will ask you again at the next start")
@@ -252,6 +253,7 @@ try:
     venv_dir = os.path.join(main_dir, 'Otrace_venv')
     apt_sources_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
     sudoers_path = os.path.join(main_dir, "Otrace", "local", "etc", "sudoers")
+    opt_dir_path = os.path.join(main_dir, "Otrace", "local", "opt")
     
     print(f"Detected operating system: {client_os}")
 
@@ -269,9 +271,7 @@ try:
         print("")
         
         print("(!) Program starting up for the first time! Removing saves of developers...")
-        print("Removing user directories...")
-        file_mngr.remove_lower(home_dir_path)
-        print("User directories removed.")
+
         print("Flushing all files storing user data...")
         file_paths = [passwd_path, shadow_path, hostname_path, warning_path, del_pycache_path, apt_sources_path, sudoers_path]
         for file_path in file_paths:
@@ -283,8 +283,8 @@ try:
         print("Flushed all files!")
         print("")
         print("Flushing all folders storing user data...")
-        folders = []
-        for folder in folders:
+        folder_paths_ = [home_dir_path, opt_dir_path]
+        for folder in folder_paths_:
             file_mngr.remove_lower(folder)
         print("Flushed all folders!")
         print("")
