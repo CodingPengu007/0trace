@@ -38,7 +38,7 @@ source Otrace_venv/bin/activate || error_exit "Failed to activate virtual enviro
 
 # Install dependencies
 pip install --upgrade pip || error_exit "Failed to upgrade pip."
-pip install bcrypt texteditor requests tkinter || error_exit "Failed to install required packages."
+pip install bcrypt texteditor requests || error_exit "Failed to install required packages."
 
 # Upgrade outdated packages if any
 outdated_packages=$(pip list --outdated --format=freeze | awk -F '==' '{print $1}')
