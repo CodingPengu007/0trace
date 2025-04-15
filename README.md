@@ -16,6 +16,18 @@
 
 ---
 
+## 📋 Requirements
+
+To run **0trace**, ensure your system meets the following requirements:
+
+- **Python**: Version 3.8 or higher
+- **Git**: Version 2.49.0 or higher
+- **Dependencies**: Install required Python packages using `pip install -r requirements.txt`
+- **Memory**: At least 2GB of RAM
+- **Storage**: At least 500MB of free disk space
+
+---
+
 ## 🛠️ Installation
 
 ### Step 1: Clone the Repository
@@ -127,6 +139,22 @@ POSSIBILITY OF SUCH DAMAGE.
 ## ⚠️ Disclaimer
 
 This game is for **entertainment purposes only**. Any resemblance to real-world hacking scenarios is purely coincidental.
+
+---
+
+## 🙌 Credits
+
+Special thanks to the following:
+
+- **Parth Jadhav** for creating the **Tkinter Designer** we used to create graphical elements in this project.
+- The **open-source community** for providing invaluable libraries and resources.
+- **Beta Testers** for their feedback and support during development.
+
+### Team Members:
+
+- **CodingPengu007** - Lead Developer
+- **lionbaum**       - Junior Software Engineer
+- **DonerKebab1231** - UI/UX Designer
 
 ---
 
