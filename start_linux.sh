@@ -6,28 +6,6 @@ function error_exit {
     exit 1
 }
 
-# Install git if not installed
-if ! command -v git &> /dev/null; then
-    echo "git is not installed. Installing git..."
-    sudo apt update && sudo apt install -y git || error_exit "Failed to install git."
-fi
-
-# Install python3 if not installed
-if ! command -v python3 &> /dev/null; then
-    echo "python3 is not installed. Installing python3..."
-    sudo apt update && sudo apt install -y python3 python3-venv python3-pip || error_exit "Failed to install Python 3."
-fi
-
-# Check if python3 is installed
-if ! command -v python3 &> /dev/null; then
-    error_exit "python3 could not be found even after installation. Please check your system."
-fi
-
-# Check if pip is installed
-if ! python3 -m pip --version &> /dev/null; then
-    error_exit "pip could not be found. Please install pip for Python 3."
-fi
-
 # Create and activate virtual environment if it doesn't exist
 if [ ! -d "Otrace_venv" ]; then
     python3 -m venv Otrace_venv || error_exit "Failed to create virtual environment."
