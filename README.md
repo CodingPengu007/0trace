@@ -1,8 +1,3 @@
-Here's the well-formatted **LICENSE** section for your **README.md** file, with the integration of the BSD 3-Clause License for Tkinter Designer. I've also formatted the text to fit naturally into your README structure.
-
-### Updated `README.md`:
-
-```markdown
 # 🚀 0trace
 
 **0trace** is an immersive hacking simulation game where players navigate a virtual Linux-based operating system to hack NPCs or other players. The game combines strategy, problem-solving, and technical skills to create a realistic and engaging experience.
@@ -18,6 +13,18 @@ Here's the well-formatted **LICENSE** section for your **README.md** file, with 
 - 🛠️ **Customizable Tools**: Build and upgrade your hacking arsenal to suit your playstyle.
 - 🌐 **Cross-Platform**: Works on Linux, macOS, and Windows.
 - ⚡ **Lightweight and Fast**: Minimal dependencies and optimized for performance.
+
+---
+
+## 📋 Requirements
+
+To run **0trace**, ensure your system meets the following requirements:
+
+- **Python**: Version 3.8 or higher
+- **Git**: Version 2.49.0 or higher
+- **Dependencies**: Install required Python packages using `pip install -r requirements.txt`
+- **Memory**: At least 2GB of RAM
+- **Storage**: At least 500MB of free disk space
 
 ---
 
@@ -135,9 +142,24 @@ This game is for **entertainment purposes only**. Any resemblance to real-world 
 
 ---
 
+## 🙌 Credits
+
+Special thanks to the following:
+
+- **Parth Jadhav** for creating the **Tkinter Designer** we used to create graphical elements in this project.
+- The **open-source community** for providing invaluable libraries and resources.
+- **Beta Testers** for their feedback and support during development.
+
+### Team Members:
+
+- **CodingPengu007** - Lead Developer
+- **lionbaum**       - Junior Software Engineer
+- **DonerKebab1231** - UI/UX Designer
+
+---
+
 ## 📬 Contact
 
 For questions or support, please open an issue on the [GitHub repository](https://github.com/CodingPengu007/0trace).
 
 ---
-

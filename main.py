@@ -238,7 +238,7 @@ try:
     author = "CodingPengu007"
     program = "0trace"
     publicity = "Closed Early Alpha"
-    github_link = "https://github.com/CodingPengu007/Otrace"
+    github_link = "https://github.com/CodingPengu007/0trace"
 
     main_dir = os.path.dirname(os.path.abspath(__file__))
     venv_dir = os.path.join(main_dir, 'Otrace_venv')
@@ -279,6 +279,8 @@ try:
                 with open(file_path, 'w') as file:
                     file.truncate()
             except IOError as e:
+                if file_path == passwd_path or file_path == shadow_path:
+                    file_path = "a file conaining sensitive user data"
                 print(f"Error opening or writing to {file_path}: {e}")        
         print("Flushed all files!")
         print("")
