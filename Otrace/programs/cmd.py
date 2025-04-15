@@ -450,8 +450,8 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"{username} is not in the sudoers file.")
     
         elif cmd == "apt":
-            if not len(full_cmd) > 1 or len(full_cmd) > 3:
-                print("Usage: apt <option> <program>")
+            if not len(full_cmd) > 1 or len(full_cmd) > 4:
+                print("Usage: apt <option> <program> or apt source <option> <option>")
             elif full_cmd[1] == "-h":
                 print("Command:")
                 print("apt")
@@ -508,7 +508,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 
             else:
                 if (full_cmd[1] == "source" or full_cmd[1] == "src") and full_cmd[2] == "add":
-                    author = full_cmd[2]
+                    author = full_cmd[3]
                     with open(sources_file_path, 'a') as file:
                         file.write(author + "\n")
                     skip_line = False
