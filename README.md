@@ -29,46 +29,7 @@ To run **0trace**, ensure your system meets the following requirements:
 
 ---
 
-## 🔄 Upate required software
-
-##### 🪟 Windows (via Winget)
-```bash
-winget upgrade --id Git.Git -e --source winget
-winget upgrade --id Python.Python.3 -e --source winget
-```
-
-##### 🍎 macOS (via Homebrew)
-```bash
-brew upgrade git
-brew upgrade python
-```
-
-##### 🐧 Linux
-
-###### Ubuntu / Debian
-```bash
-sudo apt update
-sudo apt install --only-upgrade git
-sudo apt install --only-upgrade python3
-```
-
-> 💡 To get the very latest Python versions on Ubuntu, consider using the [deadsnakes PPA](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa) or compiling from source.
-
-###### Fedora
-```bash
-sudo dnf upgrade git
-sudo dnf upgrade python3
-```
-
-###### Arch / Manjaro
-```bash
-sudo pacman -Syu git python
-```
-
----
-
-## ⬇️ Installation Guide for Requirements
-
+## ⬇️ Installation Guide for required software
 #### ⚡ Install Git
 
 ##### 🪟 Windows (via Winget)
@@ -143,6 +104,44 @@ sudo dnf install python3
 ###### Arch / Manjaro
 ```bash
 sudo pacman -S python
+```
+
+---
+
+## 🔄 Upate required software
+
+##### 🪟 Windows (via Winget)
+```bash
+winget upgrade --id Git.Git -e --source winget
+winget upgrade --id Python.Python.3 -e --source winget
+```
+
+##### 🍎 macOS (via Homebrew)
+```bash
+brew upgrade git
+brew upgrade python
+```
+
+##### 🐧 Linux
+
+###### Ubuntu / Debian
+```bash
+sudo apt update
+sudo apt install --only-upgrade git
+sudo apt install --only-upgrade python3
+```
+
+> 💡 To get the very latest Python versions on Ubuntu, consider using the [deadsnakes PPA](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa) or compiling from source.
+
+###### Fedora
+```bash
+sudo dnf upgrade git
+sudo dnf upgrade python3
+```
+
+###### Arch / Manjaro
+```bash
+sudo pacman -Syu git python
 ```
 
 ---
