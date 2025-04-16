@@ -21,14 +21,133 @@
 To run **0trace**, ensure your system meets the following requirements:
 
 - **Python**: Version 3.8 or higher
-- **Git**: Version 2.49.0 or higher
+- **Python PIP**: Version 25.0.1 or higher
+- **Git**: Version 2.49.0 or higher 
 - **Dependencies**: Install required Python packages using `pip install -r requirements.txt`
 - **Memory**: At least 2GB of RAM
 - **Storage**: At least 500MB of free disk space
 
 ---
 
-## 🛠️ Installation
+## 🔄 Upate required software
+
+##### 🪟 Windows (via Winget)
+```bash
+winget upgrade --id Git.Git -e --source winget
+winget upgrade --id Python.Python.3 -e --source winget
+```
+
+##### 🍎 macOS (via Homebrew)
+```bash
+brew upgrade git
+brew upgrade python
+```
+
+##### 🐧 Linux
+
+###### Ubuntu / Debian
+```bash
+sudo apt update
+sudo apt install --only-upgrade git
+sudo apt install --only-upgrade python3
+```
+
+> 💡 To get the very latest Python versions on Ubuntu, consider using the [deadsnakes PPA](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa) or compiling from source.
+
+###### Fedora
+```bash
+sudo dnf upgrade git
+sudo dnf upgrade python3
+```
+
+###### Arch / Manjaro
+```bash
+sudo pacman -Syu git python
+```
+
+---
+
+## ⬇️ Installation Guide for Requirements
+
+#### ⚡ Install Git
+
+##### 🪟 Windows (via Winget)
+```bash
+winget install --id Git.Git -e --source winget
+```
+
+This will install the latest Git version and make it available in Command Prompt and PowerShell.
+
+##### 🍎 macOS (via Homebrew)
+First, install Homebrew if it’s not already installed:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Then install Git:
+```bash
+brew install git
+```
+
+##### 🐧 Linux
+
+###### Ubuntu / Debian
+```bash
+sudo apt update
+sudo apt install git
+```
+
+###### Fedora
+```bash
+sudo dnf install git
+```
+
+###### Arch / Manjaro
+```bash
+sudo pacman -S git
+```
+
+#### ⚡ Install Python 3.13 and Python PIP
+
+##### 🪟 Windows (via Winget)
+```bash
+winget install --id Python.Python.3 -e --source winget
+```
+
+This installs the latest stable Python 3 and adds it to your system PATH.
+
+##### 🍎 macOS (via Homebrew)
+First, install Homebrew if it’s not already installed:
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Then install Python 3:
+```bash
+brew install python
+```
+
+##### 🐧 Linux
+
+###### Ubuntu / Debian
+```bash
+sudo apt update
+sudo apt install python3
+```
+
+###### Fedora
+```bash
+sudo dnf install python3
+```
+
+###### Arch / Manjaro
+```bash
+sudo pacman -S python
+```
+
+---
+
+## 🛠️ Installation of the program
 
 ### Step 1: Clone the Repository
 ```bash
