@@ -262,13 +262,13 @@ This game is for **entertainment purposes only**. Any resemblance to real-world 
 
 ## 🙌 Credits
 
-Special thanks to the following:
+#### Special thanks to the following:
 
 - **Parth Jadhav** for creating the **Tkinter Designer** we used to create graphical elements in this project.
 - The **open-source community** for providing invaluable libraries and resources.
 - **Beta Testers** for their feedback and support during development.
 
-### Team Members:
+#### Team Members:
 
 - **CodingPengu007** - Lead Developer
 - **lionbaum**       - Junior Software Engineer
