@@ -104,7 +104,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("  echo <text>                    - Print text to the terminal.")
                 print("  visudo                         - Edit the sudoers file.                                            (!) Requires sudo")
                 print("  apt <option> <program>         - Package manager for installing, updating, and removing programs.  (!) Requires sudo")
-                print("  sudo <command>                 - Execute a command with superuser privileges.")
+                print("  sudo <command>                 - Execute a command with superuser privileges.                      (!) Requires sudo")
                 
         elif cmd == "alias":
             if len(full_cmd) < 2 or len(full_cmd) > 3:
