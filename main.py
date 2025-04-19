@@ -441,7 +441,11 @@ try:
     print("(?) Login / Sign Up ...")
     print("")
     os.system("cls" if os.name == "nt" else "clear")
-    if game.sys.accnt_mngr.login_or_signup() == "login":
+
+    # Store the result of login_or_signup in a variable
+    user_choice = game.sys.accnt_mngr.login_or_signup()
+
+    if user_choice == "login":
         os.system("cls" if os.name == "nt" else "clear")
         print("Starting login...")
         print("Loading username...")
@@ -450,7 +454,7 @@ try:
         os.system("cls" if os.name == "nt" else "clear")
         print("Username loaded.")
         print("Login successful.")
-    elif game.sys.accnt_mngr.login_or_signup() == "signup":
+    elif user_choice == "signup":
         os.system("cls" if os.name == "nt" else "clear")
         print("Starting sign up...")
         os.system("cls" if os.name == "nt" else "clear")
