@@ -21,7 +21,7 @@
 To run **0trace**, ensure your system meets the following requirements:
 
 - **Python**: Version 3.8 or higher
-- **Python PIP**: Version 25.0.1 or higher
+- **Python PIP**: Version 25.0.1 or higher (comes with python)
 - **Git**: Version 2.49.0 or higher 
 - **Dependencies**: Install required Python packages using `pip install -r requirements.txt`
 - **Memory**: At least 2GB of RAM
