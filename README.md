@@ -34,6 +34,8 @@ To run **0trace**, ensure your system meets the following requirements:
 The installation process is thoroughly detailed and clearly explained in the program’s [Wiki](https://github.com/CodingPengu007/0trace/wiki/2.-%F0%9F%93%A6-Installation).
 It supports a wide range of operating systems, with copy-and-paste commands provided for each.
 
+Visit the installation page of 0trace here: [🎯](https://github.com/CodingPengu007/0trace/wiki/2.-%F0%9F%93%A6-Installation)
+
 ---
 
 ## 🤝 Contributing
