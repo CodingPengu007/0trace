@@ -89,6 +89,100 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ```
 
+- **bcrypt**:  
+  This project uses the [bcrypt](https://pypi.org/project/bcrypt/) Python module for password hashing.  
+  **License:** Apache Software License 2.0 (Apache-2.0)
+
+  ```
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ```
+
+- **Textual**:  
+  This project uses the [Textual](https://pypi.org/project/textual/) Python framework for building TUI (Text User Interface) applications.  
+  **License:** MIT License
+
+  ```
+  MIT License
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+  ```
+  *(Textual is distributed under the MIT License. See the official [Textual repository](https://github.com/Textualize/textual) for details.)*
+
+- ### requests (Apache License 2.0)
+
+  **Copyright 2024 Kenneth Reitz**
+
+  **Stewardship by the Python Software Foundation since 2019.**
+
+  ```
+  Apache License
+  Version 2.0, January 2004
+  http://www.apache.org/licenses/
+
+  TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+  1. Definitions.
+
+  "License" shall mean the terms and conditions for use, reproduction,
+  and distribution as defined by Sections 1 through 9 of this document.
+
+  [Full Apache 2.0 license text in the LICENSE.md ...]
+
+  END OF TERMS AND CONDITIONS
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ```
+
+- ### readline (GNU General Public License)
+
+  The `readline` library is licensed under the GNU General Public License (GPL). Please see the full text of the GPL for details.
+
+  ```
+  GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+
+  Copyright (C) 2007 Free Software Foundation, Inc. 
+  Everyone is permitted to copy and distribute verbatim copies
+  of this license document, but changing it is not allowed.
+
+  [The full GPL v3.0 license text in the LICENSE.md ...]
+  ```
+
 ---
 
 ## ⚠️ Disclaimer
@@ -101,7 +195,6 @@ This game is for **entertainment purposes only**. Any resemblance to real-world 
 
 #### Special thanks to the following:
 
-- **Parth Jadhav** for creating the **Tkinter Designer** we used to create graphical elements in this project.
 - The **open-source community** for providing invaluable libraries and resources.
 - **Beta Testers** for their feedback and support during development.
 
@@ -116,5 +209,3 @@ This game is for **entertainment purposes only**. Any resemblance to real-world 
 ## 📬 Contact
 
 For questions or support, please open an issue on the [GitHub repository](https://github.com/CodingPengu007/0trace).
-
----

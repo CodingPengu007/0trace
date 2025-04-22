@@ -9,15 +9,15 @@ import Otrace as gm
 #################################################################################
 
 def line(username, hostname, current_dir, local_dir, main_dir):
+    import readline
+    
     script = []
     full_cmd = []
     cmd = ""
-
     aliases = {}
     
     etc_dir = os.path.join(local_dir, "etc")
     home_dir = os.path.join(local_dir, "home")
-    
     alias_file_path = os.path.join(local_dir, "home", username, "Cache", "aliases")
     cache_path = os.path.join(local_dir, "home", username, "Cache")
     sudo_file_path = os.path.join(local_dir, "etc", "sudoers")
@@ -31,6 +31,34 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             for line in file:
                 alias, command = line.strip().split("=", 1)
                 aliases[alias] = command
+
+    # Configure readline for command history and auto-completion
+    history_file = os.path.join(cache_path, "command_history")
+    try:
+        readline.read_history_file(history_file)
+    except FileNotFoundError:
+        pass
+
+    def completer(text, state):
+        # Split the input to check the command and arguments
+        buffer = readline.get_line_buffer().split()
+        if len(buffer) == 0:  # No input yet
+            options = commands + list(aliases.keys())
+        elif len(buffer) == 1:  # First word (command) being typed
+            options = [cmd for cmd in commands + list(aliases.keys()) if cmd.startswith(buffer[0])]
+        else:  # Command already typed, suggest arguments
+            cmd = buffer[0]
+            if cmd in ["ls", "cd"]:  # Suggest directories
+                options = [d for d in os.listdir(current_dir) if os.path.isdir(os.path.join(current_dir, d)) and d.startswith(text)]
+            elif cmd in ["nano", "cat", "rm"]:  # Suggest files
+                options = [f for f in os.listdir(current_dir) if os.path.isfile(os.path.join(current_dir, f)) and f.startswith(text)]
+            elif cmd == "rm" and full_cmd[1] == "-rf":  # Suggest files and directories
+                options = [item for item in os.listdir(current_dir) if item.startswith(text)]
+                
+        return options[state] if state < len(options) else None
+
+    readline.set_completer(completer)
+    readline.parse_and_bind("tab: complete")
 
     get_command = True
     sudo = False
@@ -66,8 +94,13 @@ def line(username, hostname, current_dir, local_dir, main_dir):
         elif script_sudo == True:
             sudo = True
         if get_command == True:
-            full_cmd = input(f"| ({username}@{hostname})-[{show_dir}]\n| $ ").split()
-            print("")
+            try:
+                full_cmd = input(f"| ({username}@{hostname})-[{show_dir}]\n| $ ").split()
+                print("")
+                readline.write_history_file(history_file)
+            except EOFError:
+                print("\nExiting...")
+                break
             if not full_cmd:
                 continue
             if not gm.sys.file_mngr.check(cache_path):
@@ -308,6 +341,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"Error creating directory: {e}")
                     
         elif cmd == "nano":
+            from textual.app import App
+            from textual.widgets import TextArea
+
             if len(full_cmd) != 2:
                 print("Usage: nano <file>")
             elif full_cmd[1] == "-h":
@@ -326,41 +362,52 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 file_path = os.path.join(current_dir, full_cmd[1])
                 if os.path.isdir(file_path):
                     print(f"{full_cmd[1]} is a directory, not a file.")
-                elif file_path == alias_file_path:
+                    return
+                if file_path == alias_file_path:
                     print("Please use 'alias' command to edit aliases.")
-                else:
+                    return
+                # Determine initial content
+                initial_content = ""
+                if os.path.isfile(file_path):
                     try:
-                        from textual.app import App
-                        from textual.widgets import TextInput
-
-                        class TextApp(App):
-                            edited_content = ""
-
-                            def compose(self):
-                                # Create a TextInput widget with the ID 'editor'
-                                yield TextInput(id="editor", placeholder="Type here...")
-
-                            def on_mount(self):
-                                # Focus on the editor when the app mounts
-                                editor = self.query_one("#editor")
-                                editor.focus()
-
-                            def on_exit(self):
-                                # Store the content of the editor when the app exits
-                                editor = self.query_one("#editor")
-                                self.edited_content = editor.value
-
-                        app = TextApp()
-                        app.run()
-
-                        # After the app has exited, you can handle the edited content
-                        with open(file_path, 'w') as file:  # Use the specified file path
-                            file.write(app.edited_content)
-
-                    except FileNotFoundError:
-                        print(f"No such file: '{full_cmd[1]}'")
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            initial_content = f.read()
                     except Exception as e:
-                        print(f"Error using text editor: {e}")
+                        print(f"Error reading file: {e}")
+                        return
+                class TextApp(App):
+                    CSS = """
+                    TextArea {
+                        width: 100%;
+                        height: 100%;
+                    }
+                    """
+                    def compose(self):
+                        self.text_area = TextArea(id="editor", text=initial_content)
+                        self.text_area.show_line_numbers = True  # Optional feature
+                        yield self.text_area
+                    def on_mount(self):
+                        self.text_area.focus()
+                    def on_unmount(self):
+                        self.app.edited_content = self.text_area.text
+                app = TextApp()
+                app.edited_content = ""
+                app.run()
+                # After app exits, write the content
+                edited_content = app.edited_content
+                # Ensure the directory exists
+                parent_dir = os.path.dirname(file_path)
+                if parent_dir and not os.path.exists(parent_dir):
+                    try:
+                        os.makedirs(parent_dir, exist_ok=True)
+                    except OSError as e:
+                        print(f"Error creating directory {parent_dir}: {e}")
+                        return
+                try:
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        f.write(edited_content)
+                except IOError as e:
+                    print(f"Error saving file: {e}")
                     
         elif cmd in ["rm", "del", "delete", "remove"]:
             not_empty_detected = False
