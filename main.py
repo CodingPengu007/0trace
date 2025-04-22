@@ -418,6 +418,18 @@ try:
     print("")
     ### ------------------------ ###
 
+    ### Check if an hostname exists ###
+    print("")
+    print("Checking for hostname:")
+    if game.sys.file_mngr.empty(hostname_path):
+        print("(!) No hostname found.")
+        print("")
+        print("Starting hostname creation...")
+        game.sys.accnt_mngr.create_hostname(main_dir)
+        print("Hostname created successfully.")
+    print("")
+    ### -------------------------- ###
+
     ### Check for account directories directory ###
     print("")
     print("Checking for account directories:")
