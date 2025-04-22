@@ -233,7 +233,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                                 print(f"No such file or directory: '{full_cmd[1]}'")
                             except Exception as e:
                                 print(f"An error occurred: {e}")
-                            if new_dir in users and new_dir != username and sudo != True:
+                            if new_dir in users and new_dir != username and permission != "sudo":
                                 print("Permission denied")
                                 print("")
                                 continue
