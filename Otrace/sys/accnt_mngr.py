@@ -81,14 +81,19 @@ def signup(main_dir, sudo):
                     except Exception as e:
                         print(f"| (!) Failed to update sudoers file: {e}")
                 
-                input("| Account created successfully. Press Enter to continue.")
+                choice = input("| Account created successfully. Do you want to login instead? (y/n): ")
+                if choice.lower() == "y":
+                    login(main_dir)
+                    break
             except Exception as e:
                 print(f"| (!) An error occurred: {e}")
             
             break
         else:
-            input("| (!) Passwords do not match. Press Enter to try again.")
-    
+            choice = input("| (!) Passwords do not match. Do you want to login instead? (y/n): ")
+            if choice.lower() == "y":
+                login(main_dir)
+                break
     os.system("cls" if os.name == "nt" else "clear")
 
     
@@ -126,12 +131,12 @@ def login(main_dir):
                 username = usernames[user_index]
                 break
             else:
-                choice = input("| (!) Incorrect password or username. Do you want to sign up instead? (y/n): ")
+                choice = input("| (!) Incorrect password or username. Do you want to signup instead? (y/n): ")
                 if choice.lower() == "y":
                     signup(main_dir, "non_sudo")
                     break
         else:
-            choice = input("| (!) Incorrect password or username. Do you want to sign up instead? (y/n): ")
+            choice = input("| (!) Incorrect password or username. Do you want to signup instead? (y/n): ")
             if choice.lower() == "y":
                 signup(main_dir, "non_sudo")
                 break
