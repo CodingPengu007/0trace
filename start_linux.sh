@@ -16,7 +16,19 @@ source Otrace_venv/bin/activate || error_exit "Failed to activate virtual enviro
 
 # Install dependencies
 pip install --upgrade pip || error_exit "Failed to upgrade pip."
-pip install bcrypt textual textual_textarea requests readline maskpass || error_exit "Failed to install required packages."
+# Install required packages
+required_packages=(
+    bcrypt
+    textual
+    textual_textarea
+    requests
+    readline
+    maskpass
+)
+
+for package in "${required_packages[@]}"; do
+    pip install "$package" || error_exit "Failed to install package: $package."
+done
 
 # Upgrade outdated packages if any
 outdated_packages=$(pip list --outdated --format=freeze | awk -F '==' '{print $1}')

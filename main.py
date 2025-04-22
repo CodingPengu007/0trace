@@ -290,6 +290,17 @@ try:
             file_mngr.remove_lower(folder)
         print("Flushed all folders!")
         print("")
+        
+        ### Remove __pycache__ directories ###
+        print("")
+        print("Removing __pycache__ directories:")
+        print("")
+        file_mngr.remove_pycache(main_dir)
+        print("")
+        print("Removed __pycache__ directories.")
+        print("")
+        ### ------------------------ ###
+        
     else:
         print("The virtual environment exists and has been found!")
     print("")
@@ -316,8 +327,11 @@ try:
     print("Testing imports...")
     try:
         import bcrypt
-        import texteditor
         import requests
+        import maskpass
+        import textual
+        import textual_textarea
+        import readline
     except ImportError as e:
         os.system('clear' if os.name == 'posix' else 'cls')
         print("")
