@@ -38,6 +38,11 @@ def line(username, hostname, current_dir, local_dir, main_dir):
     script_active = False
     sudo_protect = False
 
+    if username in gm.sys.file_mngr.list_load(sources_file_path):
+        permission = True
+    else:
+        permission = False
+    
     while True:
         show_dir = "/" + os.path.relpath(current_dir, local_dir)
         if show_dir == f"/home/{username}":
@@ -233,7 +238,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                                 print(f"No such file or directory: '{full_cmd[1]}'")
                             except Exception as e:
                                 print(f"An error occurred: {e}")
-                            if new_dir in users and new_dir != username and permission != "sudo":
+                            if new_dir in users and new_dir != username and permission != True:
                                 print("Permission denied")
                                 print("")
                                 continue
