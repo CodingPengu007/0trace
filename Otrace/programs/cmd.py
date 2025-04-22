@@ -782,7 +782,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                         latency = random.randint(0.000, 0.04)
                     print("Starting nmap scan...")
                     print("")
-                    print(f"Nmap scan report for {target} {if domain == True, }")
+                    print(f"Nmap scan report for {target} {"(" + target_info[1] + ")" if domain else ''}")
                     print(f"Host is up ({latency} latency).")
                     
                     
