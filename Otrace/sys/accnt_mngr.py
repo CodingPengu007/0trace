@@ -131,7 +131,7 @@ def login(main_dir):
                     signup(main_dir, "non_sudo")
                     break
         else:
-            input("| (!) Incorrect password or username. Do you want to sign up instead? (y/n): ")
+            choice = input("| (!) Incorrect password or username. Do you want to sign up instead? (y/n): ")
             if choice.lower() == "y":
                 signup(main_dir, "non_sudo")
                 break
