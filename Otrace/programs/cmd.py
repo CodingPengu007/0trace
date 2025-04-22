@@ -330,18 +330,37 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print("Please use 'alias' command to edit aliases.")
                 else:
                     try:
-                        import texteditor
-                        if not os.path.exists(file_path):
-                            with open(file_path, 'w') as file:
-                                pass
-                        edited_content = texteditor.open(filename=file_path)
-                        with open(file_path, 'w') as file:
-                            file.write(edited_content)
-                        skip_line = True
+                        from textual.app import App
+                        from textual.widgets import TextInput
+
+                        class TextApp(App):
+                            edited_content = ""
+
+                            def compose(self):
+                                # Create a TextInput widget with the ID 'editor'
+                                yield TextInput(id="editor", placeholder="Type here...")
+
+                            def on_mount(self):
+                                # Focus on the editor when the app mounts
+                                editor = self.query_one("#editor")
+                                editor.focus()
+
+                            def on_exit(self):
+                                # Store the content of the editor when the app exits
+                                editor = self.query_one("#editor")
+                                self.edited_content = editor.value
+
+                        app = TextApp()
+                        app.run()
+
+                        # After the app has exited, you can handle the edited content
+                        with open(file_path, 'w') as file:  # Use the specified file path
+                            file.write(app.edited_content)
+
                     except FileNotFoundError:
                         print(f"No such file: '{full_cmd[1]}'")
                     except Exception as e:
-                        print(f"Error using texteditor: {e}")
+                        print(f"Error using text editor: {e}")
                     
         elif cmd in ["rm", "del", "delete", "remove"]:
             not_empty_detected = False
