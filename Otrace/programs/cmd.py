@@ -3,6 +3,7 @@
 import os
 import shutil
 import subprocess
+import random
 
 import Otrace as gm
 
@@ -737,7 +738,54 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print(f"Destination {full_cmd[2]} already exists.")
             except Exception as e:
                 print(f"Error copying file or directory: {e}")
-
+                
+        elif cmd == "nmap":
+            if len(full_cmd) < 2:
+                print("Usage: nmap <target>")
+            elif gm.sys.file_mngr.check(os.path.join(main_dir, "Otrace", "programs", "nmap")):
+                print("(!) nmap is not installed")
+                input("Do you want to install it? (y/n): ")
+                if input().lower() == "y":
+                    get_command = False
+                    cmd = "sudo"
+                    full_cmd = ["sudo","apt", "install", "nmap"]
+                else:
+                    pass
+            elif full_cmd[1] == "-h":
+                print("Command:")
+                print("nmap")
+                print("")
+                print("Description:")
+                print("Network exploration tool and security/port scanner.")
+                print("")
+                print("Usage:")
+                print("nmap <target>  - Scan the specified target.")
+                print("")
+                print("Examples:")
+                print("nmap google.com")
+            else:
+                target = full_cmd[1]
+                if gm.sys.file_mngr.check(os.path.join(main_dir, "Otrace", "remote", "net", target)):
+                    netinfo = gm.sys.file_mngr.list_load(os.path.join(main_dir, "Otrace", "remote", "net.info"))
+                    dosinfo = gm.sys.file_mngr.list_load(os.path.join(main_dir, "Otrace", "remote", "net.dos.info"))
+                    if target.count('.') == 1:
+                        domain = True
+                        for info in netinfo:
+                            if target in info:
+                                target_info = info.split(" ")
+                                break
+                        else:
+                            target_info = None
+                    else:
+                        ip = True
+                    if target in dosinfo:
+                        latency = random.randint(0.000, 0.04)
+                    print("Starting nmap scan...")
+                    print("")
+                    print(f"Nmap scan report for {target} {if domain == True, }")
+                    print(f"Host is up ({latency} latency).")
+                    
+                    
         else:
             if len(full_cmd) == 1 and gm.sys.file_mngr.check(os.path.join(local_dir, "opt", cmd)):
                 target_folder = os.path.join(local_dir, "opt", cmd)
