@@ -2,7 +2,6 @@
 
 import os
 import Otrace as game
-import getpass
 
 #################################################################################
 
@@ -30,6 +29,7 @@ def login_or_signup():
     
 def signup(main_dir, sudo):
     import bcrypt
+    import maskpass
     
     password_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "shadow")
     username_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "passwd")
@@ -47,10 +47,10 @@ def signup(main_dir, sudo):
             print("")
             input("| (!) This username is already taken, please try another one. Press Enter to try again.")
             continue
-                    
-        pw1 = getpass.getpass("| Password: ", stream=None)
+
+        pw1 = maskpass.askpass("| Password: ")
         print("|")
-        pw2 = getpass.getpass("| Confirm Password: ", stream=None)
+        pw2 = maskpass.askpass("| Confirm Password: ")
         print("")
         
         if pw1 == pw2:
@@ -98,8 +98,8 @@ def signup(main_dir, sudo):
 
     
 def login(main_dir):
-    
     import bcrypt
+    import maskpass
     
     password_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "shadow")
     username_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "passwd")
@@ -110,7 +110,7 @@ def login(main_dir):
         print("| Login")
         print("|")
         username = input("| Username: ")
-        pw = getpass.getpass("| Password: ", stream=None)
+        pw = maskpass.askpass("| Password: ", stream=None)
         print("")
         
         with open(username_file_path, "r") as user_file:
@@ -144,8 +144,7 @@ def login(main_dir):
     return username
 
 def create_hostname(main_dir):
-    hostname_file_path = os.path.join(main_dir, "Otrace", "local",
-                                      "etc", "hostname")
+    hostname_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "hostname")
     while True:
         os.system("cls" if os.name == "nt" else "clear")
         print("")

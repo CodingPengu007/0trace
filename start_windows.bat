@@ -15,7 +15,7 @@ call Otrace_venv\Scripts\activate.bat || call :ErrorExit "Failed to activate vir
 
 :: Install dependencies
 python -m pip install --upgrade pip || call :ErrorExit "Failed to upgrade pip."
-pip install bcrypt textual textual_textarea requests readline || call :ErrorExit "Failed to install required packages."
+pip install bcrypt textual textual_textarea requests readline maskpass || call :ErrorExit "Failed to install required packages."
 
 :: Upgrade outdated packages if any
 for /f "delims=" %%i in ('python -m pip list --outdated --format=freeze') do (
