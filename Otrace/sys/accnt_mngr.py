@@ -120,16 +120,21 @@ def login(main_dir):
         
         with open(password_file_path, "rb") as pw_file:
             passwords = [line.strip() for line in pw_file.readlines()]
-
         if user is not None and user_index is not None and user_index < len(passwords):
             if bcrypt.checkpw(pw.encode('utf-8'), passwords[user_index]):
                 input("| Login successful. Press Enter to continue.")
                 username = usernames[user_index]
                 break
             else:
-                input("| (!) Incorrect password or username. Press Enter to try again.")
+                choice = input("| (!) Incorrect password or username. Do you want to sign up instead? (y/n): ")
+                if choice.lower() == "y":
+                    signup(main_dir, "non_sudo")
+                    break
         else:
-            input("| (!) Incorrect password or username. Press Enter to try again.")
+            input("| (!) Incorrect password or username. Do you want to sign up instead? (y/n): ")
+            if choice.lower() == "y":
+                signup(main_dir, "non_sudo")
+                break
     os.system("cls" if os.name == "nt" else "clear")
     return username
 
@@ -150,8 +155,7 @@ def create_hostname(main_dir):
     os.system("cls" if os.name == "nt" else "clear")
     
 def load_hostname(main_dir):
-    hostname_file_path = os.path.join(main_dir, "Otrace", "local",
-                                      "etc", "hostname")
+    hostname_file_path = os.path.join(main_dir, "Otrace", "local","etc", "hostname")
     with open(hostname_file_path, "r") as file:
         hostname = file.read()
     return hostname

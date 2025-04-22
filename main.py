@@ -366,7 +366,7 @@ try:
         ("sudoers", os.path.join(main_dir, "Otrace", "local", "etc", "sudoers")),
         ("apt_sources", os.path.join(main_dir, "Otrace", "programs", "apt", "sources")),
     ]
-    
+
     for file_desc, file_path in files_to_check:
         print(f"Checking for {file_desc} file")
         if not game.sys.file_mngr.check(file_path):
@@ -416,7 +416,19 @@ try:
         game.sys.accnt_mngr.signup(main_dir, "sudo")
         print("Account created successfully.")
     print("")
-    ### ------------------------ ###
+    ### -------------------------- ###
+
+    ### Check if an hostname exists ###
+    print("")
+    print("Checking for hostname:")
+    if game.sys.file_mngr.empty(hostname_path):
+        print("(!) No hostname found.")
+        print("")
+        print("Starting hostname creation...")
+        game.sys.accnt_mngr.create_hostname(main_dir)
+        print("Hostname created successfully.")
+    print("")
+    ### -------------------------- ###
 
     ### Check if an hostname exists ###
     print("")
