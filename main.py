@@ -729,19 +729,18 @@ os.system("cls" if os.name == "nt" else "clear")
 #################################################################################
 
 
-def main():
-    try:
-        game.prgms.cmd.line(username, hostname, current_dir, local_dir, main_dir)
-    except KeyboardInterrupt:
-        print("Exiting...")
-        os.system("cls" if os.name == "nt" else "clear")
-        sys.exit(0)
-    except Exception as e:
-        print(f"(!) An error occurred: {e}")
-        print("")
-        print(
-            f"(!) Please report this bug to the developers and create an issue on GitHub ({github_link})."
-        )
+try:
+    game.prgms.cmd.line(username, hostname, current_dir, local_dir, main_dir)
+except KeyboardInterrupt:
+    print("Exiting...")
+    os.system("cls" if os.name == "nt" else "clear")
+    sys.exit(0)
+except Exception as e:
+    print(f"(!) An error occurred: {e}")
+    print("")
+    print(
+        f"(!) Please report this bug to the developers and create an issue on GitHub ({github_link})."
+    )
 
 
 #################################################################################
