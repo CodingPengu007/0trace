@@ -32,19 +32,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import (
-    Tk,
-    Canvas,
-    Entry,
-    Text,
-    Button,
-    PhotoImage,
-    StringVar,
-)  # All of this gets not used in this file, but it is the main.py so I wrote the whole legal part down again. :) (Wanna be clean)
 
 
 #################################################################################
@@ -61,7 +51,7 @@ def pycache():
 
     # from tkinter import *
     # Explicit imports to satisfy Flake8
-    from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
+    from tkinter import Tk, Canvas, Button, PhotoImage
 
     OUTPUT_PATH = Path(__file__).parent
     ASSETS_PATH = OUTPUT_PATH / Path(r"/home/kali/Desktop/output_2/build/assets/frame0")

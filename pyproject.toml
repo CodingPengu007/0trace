@@ -48,3 +48,10 @@ dev = [
 
 [project.scripts]
 0trace = "main:main"
+
+[tool.ruff]
+exclude = [".Otrace_venv"]
+
+[tool.ruff.lint]
+select = ["F401", "FURB"]
+per-file-ignores = {"**/__init__.py" = ["F401"]}

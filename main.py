@@ -32,19 +32,9 @@
 # ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 # POSSIBILITY OF SUCH DAMAGE.
 
-from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import (
-    Tk,
-    Canvas,
-    Entry,
-    Text,
-    Button,
-    PhotoImage,
-    StringVar,
-)  # All of this gets not used in this file, but it is the main.py so I wrote the whole legal part down again. :) (Wanna be clean)
 
 
 #################################################################################
@@ -90,25 +80,25 @@ try:
 
     if skip_warning == True:
         print("--- Welcome to 0trace ---")
-        print("")
+        print()
         print(
             "The program is automatically starting up and skipping the routine warning."
         )
-        print("")
+        print()
     elif skip_warning == False:
         print("--- Welcome to 0trace ---")
-        print("")
+        print()
         print("The program is about to start up,")
         print("please don't interrupt the process.")
-        print("")
+        print()
         input("Press enter to continue...")
-        print("")
+        print()
     else:
         print("--- Welcome to 0trace ---")
-        print("")
+        print()
         print("The program is about to start up,")
         print("please don't interrupt the process.")
-        print("")
+        print()
         answer = input("Should we warn you again next time? (y/n): ")
         if answer.lower() == "y":
             with open(
@@ -121,9 +111,9 @@ try:
                 "w",
             ) as file:
                 file.write("y")
-            print("")
+            print()
             print("(*) Warning enabled.")
-            print("")
+            print()
         elif answer.lower() == "n":
             try:
                 with open(
@@ -136,24 +126,24 @@ try:
                     "w",
                 ) as file:
                     file.write("n")
-                print("")
+                print()
                 print("(*) Warning disabled.")
-                print("")
+                print()
             except FileNotFoundError:
-                print("")
+                print()
                 print("(!) Warning not disabled. Error writing to cache.")
                 print("(!) cache will get repaired during startup")
-                print("")
+                print()
                 print("(*) Warning enabled by default.")
-                print("")
+                print()
                 input("Press Enter to continue...")
         else:
-            print("")
+            print()
             print("(!) Invalid input. Warning enabled by default.")
             print("(*) Warning enabled.")
-            print("")
+            print()
             print("-> We will ask you again at the next start")
-            print("")
+            print()
             input("Press Enter to continue...")
 
     os.system("cls" if os.name == "nt" else "clear")
@@ -190,28 +180,28 @@ try:
         )
     )
     if empty == True:
-        print("")
+        print()
         print(
             "The __pycache__ directory is used by Python to store compiled bytecode files, which help speed up program execution."
         )
         print(
             "Would you like the program to automatically delete the __pycache__ directory on startup?"
         )
-        print("")
+        print()
         print("Pro:")
         print(
             "- Ensures a clean environment by removing potentially outdated or corrupted bytecode files."
         )
         print("- Useful during development to avoid issues caused by stale cache.")
-        print("")
+        print()
         print("Contra:")
         print("- Slower startup time as Python will need to recompile bytecode files.")
         print(
             "- May not be necessary in production environments where stability is prioritized."
         )
-        print("")
+        print()
         print("(!) We recommend to disable it to prioritize faster startup times. (n)")
-        print("")
+        print()
         answer = input(
             "Do you want to automaticly delete the __pycache__ when the program starts up? (y/n): "
         )
@@ -226,9 +216,9 @@ try:
                 "w",
             ) as file:
                 file.write("y")
-            print("")
+            print()
             print("(*) Automatic deletion of the __pycache__ enabled.")
-            print("")
+            print()
         if answer.lower() == "n":
             try:
                 with open(
@@ -241,49 +231,49 @@ try:
                     "w",
                 ) as file:
                     file.write("n")
-                print("")
+                print()
                 print("(*) Automatic deletion of the __pycache__ disabled.")
-                print("")
+                print()
             except FileNotFoundError:
-                print("")
+                print()
                 print("(!) Deletion not disabled. Error writing to cache.")
                 print("(!) cache will get repaired during startup")
-                print("")
+                print()
                 print("(*) Deletion disabled by default.")
-                print("")
+                print()
                 input("Press Enter to continue...")
 
     if delete_pycache == True:
-        print("")
+        print()
         print("Deleting __pycache__ as the user configured")
-        print("")
+        print()
     elif delete_pycache == False:
-        print("")
+        print()
         print("Won't delete __pycache__ as the user configured")
-        print("")
+        print()
     else:
-        print("")
+        print()
         print(
             "The __pycache__ directory is used by Python to store compiled bytecode files, which help speed up program execution."
         )
         print(
             "Would you like the program to automatically delete the __pycache__ directory on startup?"
         )
-        print("")
+        print()
         print("Pro:")
         print(
             "- Ensures a clean environment by removing potentially outdated or corrupted bytecode files."
         )
         print("- Useful during development to avoid issues caused by stale cache.")
-        print("")
+        print()
         print("Contra:")
         print("- Slower startup time as Python will need to recompile bytecode files.")
         print(
             "- May not be necessary in production environments where stability is prioritized."
         )
-        print("")
+        print()
         print("(!) We recommend to disable it to prioritize faster startup times. (n)")
-        print("")
+        print()
         answer = input(
             "Do you want to automaticly delete the __pycache__ when the program starts up? (y/n): "
         )
@@ -298,9 +288,9 @@ try:
                 "w",
             ) as file:
                 file.write("y")
-            print("")
+            print()
             print("(*) Automatic deletion of the __pycache__ enabled.")
-            print("")
+            print()
         if answer.lower() == "n":
             try:
                 with open(
@@ -313,30 +303,30 @@ try:
                     "w",
                 ) as file:
                     file.write("n")
-                print("")
+                print()
                 print("(*) Automatic deletion of the __pycache__ disabled.")
-                print("")
+                print()
             except FileNotFoundError:
-                print("")
+                print()
                 print("(!) Deletion not disabled. Error writing to cache.")
                 print("(!) cache will get repaired during startup")
-                print("")
+                print()
                 print("(*) Deletion disabled by default.")
-                print("")
+                print()
                 input("Press Enter to continue...")
         else:
-            print("")
+            print()
             print("(!) Invalid input. Deletion disabled by default.")
-            print("")
+            print()
             print("(*) Deletion disabled.")
-            print("")
+            print()
             print("-> We will ask you again at the next start")
-            print("")
+            print()
             input("Press Enter to continue...")
 
     os.system("cls" if os.name == "nt" else "clear")
     print("Starting up...")
-    print("")
+    print()
 
     os_name = sys.platform
     if os_name.startswith("win"):
@@ -378,13 +368,13 @@ try:
     print(f"Detected operating system: {client_os}")
 
     ### Virtual Environment Management ###
-    print("")
+    print()
     print("Checking virtual environment:")
     if not file_mngr.check(venv_dir):
         print(
             "(!) Virtual environment not found. (This is normal when starting for the first time)"
         )
-        print("")
+        print()
         print(
             "--------------------------------------------------------------------------------------"
         )
@@ -396,7 +386,7 @@ try:
         print(
             "--------------------------------------------------------------------------------------"
         )
-        print("")
+        print()
 
         print(
             "(!) Program starting up for the first time! Removing saves of developers..."
@@ -421,31 +411,31 @@ try:
                     file_path = "a file conaining sensitive user data"
                 print(f"Error opening or writing to {file_path}: {e}")
         print("Flushed all files!")
-        print("")
+        print()
         print("Flushing all folders storing user data...")
         folder_paths_ = [home_dir_path, opt_dir_path]
         for folder in folder_paths_:
             file_mngr.remove_lower(folder)
         print("Flushed all folders!")
-        print("")
+        print()
 
         ### Remove __pycache__ directories ###
-        print("")
+        print()
         print("Removing __pycache__ directories:")
-        print("")
+        print()
         file_mngr.remove_pycache(main_dir)
-        print("")
+        print()
         print("Removed __pycache__ directories.")
-        print("")
+        print()
         ### ------------------------------ ###
 
     else:
         print("The virtual environment exists and has been found!")
-    print("")
+    print()
     ### ----------------------------- ###
 
     ### Running the startup script ###
-    print("")
+    print()
     print("Running the startup script...")
     try:
         if client_os == "Windows":
@@ -467,63 +457,69 @@ try:
         print("Please check the script for errors.")
         sys.exit(1)
     print("Startup script executed successfully.")
-    print("")
+    print()
     ### ------------------------- ###
 
     ### Testing Imports ###
-    print("")
-    print("Testing imports...")
-    try:
-        import bcrypt
-        import requests
-        import maskpass
-        import textual
-        import textual_textarea
-        import readline
-    except ImportError as e:
-        os.system("clear" if os.name == "posix" else "cls")
-        print("")
-        print("(!) An error occurred when importing modules!")
-        print(f"(!) {e}")
-        print("")
-        print(
-            "(!) Please ensure that the virtual environment is activated and all dependencies are installed."
-        )
-        print("(!) You can do this by running the following command:")
-        print("")
-        if client_os == "Windows":
-            print(f"{venv_dir}/Scripts/activate")
-        elif client_os == "Unknown":
-            print(
-                f"(!)You are using an unknown operating system, please create an issue on GitHub ({github_link})."
-            )
+    from importlib.util import find_spec
+
+    requirements = [
+        "bcrypt",
+        "requests",
+        "maskpass",
+        "textual",
+        "textual_textarea",
+        "readline",
+    ]
+
+    for package in requirements:
+        if find_spec(package) is not None:
+            print(f"{package} is installed")
         else:
-            print(f"source {venv_dir}/bin/activate")
-        print("")
-        print("Please activate the virtual environment and run the program again.")
-        print("")
-        sys.exit(1)
+            os.system("clear" if os.name == "posix" else "cls")
+            print()
+            print("(!) An error occurred when importing modules!")
+            print(f"(!) {package} is not installed.")
+            print()
+            print(
+                "(!) Please ensure that the virtual environment is activated and all dependencies are installed."
+            )
+            print("(!) You can do this by running the following command:")
+            print()
+            if client_os == "nt":
+                print(f"{venv_dir}/Scripts/activate")
+            elif client_os == "posix":
+                print(f"source {venv_dir}/bin/activate")
+            else:
+                print(
+                    f"(!) You are using an unknown operating system, please create an issue on GitHub ({github_link})."
+                )
+            print()
+            print("Please activate the virtual environment and run the program again.")
+            print()
+            sys.exit(1)
+
     print("All imports successful.")
-    print("")
+    print()
     ### -------------- ###
 
     import Otrace as game
 
     ### Remove __pycache__ directories ###
     if delete_pycache == True:
-        print("")
+        print()
         print("Removing __pycache__ directories:")
-        print("")
+        print()
         game.sys.file_mngr.remove_pycache(main_dir)
-        print("")
+        print()
         print("Removed __pycache__ directories.")
-        print("")
+        print()
     ### ------------------------ ###
 
     ### Check if essential system files exist ###
-    print("")
+    print()
     print("Checking if essential system files exist:")
-    print("")
+    print()
 
     files_to_check = [
         ("hostname", os.path.join(main_dir, "Otrace", "local", "etc", "hostname")),
@@ -543,13 +539,13 @@ try:
         else:
             print(f"{file_desc} file found.")
 
-    print("")
+    print()
     ### ------------------------------------ ###
 
     ### Check if essential system files exist ###
-    print("")
+    print()
     print("Checking if essential system files exist:")
-    print("")
+    print()
 
     folders_to_check = [
         ("opt", os.path.join(main_dir, "Otrace", "local", "opt")),
@@ -567,49 +563,49 @@ try:
         else:
             print(f"{folder_desc} folder found.")
 
-    print("")
+    print()
     ### ------------------------------------ ###
 
     ### Check if an account exists ###
-    print("")
+    print()
     print("Checking for accounts:")
     if game.sys.accnt_mngr.check(main_dir):
         print("Account(s) found.")
     else:
         print("(!) No account found.")
-        print("")
+        print()
         print("Starting account creation...")
         game.sys.accnt_mngr.signup(main_dir, "sudo")
         print("Account created successfully.")
-    print("")
+    print()
     ### -------------------------- ###
 
     ### Check if an hostname exists ###
-    print("")
+    print()
     print("Checking for hostname:")
     if game.sys.file_mngr.empty(hostname_path):
         print("(!) No hostname found.")
-        print("")
+        print()
         print("Starting hostname creation...")
         game.sys.accnt_mngr.create_hostname(main_dir)
         print("Hostname created successfully.")
-    print("")
+    print()
     ### -------------------------- ###
 
     ### Check if an hostname exists ###
-    print("")
+    print()
     print("Checking for hostname:")
     if game.sys.file_mngr.empty(hostname_path):
         print("(!) No hostname found.")
-        print("")
+        print()
         print("Starting hostname creation...")
         game.sys.accnt_mngr.create_hostname(main_dir)
         print("Hostname created successfully.")
-    print("")
+    print()
     ### -------------------------- ###
 
     ### Check for account directories directory ###
-    print("")
+    print()
     print("Checking for account directories:")
     username_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "passwd")
     with open(username_file_path, "r") as user_file:
@@ -624,14 +620,14 @@ try:
             print("Directory created.")
         else:
             print(f"Directory for {users} found.")
-    print("")
+    print()
     ### ------------------------------------- ###
 
     ### Load account information ###
-    print("")
+    print()
     print("Loading account information:")
     print("(?) Login / Sign Up ...")
-    print("")
+    print()
     os.system("cls" if os.name == "nt" else "clear")
 
     # Store the result of login_or_signup in a variable
@@ -663,18 +659,18 @@ try:
         print("Login successful.")
     else:
         os.system("cls" if os.name == "nt" else "clear")
-        print("")
+        print()
         print("Crash report:")
         print("----------------------------")
         print(f"ERROR: Invalid output from login_or_signup function.")
         print("----------------------------")
-        print("")
-        print("")
+        print()
+        print()
         print("(!) Please report this issue to the developers.")
-        print("")
+        print()
         print("--> Please create an issue on Github:")
         print(f"--> {github_link}")
-        print("")
+        print()
 
     print("Loading hostname...")
     hostname = game.sys.accnt_mngr.load_hostname(main_dir)
@@ -685,31 +681,31 @@ try:
     print("Loading current directory...")
     current_dir = f"{local_dir}/home/{username}"
     print("Current directory loaded.")
-    print("")
+    print()
     ### ------------------------ ###
 
-    print("")
+    print()
 
 except KeyboardInterrupt:
     print("Exiting...")
     os.system("cls" if os.name == "nt" else "clear")
     sys.exit(0)
 except Exception as e:
-    print("")
+    print()
     print("The Startup of 0trace failed.")
-    print("")
+    print()
     print("Crash report:")
     print("----------------------------")
     print(f"ERROR: {e}")
     print("----------------------------")
-    print("")
-    print("")
+    print()
+    print()
     print("(!) Please report this issue to the developers.")
-    print("")
+    print()
     print("--> Please create an issue on Github:")
     print(f"--> {github_link}")
-    print("")
-    print("")
+    print()
+    print()
     input("Press Enter to exit...")
     os.system("cls" if os.name == "nt" else "clear")
     sys.exit(1)
@@ -718,11 +714,11 @@ print("Startup complete.")
 os.system("cls" if os.name == "nt" else "clear")
 
 print(f"Welcome to {program}!")
-print("")
+print()
 print(f"Version: {version}")
 print(f"Author: {author}")
 print(f"Publicity: {publicity}")
-print("")
+print()
 
 os.system("cls" if os.name == "nt" else "clear")
 
@@ -737,7 +733,7 @@ except KeyboardInterrupt:
     sys.exit(0)
 except Exception as e:
     print(f"(!) An error occurred: {e}")
-    print("")
+    print()
     print(
         f"(!) Please report this bug to the developers and create an issue on GitHub ({github_link})."
     )
