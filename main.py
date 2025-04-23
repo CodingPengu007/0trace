@@ -51,6 +51,7 @@ import subprocess
 import Otrace.sys.file_mngr as file_mngr
 
 #################################################################################
+
 try:
     os.system("cls" if os.name == "nt" else "clear")
     skip_warning = False
@@ -582,15 +583,16 @@ os.system("cls" if os.name == "nt" else "clear")
 
 #################################################################################
 
-try:
-    game.prgms.cmd.line(username, hostname, current_dir, local_dir, main_dir)
-except KeyboardInterrupt:
-    print("Exiting...")
-    os.system("cls" if os.name == "nt" else "clear")
-    sys.exit(0)
-except Exception as e:
-    print(f"(!) An error occurred: {e}")
-    print("")
-    print(f"(!) Please report this bug to the developers and create an issue on GitHub ({github_link}).")
+def main():
+    try:
+        game.prgms.cmd.line(username, hostname, current_dir, local_dir, main_dir)
+    except KeyboardInterrupt:
+        print("Exiting...")
+        os.system("cls" if os.name == "nt" else "clear")
+        sys.exit(0)
+    except Exception as e:
+        print(f"(!) An error occurred: {e}")
+        print("")
+        print(f"(!) Please report this bug to the developers and create an issue on GitHub ({github_link}).")
     
 #################################################################################
