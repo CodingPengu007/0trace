@@ -8,14 +8,15 @@ import Otrace as gm
 
 #################################################################################
 
+
 def line(username, hostname, current_dir, local_dir, main_dir):
     import readline
-    
+
     script = []
     full_cmd = []
     cmd = ""
     aliases = {}
-    
+
     etc_dir = os.path.join(local_dir, "etc")
     home_dir = os.path.join(local_dir, "home")
     alias_file_path = os.path.join(local_dir, "home", username, "Cache", "aliases")
@@ -23,11 +24,26 @@ def line(username, hostname, current_dir, local_dir, main_dir):
     sudo_file_path = os.path.join(local_dir, "etc", "sudoers")
     log_file_path = os.path.join(local_dir, "home", username, "Cache", "local_logs")
     sources_file_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
-    
-    commands = ["ls", "cd", "cat", "mkdir", "clear", "alias", "nano", "exit", "rm", "bash", "echo", "visudo", "apt", "sudo"]
+
+    commands = [
+        "ls",
+        "cd",
+        "cat",
+        "mkdir",
+        "clear",
+        "alias",
+        "nano",
+        "exit",
+        "rm",
+        "bash",
+        "echo",
+        "visudo",
+        "apt",
+        "sudo",
+    ]
 
     if os.path.exists(alias_file_path):
-        with open(alias_file_path, 'r') as file:
+        with open(alias_file_path, "r") as file:
             for line in file:
                 alias, command = line.strip().split("=", 1)
                 aliases[alias] = command
@@ -41,7 +57,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             os.makedirs(cache_path)
         else:
             pass
-        with open(history_file_path, 'w') as file:
+        with open(history_file_path, "w") as file:
             pass
 
     def completer(text, state):
@@ -50,16 +66,32 @@ def line(username, hostname, current_dir, local_dir, main_dir):
         if len(buffer) == 0:  # No input yet
             options = commands + list(aliases.keys())
         elif len(buffer) == 1:  # First word (command) being typed
-            options = [cmd for cmd in commands + list(aliases.keys()) if cmd.startswith(buffer[0])]
+            options = [
+                cmd
+                for cmd in commands + list(aliases.keys())
+                if cmd.startswith(buffer[0])
+            ]
         else:  # Command already typed, suggest arguments
             cmd = buffer[0]
             if cmd in ["ls", "cd"]:  # Suggest directories
-                options = [d for d in os.listdir(current_dir) if os.path.isdir(os.path.join(current_dir, d)) and d.startswith(text)]
+                options = [
+                    d
+                    for d in os.listdir(current_dir)
+                    if os.path.isdir(os.path.join(current_dir, d))
+                    and d.startswith(text)
+                ]
             elif cmd in ["nano", "cat", "rm"]:  # Suggest files
-                options = [f for f in os.listdir(current_dir) if os.path.isfile(os.path.join(current_dir, f)) and f.startswith(text)]
+                options = [
+                    f
+                    for f in os.listdir(current_dir)
+                    if os.path.isfile(os.path.join(current_dir, f))
+                    and f.startswith(text)
+                ]
             elif cmd == "rm" and full_cmd[1] == "-rf":  # Suggest files and directories
-                options = [item for item in os.listdir(current_dir) if item.startswith(text)]
-                
+                options = [
+                    item for item in os.listdir(current_dir) if item.startswith(text)
+                ]
+
         return options[state] if state < len(options) else None
 
     readline.set_completer(completer)
@@ -75,7 +107,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
         permission = True
     else:
         permission = False
-    
+
     while True:
         show_dir = "/" + os.path.relpath(current_dir, local_dir)
         if show_dir == f"/home/{username}":
@@ -100,7 +132,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             sudo = True
         if get_command == True:
             try:
-                full_cmd = input(f"| ({username}@{hostname})-[{show_dir}]\n| $ ").split()
+                full_cmd = input(
+                    f"| ({username}@{hostname})-[{show_dir}]\n| $ "
+                ).split()
                 print("")
                 readline.write_history_file(history_file_path)
             except EOFError:
@@ -111,47 +145,63 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             if not gm.sys.file_mngr.check(cache_path):
                 os.makedirs(cache_path, exist_ok=True)
             if not gm.sys.file_mngr.check(alias_file_path):
-                with open(alias_file_path, 'w') as file:
+                with open(alias_file_path, "w") as file:
                     pass
             if not gm.sys.file_mngr.check(log_file_path):
-                with open(log_file_path, 'w') as file:
+                with open(log_file_path, "w") as file:
                     pass
             if cmd in aliases:
                 full_cmd = aliases[cmd].split() + full_cmd[1:]
                 cmd = full_cmd[0]
-            with open(log_file_path, 'a') as file:
+            with open(log_file_path, "a") as file:
                 file.write(cmd + "\n")
         else:
             get_command = True
-            
+
         cmd = full_cmd[0]
         skip_line = False
         just_removed = False
-        
+
         if cmd == "help":
             if len(full_cmd) > 1:
                 print("Command doesn't take any arguments.")
             else:
                 print("Commands:")
                 print("  help                           - Display this help message.")
-                print("  ls [dir]                       - List files in current or specified directory.")
+                print(
+                    "  ls [dir]                       - List files in current or specified directory."
+                )
                 print("  cd <dir>                       - Change directory.")
                 print("  cat <file>                     - Print file contents.")
                 print("  mkdir <dir>                    - Create a new directory.")
                 print("  clear                          - Clear the terminal screen.")
-                print("  alias <command> <new_alias>    - Create an alias for a command.")
-                print("  nano <file>                    - Create or edit a file using a simple text editor.")
+                print(
+                    "  alias <command> <new_alias>    - Create an alias for a command."
+                )
+                print(
+                    "  nano <file>                    - Create or edit a file using a simple text editor."
+                )
                 print("  exit                           - Exit the shell.")
                 print("  rm <file>                      - Remove a file.")
-                print("  bash <file>                    - Run a script file with the file ending .sh")
+                print(
+                    "  bash <file>                    - Run a script file with the file ending .sh"
+                )
                 print("  echo <text>                    - Print text to the terminal.")
-                print("  visudo                         - Edit the sudoers file.                                            (!) Requires sudo")
-                print("  apt <option> <program>         - Package manager for installing, updating, and removing programs.  (!) Requires sudo")
-                print("  sudo <command>                 - Execute a command with superuser privileges.                      (!) Requires sudo")
+                print(
+                    "  visudo                         - Edit the sudoers file.                                            (!) Requires sudo"
+                )
+                print(
+                    "  apt <option> <program>         - Package manager for installing, updating, and removing programs.  (!) Requires sudo"
+                )
+                print(
+                    "  sudo <command>                 - Execute a command with superuser privileges.                      (!) Requires sudo"
+                )
 
         elif cmd == "alias":
             if len(full_cmd) < 2 or len(full_cmd) > 3:
-                print("Usage: alias <command> <new_alias>, alias show, or alias delete <alias_name>")
+                print(
+                    "Usage: alias <command> <new_alias>, alias show, or alias delete <alias_name>"
+                )
             elif full_cmd[1] == "-h":
                 print("Command:")
                 print("alias")
@@ -180,7 +230,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 alias_to_delete = full_cmd[2]
                 if alias_to_delete in aliases:
                     del aliases[alias_to_delete]
-                    with open(alias_file_path, 'w') as file:
+                    with open(alias_file_path, "w") as file:
                         for alias, command in aliases.items():
                             file.write(f"{alias}={command}\n")
                     print(f"Alias {alias_to_delete} deleted.")
@@ -195,13 +245,15 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 elif alias in commands:
                     print(f"{alias} is a command and cannot be used as an alias.")
                 elif command in aliases.values():
-                    print(f"Command {command} is already aliased to {list(aliases.keys())[list(aliases.values()).index(command)]}.")
+                    print(
+                        f"Command {command} is already aliased to {list(aliases.keys())[list(aliases.values()).index(command)]}."
+                    )
                 else:
                     aliases[alias] = command
-                    with open(alias_file_path, 'a') as file:
+                    with open(alias_file_path, "a") as file:
                         file.write(f"{alias}={command}\n")
                     print(f"Alias '{alias}' created for command '{command}'.")
-                    
+
         elif cmd == "ls" or cmd == "dir":
             if len(full_cmd) > 2:
                 print("Usage: ls [dir]")
@@ -210,7 +262,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("ls, dir")
                 print("")
                 print("Description:")
-                print("List files and directories in the current (without any arguments 'ls') or specified directory (with the directory specified 'ls directory').")
+                print(
+                    "List files and directories in the current (without any arguments 'ls') or specified directory (with the directory specified 'ls directory')."
+                )
                 print("")
                 print("Usage:")
                 print("ls <dir> - List files in the specified directory.")
@@ -232,7 +286,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                             print(item)
                 except FileNotFoundError:
                     print(f"No such file or directory: '{target_dir}'")
-                    
+
         elif cmd == "cd":
             if len(full_cmd) != 2:
                 print("Usage: cd <dir>")
@@ -260,7 +314,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     if new_dir == "..":
                         new_dir = os.path.dirname(current_dir)
                     try:
-                        if not os.path.commonpath([new_dir, local_dir]).startswith(local_dir):
+                        if not os.path.commonpath([new_dir, local_dir]).startswith(
+                            local_dir
+                        ):
                             print("Permission denied.")
                             print("")
                             continue
@@ -268,15 +324,24 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                             print("Permission denied.")
                             print("")
                             continue
-                        if current_dir == home_dir and os.path.commonpath([new_dir, home_dir]) == home_dir:
+                        if (
+                            current_dir == home_dir
+                            and os.path.commonpath([new_dir, home_dir]) == home_dir
+                        ):
                             users = []
                             try:
-                                users = gm.sys.file_mngr.list_load(os.path.join(etc_dir, "passwd"))
+                                users = gm.sys.file_mngr.list_load(
+                                    os.path.join(etc_dir, "passwd")
+                                )
                             except FileNotFoundError:
                                 print(f"No such file or directory: '{full_cmd[1]}'")
                             except Exception as e:
                                 print(f"An error occurred: {e}")
-                            if new_dir in users and new_dir != username and permission != True:
+                            if (
+                                new_dir in users
+                                and new_dir != username
+                                and permission != True
+                            ):
                                 print("Permission denied")
                                 print("")
                                 continue
@@ -294,7 +359,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 except Exception as e:
                     print(f"An error occurred: {e}")
                 skip_line = True
-                
+
         elif cmd == "cat":
             if len(full_cmd) != 2:
                 print("Usage: cat <file>")
@@ -316,11 +381,11 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     if os.path.isdir(file_path):
                         print(f"'{full_cmd[1]}' is a directory, not a file.")
                     else:
-                        with open(file_path, 'r') as file:
+                        with open(file_path, "r") as file:
                             print(file.read())
                 except FileNotFoundError:
                     print(f"No such file: '{full_cmd[1]}'")
-                    
+
         elif cmd == "mkdir":
             if len(full_cmd) != 2:
                 print("Usage: mkdir <dir>")
@@ -344,7 +409,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"Directory {dir_name} created.")
                 except Exception as e:
                     print(f"Error creating directory: {e}")
-                    
+
         elif cmd == "nano":
             from textual.app import App
             from textual.widgets import TextArea
@@ -375,11 +440,12 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 initial_content = ""
                 if os.path.isfile(file_path):
                     try:
-                        with open(file_path, 'r', encoding='utf-8') as f:
+                        with open(file_path, "r", encoding="utf-8") as f:
                             initial_content = f.read()
                     except Exception as e:
                         print(f"Error reading file: {e}")
                         return
+
                 class TextApp(App):
                     CSS = """
                     TextArea {
@@ -387,14 +453,18 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                         height: 100%;
                     }
                     """
+
                     def compose(self):
                         self.text_area = TextArea(id="editor", text=initial_content)
                         self.text_area.show_line_numbers = True  # Optional feature
                         yield self.text_area
+
                     def on_mount(self):
                         self.text_area.focus()
+
                     def on_unmount(self):
                         self.app.edited_content = self.text_area.text
+
                 app = TextApp()
                 app.edited_content = ""
                 app.run()
@@ -409,11 +479,11 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                         print(f"Error creating directory {parent_dir}: {e}")
                         return
                 try:
-                    with open(file_path, 'w', encoding='utf-8') as f:
+                    with open(file_path, "w", encoding="utf-8") as f:
                         f.write(edited_content)
                 except IOError as e:
                     print(f"Error saving file: {e}")
-                    
+
         elif cmd in ["rm", "del", "delete", "remove"]:
             not_empty_detected = False
             if len(full_cmd) < 2 or len(full_cmd) > 3:
@@ -427,7 +497,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("")
                 print("Usage:")
                 print("rm <file>        - Remove the specified file.")
-                print("rm -rf <folder>  - Remove the specified folder and all its contents.")
+                print(
+                    "rm -rf <folder>  - Remove the specified folder and all its contents."
+                )
                 print("")
                 print("Examples:")
                 print("rm file.txt")
@@ -442,7 +514,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                             print(f"Empty folder {full_cmd[1]} removed.")
                         else:
                             not_empty_detected = True
-                            print(f"Folder {full_cmd[1]} is not empty. Use 'rm -rf {full_cmd[1]}' to remove it with all contents.")
+                            print(
+                                f"Folder {full_cmd[1]} is not empty. Use 'rm -rf {full_cmd[1]}' to remove it with all contents."
+                            )
                     else:
                         os.remove(file_path)
                         print(f"File {full_cmd[1]} removed.")
@@ -458,7 +532,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 folder_path = os.path.join(current_dir, full_cmd[2])
                 try:
                     if os.path.isdir(folder_path):
-                        shutil.rmtree(folder_path)  # This should remove the folder and all its contents
+                        shutil.rmtree(
+                            folder_path
+                        )  # This should remove the folder and all its contents
                         print(f"Folder {full_cmd[2]} and all its contents removed.")
                     else:
                         print(f"'{full_cmd[2]}' is not a folder.")
@@ -470,15 +546,15 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"Error force removing folder: {e}")
             else:
                 print(f"Unknown argument: {full_cmd[1]}")
-                    
+
         elif cmd == "clear" or cmd == "cls":
             if len(full_cmd) > 1:
                 print("Usage: clear")
             elif len(full_cmd) == 1:
-                os.system('clear' if os.name == 'posix' else 'cls')
+                os.system("clear" if os.name == "posix" else "cls")
             else:
                 print(f"Unknown argument: {full_cmd[1]}")
-                
+
         elif cmd == "exit":
             if len(full_cmd) > 2:
                 print("Usage: exit or exit -h")
@@ -498,7 +574,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("exit")
             else:
                 print(f"Unknown argument: {full_cmd[1]}")
-        
+
         elif cmd == "sudo":
             if len(full_cmd) < 2:
                 print("Usage: sudo <command>")
@@ -510,12 +586,17 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Execute a command with superuser privileges.")
                 print("")
                 print("Usage:")
-                print("sudo <command>   - Execute the specified command with superuser privileges.")
+                print(
+                    "sudo <command>   - Execute the specified command with superuser privileges."
+                )
                 print("")
                 print("Examples:")
                 print("sudo apt update")
             else:
-                sudoers = [username.strip() for username in gm.sys.file_mngr.list_load(sudo_file_path)]
+                sudoers = [
+                    username.strip()
+                    for username in gm.sys.file_mngr.list_load(sudo_file_path)
+                ]
                 if username in sudoers:
                     get_command = False
                     sudo = True
@@ -524,7 +605,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     sudo_protect = True
                 else:
                     print(f"{username} is not in the sudoers file.")
-    
+
         elif cmd == "apt":
             if not len(full_cmd) > 1 or len(full_cmd) > 4:
                 print("Usage: apt <option> <program> or apt source <option> <option>")
@@ -533,22 +614,32 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("apt")
                 print("")
                 print("Description:")
-                print("Package manager for installing, updating, and removing programs.")
+                print(
+                    "Package manager for installing, updating, and removing programs."
+                )
                 print("(!) This command requires superuser privileges.")
                 print("")
                 print("Usage:")
                 print("apt source add <author>      - Add an author to the sources.")
-                print("apt source remove <author>   - Remove an author from the sources.")
+                print(
+                    "apt source remove <author>   - Remove an author from the sources."
+                )
                 print("apt source list              - List all authors in the sources.")
                 print("--- or ---")
                 print("apt src add <author>         - Add an author to the sources.")
-                print("apt src rm <author>          - Remove an author from the sources.")
+                print(
+                    "apt src rm <author>          - Remove an author from the sources."
+                )
                 print("apt src ls                   - List all authors in the sources.")
                 print("")
-                print("apt update                   - Update the sources and check if the authors exist.")
+                print(
+                    "apt update                   - Update the sources and check if the authors exist."
+                )
                 print("apt upgrade                  - Upgrade all installed programs.")
                 print("")
-                print("apt install <program>        - Install a program from the sources.")
+                print(
+                    "apt install <program>        - Install a program from the sources."
+                )
                 print("apt remove <program>         - Remove a program.")
                 print("")
                 print("Examples:")
@@ -566,9 +657,11 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("sudo apt install pencrypt")
                 print("sudo apt remove pencrypt")
 
-            elif (full_cmd[1] == "source" or full_cmd[1] == "src") and (full_cmd[2] == "list" or full_cmd[2] == "ls"):
+            elif (full_cmd[1] == "source" or full_cmd[1] == "src") and (
+                full_cmd[2] == "list" or full_cmd[2] == "ls"
+            ):
                 try:
-                    with open(sources_file_path, 'r') as file:
+                    with open(sources_file_path, "r") as file:
                         authors = [author.strip() for author in file.readlines()]
                     if authors:
                         print("Authors in sources:")
@@ -581,30 +674,43 @@ def line(username, hostname, current_dir, local_dir, main_dir):
 
             elif sudo == False:
                 print("Permission denied.")
-                
+
             else:
-                if (full_cmd[1] == "source" or full_cmd[1] == "src") and full_cmd[2] == "add":
+                if (full_cmd[1] == "source" or full_cmd[1] == "src") and full_cmd[
+                    2
+                ] == "add":
                     author = full_cmd[3]
-                    with open(sources_file_path, 'a') as file:
+                    with open(sources_file_path, "a") as file:
                         file.write(author + "\n")
                     skip_line = False
-                
-                elif (full_cmd[1] == "source" or full_cmd[1] == "src") and (full_cmd[2] == "remove" or full_cmd[2] == "rm"):
+
+                elif (full_cmd[1] == "source" or full_cmd[1] == "src") and (
+                    full_cmd[2] == "remove" or full_cmd[2] == "rm"
+                ):
                     author = full_cmd[2]
-                    with open(sources_file_path, 'r') as file:
+                    with open(sources_file_path, "r") as file:
                         lines = file.readlines()
-                    with open(sources_file_path, 'w') as file:
+                    with open(sources_file_path, "w") as file:
                         for line in lines:
                             if line.strip() != author:
                                 file.write(line)
                     skip_line = False
-                        
+
                 elif full_cmd[1] == "update":
                     try:
                         import requests
-                        with open(sources_file_path, 'r') as file:
-                            urls = ["https://github.com/" + line.strip() for line in file.readlines()]
-                            authors = [author.strip() for author in gm.sys.file_mngr.list_load(sources_file_path)]
+
+                        with open(sources_file_path, "r") as file:
+                            urls = [
+                                "https://github.com/" + line.strip()
+                                for line in file.readlines()
+                            ]
+                            authors = [
+                                author.strip()
+                                for author in gm.sys.file_mngr.list_load(
+                                    sources_file_path
+                                )
+                            ]
                         for url, author in zip(urls, authors):
                             url = url.strip()
                             try:
@@ -623,18 +729,24 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                         print("Sources file not found.")
                     except Exception as e:
                         print(f"Error checking URLs: {e}")
-                
+
                 elif full_cmd[1] == "upgrade":
                     try:
                         opt_dir = os.path.join(local_dir, "opt")
                         if not os.path.exists(opt_dir):
                             print("No programs installed to upgrade.")
                         else:
-                            programs = [program for program in os.listdir(opt_dir) if os.path.isdir(os.path.join(opt_dir, program))]
+                            programs = [
+                                program
+                                for program in os.listdir(opt_dir)
+                                if os.path.isdir(os.path.join(opt_dir, program))
+                            ]
                             for program in programs:
                                 program_path = os.path.join(opt_dir, program)
                                 print(f"Updating {program}...")
-                                subprocess.run(["git", "-C", program_path, "pull"], check=True)
+                                subprocess.run(
+                                    ["git", "-C", program_path, "pull"], check=True
+                                )
                                 print(f"{program} updated successfully.")
                     except Exception as e:
                         print(f"Error upgrading programs: {e}")
@@ -644,42 +756,60 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                         print(f"0trace updated successfully.")
                     except Exception as e:
                         print(f"Error upgrading 0trace")
-                        
+
                 elif full_cmd[1] == "install":
                     import requests
+
                     program = full_cmd[2]
                     try:
-                        with open(sources_file_path, 'r') as file:
+                        with open(sources_file_path, "r") as file:
                             authors = [author.strip() for author in file.readlines()]
                         found = False
                         for author in authors:
                             repo_url = f"https://github.com/{author}/{program}.git"
-                            print(f"Checking repository: {repo_url}")  # Log the URL being checked
+                            print(
+                                f"Checking repository: {repo_url}"
+                            )  # Log the URL being checked
                             try:
-                                response = requests.head(repo_url, allow_redirects=True, timeout=5)
+                                response = requests.head(
+                                    repo_url, allow_redirects=True, timeout=5
+                                )
                                 if response.status_code == 200:
-                                    target_folder = os.path.join(local_dir, "opt", program)
+                                    target_folder = os.path.join(
+                                        local_dir, "opt", program
+                                    )
                                     if os.path.exists(target_folder):
-                                        print(f"Program {program} is already installed.")
+                                        print(
+                                            f"Program {program} is already installed."
+                                        )
                                         found = True
                                         break
                                     print(f"Cloning {program} from {repo_url}...")
                                     os.makedirs(target_folder, exist_ok=True)
-                                    subprocess.run(["git", "clone", repo_url, target_folder], check=True)
+                                    subprocess.run(
+                                        ["git", "clone", repo_url, target_folder],
+                                        check=True,
+                                    )
                                     print(f"{program} installed successfully.")
                                     found = True
                                     break
                                 else:
-                                    print(f"Repository {repo_url} returned status code {response.status_code}.")
+                                    print(
+                                        f"Repository {repo_url} returned status code {response.status_code}."
+                                    )
                             except requests.RequestException as e:
                                 print(f"Error checking {repo_url}: {e}")
                         if not found:
-                            print(f"Program {program} not found in sources. Ensure the program name and author are correct.")
+                            print(
+                                f"Program {program} not found in sources. Ensure the program name and author are correct."
+                            )
                     except FileNotFoundError:
-                        print("Sources file not found. Ensure the sources contain valid authors.")
+                        print(
+                            "Sources file not found. Ensure the sources contain valid authors."
+                        )
                     except Exception as e:
                         print(f"Error installing program: {e}")
-                
+
                 elif full_cmd[1] == "remove":
                     program = full_cmd[2]
                     target_folder = os.path.join(local_dir, "opt", program)
@@ -690,7 +820,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                         print(f"No such program: {program}")
                 else:
                     print(f"Unknown argument: {full_cmd[1]}")
-                        
+
         elif cmd == "bash":
             if len(full_cmd) < 2:
                 print("Usage: bash <file>")
@@ -712,7 +842,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 file_path = os.path.join(current_dir, full_cmd[1])
                 if os.path.exists(file_path):
                     try:
-                        with open(file_path, 'r') as file:
+                        with open(file_path, "r") as file:
                             script_active = True
                             script = file.readlines()
                             script_lines = len(script) - 1
@@ -727,7 +857,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"No such file: {full_cmd[1]}")
             else:
                 print(f"Unknown argument: {full_cmd[1]}")
-                    
+
         elif cmd == "echo":
             if len(full_cmd) < 2:
                 print("Usage: echo <text>")
@@ -754,7 +884,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             else:
                 cmd = "nano"
                 full_cmd = [cmd, sudo_file_path]
-                
+
         elif cmd == "mv":
             if len(full_cmd) != 3:
                 print("Usage: mv <source> <destination>")
@@ -766,7 +896,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Move or rename a file or directory.")
                 print("")
                 print("Usage:")
-                print("mv <source> <destination>  - Move or rename the specified file or directory.")
+                print(
+                    "mv <source> <destination>  - Move or rename the specified file or directory."
+                )
                 print("")
                 print("Examples:")
                 print("mv file.txt new_file.txt")
@@ -793,7 +925,9 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print("Copy a file or directory.")
                 print("")
                 print("Usage:")
-                print("cp <source> <destination>  - Copy the specified file or directory.")
+                print(
+                    "cp <source> <destination>  - Copy the specified file or directory."
+                )
                 print("")
                 print("Examples:")
                 print("cp file.txt copy_of_file.txt")
@@ -815,12 +949,14 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 print(f"Error copying file or directory: {e}")
 
         else:
-            if len(full_cmd) == 1 and gm.sys.file_mngr.check(os.path.join(local_dir, "opt", cmd)):
+            if len(full_cmd) == 1 and gm.sys.file_mngr.check(
+                os.path.join(local_dir, "opt", cmd)
+            ):
                 target_folder = os.path.join(local_dir, "opt", cmd)
                 if os.path.isdir(target_folder):
                     os.chdir(target_folder)
                     try:
-                        if os.name == 'nt':
+                        if os.name == "nt":
                             subprocess.run(["python", "-m", "main.py"], check=True)
                         else:
                             subprocess.run(["python3", "-m", "main.py"], check=True)
@@ -839,13 +975,14 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     print(f"'{cmd}' is not a directory.")
             else:
                 print("Command not found.")
-                        
+
         if not skip_line == True:
             print("")
-            
+
         if not sudo_protect == True:
             sudo = False
         else:
             sudo_protect = False
-        
+
+
 #################################################################################

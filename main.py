@@ -36,8 +36,15 @@ from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar # All of this gets not used in this file, but it is the main.py so I wrote the whole legal part down again. :) (Wanna be clean)
-
+from tkinter import (
+    Tk,
+    Canvas,
+    Entry,
+    Text,
+    Button,
+    PhotoImage,
+    StringVar,
+)  # All of this gets not used in this file, but it is the main.py so I wrote the whole legal part down again. :) (Wanna be clean)
 
 
 #################################################################################
@@ -55,19 +62,38 @@ import Otrace.sys.file_mngr as file_mngr
 try:
     os.system("cls" if os.name == "nt" else "clear")
     skip_warning = False
-    if file_mngr.check(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning")):
-        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"), "r") as file:
+    if file_mngr.check(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"
+        )
+    ):
+        with open(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"
+            ),
+            "r",
+        ) as file:
             skip_warning = bool(file.read(1) == "n")
     else:
-        file_mngr.create(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"))
-        
-    if file_mngr.empty(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning")):
+        file_mngr.create(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"
+            )
+        )
+
+    if file_mngr.empty(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"
+        )
+    ):
         skip_warning = None
 
     if skip_warning == True:
         print("--- Welcome to 0trace ---")
         print("")
-        print("The program is automatically starting up and skipping the routine warning.")
+        print(
+            "The program is automatically starting up and skipping the routine warning."
+        )
         print("")
     elif skip_warning == False:
         print("--- Welcome to 0trace ---")
@@ -85,14 +111,30 @@ try:
         print("")
         answer = input("Should we warn you again next time? (y/n): ")
         if answer.lower() == "y":
-            with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"), "w") as file:
+            with open(
+                os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "Otrace",
+                    "cache",
+                    "warning",
+                ),
+                "w",
+            ) as file:
                 file.write("y")
             print("")
             print("(*) Warning enabled.")
             print("")
         elif answer.lower() == "n":
             try:
-                with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"), "w") as file:
+                with open(
+                    os.path.join(
+                        os.path.dirname(os.path.abspath(__file__)),
+                        "Otrace",
+                        "cache",
+                        "warning",
+                    ),
+                    "w",
+                ) as file:
                     file.write("n")
                 print("")
                 print("(*) Warning disabled.")
@@ -117,38 +159,87 @@ try:
     os.system("cls" if os.name == "nt" else "clear")
 
     delete_pycache = False
-    if file_mngr.check(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "del_pycache")):
-        with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "del_pycache"), "r") as file:
+    if file_mngr.check(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "del_pycache"
+        )
+    ):
+        with open(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                "Otrace",
+                "cache",
+                "del_pycache",
+            ),
+            "r",
+        ) as file:
             delete_pycache = bool(file.read(1) == "y")
     else:
-        file_mngr.create(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "del_pycache"))
+        file_mngr.create(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)),
+                "Otrace",
+                "cache",
+                "del_pycache",
+            )
+        )
 
-    empty = file_mngr.empty(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "del_pycache"))
+    empty = file_mngr.empty(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "del_pycache"
+        )
+    )
     if empty == True:
         print("")
-        print("The __pycache__ directory is used by Python to store compiled bytecode files, which help speed up program execution.")
-        print("Would you like the program to automatically delete the __pycache__ directory on startup?")
+        print(
+            "The __pycache__ directory is used by Python to store compiled bytecode files, which help speed up program execution."
+        )
+        print(
+            "Would you like the program to automatically delete the __pycache__ directory on startup?"
+        )
         print("")
         print("Pro:")
-        print("- Ensures a clean environment by removing potentially outdated or corrupted bytecode files.")
+        print(
+            "- Ensures a clean environment by removing potentially outdated or corrupted bytecode files."
+        )
         print("- Useful during development to avoid issues caused by stale cache.")
         print("")
         print("Contra:")
         print("- Slower startup time as Python will need to recompile bytecode files.")
-        print("- May not be necessary in production environments where stability is prioritized.")
+        print(
+            "- May not be necessary in production environments where stability is prioritized."
+        )
         print("")
         print("(!) We recommend to disable it to prioritize faster startup times. (n)")
         print("")
-        answer = input("Do you want to automaticly delete the __pycache__ when the program starts up? (y/n): ")
+        answer = input(
+            "Do you want to automaticly delete the __pycache__ when the program starts up? (y/n): "
+        )
         if answer.lower() == "y":
-            with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "del_pycache"), "w") as file:
+            with open(
+                os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "Otrace",
+                    "cache",
+                    "del_pycache",
+                ),
+                "w",
+            ) as file:
                 file.write("y")
             print("")
             print("(*) Automatic deletion of the __pycache__ enabled.")
             print("")
         if answer.lower() == "n":
             try:
-                with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "del_pycache"), "w") as file:
+                with open(
+                    os.path.join(
+                        os.path.dirname(os.path.abspath(__file__)),
+                        "Otrace",
+                        "cache",
+                        "del_pycache",
+                    ),
+                    "w",
+                ) as file:
                     file.write("n")
                 print("")
                 print("(*) Automatic deletion of the __pycache__ disabled.")
@@ -172,29 +263,55 @@ try:
         print("")
     else:
         print("")
-        print("The __pycache__ directory is used by Python to store compiled bytecode files, which help speed up program execution.")
-        print("Would you like the program to automatically delete the __pycache__ directory on startup?")
+        print(
+            "The __pycache__ directory is used by Python to store compiled bytecode files, which help speed up program execution."
+        )
+        print(
+            "Would you like the program to automatically delete the __pycache__ directory on startup?"
+        )
         print("")
         print("Pro:")
-        print("- Ensures a clean environment by removing potentially outdated or corrupted bytecode files.")
+        print(
+            "- Ensures a clean environment by removing potentially outdated or corrupted bytecode files."
+        )
         print("- Useful during development to avoid issues caused by stale cache.")
         print("")
         print("Contra:")
         print("- Slower startup time as Python will need to recompile bytecode files.")
-        print("- May not be necessary in production environments where stability is prioritized.")
+        print(
+            "- May not be necessary in production environments where stability is prioritized."
+        )
         print("")
         print("(!) We recommend to disable it to prioritize faster startup times. (n)")
         print("")
-        answer = input("Do you want to automaticly delete the __pycache__ when the program starts up? (y/n): ")
+        answer = input(
+            "Do you want to automaticly delete the __pycache__ when the program starts up? (y/n): "
+        )
         if answer.lower() == "y":
-            with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "del_pycache"), "w") as file:
+            with open(
+                os.path.join(
+                    os.path.dirname(os.path.abspath(__file__)),
+                    "Otrace",
+                    "cache",
+                    "del_pycache",
+                ),
+                "w",
+            ) as file:
                 file.write("y")
             print("")
             print("(*) Automatic deletion of the __pycache__ enabled.")
             print("")
         if answer.lower() == "n":
             try:
-                with open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "del_pycache"), "w") as file:
+                with open(
+                    os.path.join(
+                        os.path.dirname(os.path.abspath(__file__)),
+                        "Otrace",
+                        "cache",
+                        "del_pycache",
+                    ),
+                    "w",
+                ) as file:
                     file.write("n")
                 print("")
                 print("(*) Automatic deletion of the __pycache__ disabled.")
@@ -220,21 +337,21 @@ try:
     os.system("cls" if os.name == "nt" else "clear")
     print("Starting up...")
     print("")
-    
+
     os_name = sys.platform
-    if os_name.startswith('win'):
+    if os_name.startswith("win"):
         client_os = "Windows"
         script_file_ending = "bat"
-    elif os_name.startswith('darwin'):
+    elif os_name.startswith("darwin"):
         client_os = "MacOS"
         script_file_ending = "sh"
-    elif os_name.startswith('linux'):
+    elif os_name.startswith("linux"):
         client_os = "Linux"
         script_file_ending = "sh"
     else:
         client_os = "Unknown"
         script_file_ending = "unknown"
-        
+
     version = "0.0.7.4"
     author = "CodingPengu007"
     program = "0trace"
@@ -242,47 +359,67 @@ try:
     github_link = "https://github.com/CodingPengu007/0trace"
 
     main_dir = os.path.dirname(os.path.abspath(__file__))
-    venv_dir = os.path.join(main_dir, 'Otrace_venv')
-    
-    shell_script_path = os.path.join(main_dir, f"start_{client_os.lower()}.{script_file_ending}")
+    venv_dir = os.path.join(main_dir, "Otrace_venv")
+
+    shell_script_path = os.path.join(
+        main_dir, f"start_{client_os.lower()}.{script_file_ending}"
+    )
     home_dir_path = os.path.join(main_dir, "Otrace", "local", "home")
     passwd_path = os.path.join(main_dir, "Otrace", "local", "etc", "passwd")
     shadow_path = os.path.join(main_dir, "Otrace", "local", "etc", "shadow")
     hostname_path = os.path.join(main_dir, "Otrace", "local", "etc", "hostname")
     warning_path = os.path.join(main_dir, "Otrace", "cache", "warning")
     del_pycache_path = os.path.join(main_dir, "Otrace", "cache", "del_pycache")
-    venv_dir = os.path.join(main_dir, 'Otrace_venv')
+    venv_dir = os.path.join(main_dir, "Otrace_venv")
     apt_sources_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
     sudoers_path = os.path.join(main_dir, "Otrace", "local", "etc", "sudoers")
     opt_dir_path = os.path.join(main_dir, "Otrace", "local", "opt")
-    
+
     print(f"Detected operating system: {client_os}")
 
     ### Virtual Environment Management ###
     print("")
     print("Checking virtual environment:")
     if not file_mngr.check(venv_dir):
-        print("(!) Virtual environment not found. (This is normal when starting for the first time)")
+        print(
+            "(!) Virtual environment not found. (This is normal when starting for the first time)"
+        )
         print("")
-        print("--------------------------------------------------------------------------------------")
+        print(
+            "--------------------------------------------------------------------------------------"
+        )
         print("This is the first time you are running this program, thanks for that!")
-        print("But please be aware that the first time will take a little bit longer than usual. :)")
+        print(
+            "But please be aware that the first time will take a little bit longer than usual. :)"
+        )
         print("So please wait while the virtual environment is set up:")
-        print("--------------------------------------------------------------------------------------")
+        print(
+            "--------------------------------------------------------------------------------------"
+        )
         print("")
-        
-        print("(!) Program starting up for the first time! Removing saves of developers...")
+
+        print(
+            "(!) Program starting up for the first time! Removing saves of developers..."
+        )
 
         print("Flushing all files storing user data...")
-        file_paths = [passwd_path, shadow_path, hostname_path, warning_path, del_pycache_path, apt_sources_path, sudoers_path]
+        file_paths = [
+            passwd_path,
+            shadow_path,
+            hostname_path,
+            warning_path,
+            del_pycache_path,
+            apt_sources_path,
+            sudoers_path,
+        ]
         for file_path in file_paths:
             try:
-                with open(file_path, 'w') as file:
+                with open(file_path, "w") as file:
                     file.truncate()
             except IOError as e:
                 if file_path == passwd_path or file_path == shadow_path:
                     file_path = "a file conaining sensitive user data"
-                print(f"Error opening or writing to {file_path}: {e}")        
+                print(f"Error opening or writing to {file_path}: {e}")
         print("Flushed all files!")
         print("")
         print("Flushing all folders storing user data...")
@@ -291,7 +428,7 @@ try:
             file_mngr.remove_lower(folder)
         print("Flushed all folders!")
         print("")
-        
+
         ### Remove __pycache__ directories ###
         print("")
         print("Removing __pycache__ directories:")
@@ -301,12 +438,12 @@ try:
         print("Removed __pycache__ directories.")
         print("")
         ### ------------------------------ ###
-        
+
     else:
         print("The virtual environment exists and has been found!")
     print("")
     ### ----------------------------- ###
-    
+
     ### Running the startup script ###
     print("")
     print("Running the startup script...")
@@ -314,7 +451,9 @@ try:
         if client_os == "Windows":
             subprocess.run(["cmd", "/c", shell_script_path], check=True)
         elif client_os in ["MacOS", "Linux"]:
-            result = subprocess.run(["bash", shell_script_path], check=True, capture_output=True, text=True)
+            result = subprocess.run(
+                ["bash", shell_script_path], check=True, capture_output=True, text=True
+            )
             print("Startup script output:")
             print(result.stdout)
         else:
@@ -330,7 +469,7 @@ try:
     print("Startup script executed successfully.")
     print("")
     ### ------------------------- ###
-    
+
     ### Testing Imports ###
     print("")
     print("Testing imports...")
@@ -342,18 +481,22 @@ try:
         import textual_textarea
         import readline
     except ImportError as e:
-        os.system('clear' if os.name == 'posix' else 'cls')
+        os.system("clear" if os.name == "posix" else "cls")
         print("")
         print("(!) An error occurred when importing modules!")
         print(f"(!) {e}")
         print("")
-        print("(!) Please ensure that the virtual environment is activated and all dependencies are installed.")
+        print(
+            "(!) Please ensure that the virtual environment is activated and all dependencies are installed."
+        )
         print("(!) You can do this by running the following command:")
         print("")
         if client_os == "Windows":
             print(f"{venv_dir}/Scripts/activate")
         elif client_os == "Unknown":
-            print(f"(!)You are using an unknown operating system, please create an issue on GitHub ({github_link}).")
+            print(
+                f"(!)You are using an unknown operating system, please create an issue on GitHub ({github_link})."
+            )
         else:
             print(f"source {venv_dir}/bin/activate")
         print("")
@@ -363,7 +506,7 @@ try:
     print("All imports successful.")
     print("")
     ### -------------- ###
-    
+
     import Otrace as game
 
     ### Remove __pycache__ directories ###
@@ -376,12 +519,12 @@ try:
         print("Removed __pycache__ directories.")
         print("")
     ### ------------------------ ###
-    
+
     ### Check if essential system files exist ###
     print("")
     print("Checking if essential system files exist:")
     print("")
-    
+
     files_to_check = [
         ("hostname", os.path.join(main_dir, "Otrace", "local", "etc", "hostname")),
         ("username", os.path.join(main_dir, "Otrace", "local", "etc", "passwd")),
@@ -399,21 +542,21 @@ try:
             print(f"{file_desc} file created successfully.")
         else:
             print(f"{file_desc} file found.")
-        
+
     print("")
     ### ------------------------------------ ###
-    
+
     ### Check if essential system files exist ###
     print("")
     print("Checking if essential system files exist:")
     print("")
-    
+
     folders_to_check = [
         ("opt", os.path.join(main_dir, "Otrace", "local", "opt")),
         ("cache", os.path.join(main_dir, "Otrace", "cache")),
         ("home", os.path.join(main_dir, "Otrace", "local", "home")),
     ]
-    
+
     for folder_desc, folder_path in folders_to_check:
         print(f"Checking for {folder_desc} folder")
         if not game.sys.file_mngr.check(folder_path):
@@ -423,7 +566,7 @@ try:
             print(f"{folder_desc} folder created successfully.")
         else:
             print(f"{folder_desc} folder found.")
-        
+
     print("")
     ### ------------------------------------ ###
 
@@ -472,7 +615,9 @@ try:
     with open(username_file_path, "r") as user_file:
         usernames = [line.strip() for line in user_file.readlines()]
     for users in usernames:
-        if not game.sys.file_mngr.check(os.path.join(main_dir, "Otrace", "local", "home", users)):
+        if not game.sys.file_mngr.check(
+            os.path.join(main_dir, "Otrace", "local", "home", users)
+        ):
             print(f"(!) Directory for {users} not found.")
             print("Creating directory...")
             os.mkdir(os.path.join(main_dir, "Otrace", "local", "home", users))
@@ -508,7 +653,7 @@ try:
         game.sys.accnt_mngr.signup(main_dir, "non_sudo")
         os.system("cls" if os.name == "nt" else "clear")
         print("Sign up successful.")
-        
+
         print("Starting login...")
         print("Loading username...")
         os.system("cls" if os.name == "nt" else "clear")
@@ -530,7 +675,7 @@ try:
         print("--> Please create an issue on Github:")
         print(f"--> {github_link}")
         print("")
-        
+
     print("Loading hostname...")
     hostname = game.sys.accnt_mngr.load_hostname(main_dir)
     print("Hostname loaded.")
@@ -583,6 +728,7 @@ os.system("cls" if os.name == "nt" else "clear")
 
 #################################################################################
 
+
 def main():
     try:
         game.prgms.cmd.line(username, hostname, current_dir, local_dir, main_dir)
@@ -593,6 +739,9 @@ def main():
     except Exception as e:
         print(f"(!) An error occurred: {e}")
         print("")
-        print(f"(!) Please report this bug to the developers and create an issue on GitHub ({github_link}).")
-    
+        print(
+            f"(!) Please report this bug to the developers and create an issue on GitHub ({github_link})."
+        )
+
+
 #################################################################################
