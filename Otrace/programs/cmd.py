@@ -682,7 +682,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     author = full_cmd[3]
                     with open(sources_file_path, "a") as file:
                         file.write(author + "\n")
-                    skip_line = False
+                    skip_line = True
 
                 elif (full_cmd[1] == "source" or full_cmd[1] == "src") and (
                     full_cmd[2] == "remove" or full_cmd[2] == "rm"
@@ -716,10 +716,10 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                             try:
                                 response = requests.head(url, timeout=10)
                                 if response.status_code == 200:
-                                    print(f"[checked] {author}")
+                                    print(f"[  OK ] {author}")
                                 else:
                                     print()
-                                    print(f"[!] {author} does not exist.")
+                                    print(f"[FAILED] {author} does not exist.")
                                     print(f"Account URL: {url}")
                                     print(f"Status code: {response.status_code}")
                                     print()
