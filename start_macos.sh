@@ -19,19 +19,23 @@ pip install --upgrade pip || error_exit "Failed to upgrade pip."
 # Install required packages
 required_packages=(
     bcrypt
-    textual
-    textual_textarea
+    textual==0.89.1
+    textual_textarea==0.15.0
     requests
-    readline
     maskpass
+    readline
 )
 
 for package in "${required_packages[@]}"; do
+    if [ "$package" == "readline" ]; then
+        echo "Skipping installation of readline via pip. Ensure 'libreadline-dev' is installed on your system."
+        continue
+    fi
     pip install "$package" || error_exit "Failed to install package: $package."
 done
 
 # Upgrade outdated packages if any
-outdated_packages=$(pip list --outdated --format=freeze | awk -F '==' '{print $1}')
+outdated_packages=$(pip list --outdated --format=columns | awk 'NR>2 {print $1}')
 if [ -n "$outdated_packages" ]; then
     echo "Upgrading outdated packages:"
     echo "$outdated_packages" | xargs -n1 pip install --upgrade || error_exit "Failed to upgrade some packages."

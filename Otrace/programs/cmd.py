@@ -33,11 +33,16 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 aliases[alias] = command
 
     # Configure readline for command history and auto-completion
-    history_file = os.path.join(cache_path, "command_history")
     try:
-        readline.read_history_file(history_file)
+        history_file_path = os.path.join(cache_path, "command_history")
+        readline.read_history_file(history_file_path)
     except FileNotFoundError:
-        pass
+        if not os.path.exists(cache_path):
+            os.makedirs(cache_path)
+        else:
+            pass
+        with open(history_file_path, 'w') as file:
+            pass
 
     def completer(text, state):
         # Split the input to check the command and arguments
@@ -97,7 +102,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             try:
                 full_cmd = input(f"| ({username}@{hostname})-[{show_dir}]\n| $ ").split()
                 print("")
-                readline.write_history_file(history_file)
+                readline.write_history_file(history_file_path)
             except EOFError:
                 print("\nExiting...")
                 break

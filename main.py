@@ -299,7 +299,7 @@ try:
         print("")
         print("Removed __pycache__ directories.")
         print("")
-        ### ------------------------ ###
+        ### ------------------------------ ###
         
     else:
         print("The virtual environment exists and has been found!")
@@ -313,11 +313,19 @@ try:
         if client_os == "Windows":
             subprocess.run(["cmd", "/c", shell_script_path], check=True)
         elif client_os in ["MacOS", "Linux"]:
-            subprocess.run(["bash", shell_script_path], check=True)
+            result = subprocess.run(["bash", shell_script_path], check=True, capture_output=True, text=True)
+            print("Startup script output:")
+            print(result.stdout)
         else:
             print("Unsupported operating system. Skipping script execution.")
     except subprocess.CalledProcessError as e:
         print(f"Error occurred while running the script: {e}")
+        print("Script output (stdout):")
+        print(e.stdout)
+        print("Script error (stderr):")
+        print(e.stderr)
+        print("Please check the script for errors.")
+        sys.exit(1)
     print("Startup script executed successfully.")
     print("")
     ### ------------------------- ###

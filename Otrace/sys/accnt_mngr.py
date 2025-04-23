@@ -81,10 +81,7 @@ def signup(main_dir, sudo):
                     except Exception as e:
                         print(f"| (!) Failed to update sudoers file: {e}")
                 
-                choice = input("| Account created successfully. Do you want to login instead? (y/n): ")
-                if choice.lower() == "y":
-                    login(main_dir)
-                    break
+                choice = input("| Account created successfully. Press Enter to continue. ")
             except Exception as e:
                 print(f"| (!) An error occurred: {e}")
             
@@ -110,7 +107,7 @@ def login(main_dir):
         print("| Login")
         print("|")
         username = input("| Username: ")
-        pw = maskpass.askpass("| Password: ", stream=None)
+        pw = maskpass.askpass("| Password: ")
         print("")
         
         with open(username_file_path, "r") as user_file:
