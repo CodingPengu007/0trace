@@ -42,9 +42,10 @@ Visit the installation page of 0trace here: [🎯](https://github.com/CodingPeng
 
 Contributions are welcome! Follow these steps to get started:
 
-1. **Fork** the repository.
-2. **Create a new branch** for your feature or bug fix.
-3. **Submit a pull request** with a detailed description.
+1. **Setup a Dev-Enviroment** wich has ruff and pre-commit installed.
+2. **Fork** the repository.
+3. **Create a new branch** for your feature or bug fix.
+4. **Submit a pull request** with a detailed description.
 
 ---
 
