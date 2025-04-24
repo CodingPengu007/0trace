@@ -9,9 +9,10 @@ from pathlib import Path
 # Explicit imports to satisfy Flake8
 from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage
 
+import os
+current_dir = os.path.dirname(os.path.abspath(__file__))
 
-OUTPUT_PATH = Path(__file__).parent
-ASSETS_PATH = OUTPUT_PATH / Path(r"C:\Users\LeonU\OneDrive\Desktop\OTrace settings\build\assets\frame1")
+ASSETS_PATH = os.path.join(current_dir, "assets", "pycache")
 
 
 def relative_to_assets(path: str) -> Path:
