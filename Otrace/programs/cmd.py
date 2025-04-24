@@ -1,6 +1,7 @@
 #################################################################################
 
 import os
+import sys
 import shutil
 import subprocess
 
@@ -25,6 +26,20 @@ def line(username, hostname, current_dir, local_dir, main_dir):
     log_file_path = os.path.join(local_dir, "home", username, "Cache", "local_logs")
     sources_file_path = os.path.join(main_dir, "Otrace", "programs", "apt", "sources")
 
+    os_name = sys.platform
+    if os_name.startswith("win"):
+        client_os = "Windows"
+        script_file_ending = "bat"
+    elif os_name.startswith("darwin"):
+        client_os = "MacOS"
+        script_file_ending = "sh"
+    elif os_name.startswith("linux"):
+        client_os = "Linux"
+        script_file_ending = "sh"
+    else:
+        client_os = "Unknown"
+        script_file_ending = "unknown"
+
     commands = [
         "ls",
         "cd",
@@ -48,54 +63,55 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                 alias, command = line.strip().split("=", 1)
                 aliases[alias] = command
 
-    # Configure readline for command history and auto-completion
-    try:
-        history_file_path = os.path.join(cache_path, "command_history")
-        readline.read_history_file(history_file_path)
-    except FileNotFoundError:
-        if not os.path.exists(cache_path):
-            os.makedirs(cache_path)
-        else:
-            pass
-        with open(history_file_path, "w") as file:
-            pass
+    if not client_os == "Windows":
+        # Configure readline for command history and auto-completion
+        try:
+            history_file_path = os.path.join(cache_path, "command_history")
+            readline.read_history_file(history_file_path)
+        except FileNotFoundError:
+            if not os.path.exists(cache_path):
+                os.makedirs(cache_path)
+            else:
+                pass
+            with open(history_file_path, "w") as file:
+                pass
 
-    def completer(text, state):
-        # Split the input to check the command and arguments
-        buffer = readline.get_line_buffer().split()
-        if len(buffer) == 0:  # No input yet
-            options = commands + list(aliases.keys())
-        elif len(buffer) == 1:  # First word (command) being typed
-            options = [
-                cmd
-                for cmd in commands + list(aliases.keys())
-                if cmd.startswith(buffer[0])
-            ]
-        else:  # Command already typed, suggest arguments
-            cmd = buffer[0]
-            if cmd in ["ls", "cd"]:  # Suggest directories
+        def completer(text, state):
+            # Split the input to check the command and arguments
+            buffer = readline.get_line_buffer().split()
+            if len(buffer) == 0:  # No input yet
+                options = commands + list(aliases.keys())
+            elif len(buffer) == 1:  # First word (command) being typed
                 options = [
-                    d
-                    for d in os.listdir(current_dir)
-                    if os.path.isdir(os.path.join(current_dir, d))
-                    and d.startswith(text)
+                    cmd
+                    for cmd in commands + list(aliases.keys())
+                    if cmd.startswith(buffer[0])
                 ]
-            elif cmd in ["nano", "cat", "rm"]:  # Suggest files
-                options = [
-                    f
-                    for f in os.listdir(current_dir)
-                    if os.path.isfile(os.path.join(current_dir, f))
-                    and f.startswith(text)
-                ]
-            elif cmd == "rm" and full_cmd[1] == "-rf":  # Suggest files and directories
-                options = [
-                    item for item in os.listdir(current_dir) if item.startswith(text)
-                ]
+            else:  # Command already typed, suggest arguments
+                cmd = buffer[0]
+                if cmd in ["ls", "cd"]:  # Suggest directories
+                    options = [
+                        d
+                        for d in os.listdir(current_dir)
+                        if os.path.isdir(os.path.join(current_dir, d))
+                        and d.startswith(text)
+                    ]
+                elif cmd in ["nano", "cat", "rm"]:  # Suggest files
+                    options = [
+                        f
+                        for f in os.listdir(current_dir)
+                        if os.path.isfile(os.path.join(current_dir, f))
+                        and f.startswith(text)
+                    ]
+                elif cmd == "rm" and full_cmd[1] == "-rf":  # Suggest files and directories
+                    options = [
+                        item for item in os.listdir(current_dir) if item.startswith(text)
+                    ]
 
-        return options[state] if state < len(options) else None
+            return options[state] if state < len(options) else None
 
-    readline.set_completer(completer)
-    readline.parse_and_bind("tab: complete")
+        readline.set_completer(completer)
+        readline.parse_and_bind("tab: complete")
 
     get_command = True
     sudo = False
