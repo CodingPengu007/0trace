@@ -42,4 +42,3 @@ for /f "skip=2 tokens=1" %%a in ('pip list --outdated --format=columns') do (
 )
 
 echo Setup completed successfully.
-exit /b 0
