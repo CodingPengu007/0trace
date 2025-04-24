@@ -466,7 +466,6 @@ try:
     requirements = [
         "bcrypt",
         "requests",
-        "maskpass",
         "textual",
         "textual_textarea",
         "readline",
