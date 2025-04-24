@@ -152,7 +152,8 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     f"| ({username}@{hostname})-[{show_dir}]\n| $ "
                 ).split()
                 print("")
-                readline.write_history_file(history_file_path)
+                if not client_os == "Windows":
+                    readline.write_history_file(history_file_path)
             except EOFError:
                 print("\nExiting...")
                 break
