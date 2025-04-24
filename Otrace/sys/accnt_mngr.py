@@ -71,6 +71,13 @@ def signup(main_dir, sudo):
             )
             continue
 
+        if not username.strip() or username == "":
+            print("")
+            input(
+            "| (!) The username should contain at least one non-space character. Press Enter to try again."
+            )
+            continue
+
         pw1 = maskpass.askpass("| Password: ")
         print("|")
         pw2 = maskpass.askpass("| Confirm Password: ")
@@ -207,10 +214,18 @@ def create_hostname(main_dir):
         print("|")
         hostname = input("| Hostname: ")
         print("")
-        with open(hostname_file_path, "w") as file:
-            file.write(hostname)
-        input("| Hostname created successfully. Press Enter to continue.")
-        break
+
+        if not hostname.strip() or hostname == "":
+            print("")
+            input(
+            "| (!) The hostname should contain at least one non-space character. Press Enter to try again."
+            )
+            continue
+        else:
+            with open(hostname_file_path, "w") as file:
+                file.write(hostname)
+            input("| Hostname created successfully. Press Enter to continue.")
+            break
     os.system("cls" if os.name == "nt" else "clear")
 
 

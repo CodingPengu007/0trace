@@ -136,7 +136,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             show_dir = "/"
         elif show_dir == "\\.":
             show_dir = "\\"
-
+            
         if script_active:
             if script_line <= script_lines:
                 full_cmd = script[script_line].split()
@@ -337,46 +337,25 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                         new_dir = os.path.normpath(os.path.join(current_dir, new_dir))
                     if new_dir == "..":
                         new_dir = os.path.dirname(current_dir)
-                    try:
-                        if new_dir == etc_dir:
-                            print("Permission denied.")
-                            print("")
-                            continue
-                        if (
-                            current_dir == home_dir
-                            and os.path.commonpath([new_dir, home_dir]) == home_dir
-                        ):
-                            users = []
-                            try:
-                                users = gm.sys.file_mngr.list_load(
-                                    os.path.join(etc_dir, "passwd")
-                                )
-                            except FileNotFoundError:
-                                print(f"No such file or directory: '{full_cmd[1]}'")
-                            except Exception as e:
-                                print(f"An error occurred: {e}")
-                            if (
-                                new_dir in users
-                                and new_dir != username
-                                and permission != True
-                            ):
-                                print("Permission denied")
-                                print("")
-                                continue
-                    except ValueError:
-                        print("Invalid path comparison.")
+
+                    if not os.path.commonpath([os.path.realpath(new_dir), local_dir]).startswith(os.path.realpath(local_dir)):
+                        print("Permission denied.")
                         print("")
                         continue
-                    try:
-                        os.chdir(new_dir)
-                        current_dir = os.getcwd()
-                    except FileNotFoundError:
-                        print(f"No such file or directory: '{full_cmd[1]}'")
+
+                    if os.path.realpath(new_dir) == os.path.realpath(etc_dir):
+                        print("Permission denied.")
+                        print("")
+                        continue
+
+                    os.chdir(new_dir)
+                    current_dir = os.getcwd()
                 except FileNotFoundError:
                     print(f"No such file or directory: '{full_cmd[1]}'")
                 except Exception as e:
                     print(f"An error occurred: {e}")
                 skip_line = True
+
 
         elif cmd == "cat":
             if len(full_cmd) != 2:
