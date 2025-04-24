@@ -9,10 +9,15 @@ exit /b 1
 :MAIN
 REM Create virtual environment if it doesn't exist
 if not exist "Otrace_venv\" (
-    python -m venv Otrace_venv || call :ERROR_EXIT "Failed to create virtual environment."
+    python -m venv Otrace_venv
+    if errorlevel 1 call :ERROR_EXIT "Failed to create virtual environment. Ensure Python is installed and added to PATH."
 )
 
-REM Activate the virtual environment
+if exist "Otrace_venv\Scripts\activate.bat" (
+    call Otrace_venv\Scripts\activate.bat || call :ERROR_EXIT "Failed to activate virtual environment."
+) else (
+    call :ERROR_EXIT "activate.bat not found. Ensure the virtual environment was created successfully."
+)
 call Otrace_venv\Scripts\activate.bat || call :ERROR_EXIT "Failed to activate virtual environment."
 
 REM Upgrade pip
