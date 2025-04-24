@@ -1,6 +1,7 @@
 #################################################################################
 
 import os
+import sys
 import Otrace as game
 
 #################################################################################
@@ -21,17 +22,26 @@ def login_or_signup():
     print("| Do you want to login or sign up?")
     print("| 1. Login")
     print("| 2. Sign Up")
-    print()
+    print("")
     while True:
         choice = input("| > ")
         if choice == "1":
             return "login"
         elif choice == "2":
             return "signup"
+        elif choice.lower() == "login":
+            return "login"
+        elif choice.lower() == "signup":
+            return "signup"
+        elif choice.lower() == "exit":
+            print("")
+            print("| Exiting...")
+            print("")
+            sys.exit(0)
         else:
-            print()
+            print("")
             print("| (!) Invalid choice. Please try again.")
-            print()
+            print("")
 
 
 def signup(main_dir, sudo):
@@ -44,7 +54,7 @@ def signup(main_dir, sudo):
 
     while True:
         os.system("cls" if os.name == "nt" else "clear")
-        print()
+        print("")
         print("| Sign Up")
         print("|")
         username = input("| Username: ")
@@ -53,8 +63,9 @@ def signup(main_dir, sudo):
             username.strip()
             for username in game.sys.file_mngr.list_load(username_file_path)
         ]
+
         if username in existing_usernames:
-            print()
+            print("")
             input(
                 "| (!) This username is already taken, please try another one. Press Enter to try again."
             )
@@ -63,7 +74,7 @@ def signup(main_dir, sudo):
         pw1 = maskpass.askpass("| Password: ")
         print("|")
         pw2 = maskpass.askpass("| Confirm Password: ")
-        print()
+        print("")
 
         if pw1 == pw2:
             # Generate hash with salt
@@ -145,12 +156,12 @@ def login(main_dir):
 
     while True:
         os.system("cls" if os.name == "nt" else "clear")
-        print()
+        print("")
         print("| Login")
         print("|")
         username = input("| Username: ")
         pw = maskpass.askpass("| Password: ")
-        print()
+        print("")
 
         with open(username_file_path, "r") as user_file:
             usernames = [line.strip() for line in user_file.readlines()]
@@ -191,11 +202,11 @@ def create_hostname(main_dir):
     hostname_file_path = os.path.join(main_dir, "Otrace", "local", "etc", "hostname")
     while True:
         os.system("cls" if os.name == "nt" else "clear")
-        print()
+        print("")
         print("| Hostname Creation")
         print("|")
         hostname = input("| Hostname: ")
-        print()
+        print("")
         with open(hostname_file_path, "w") as file:
             file.write(hostname)
         input("| Hostname created successfully. Press Enter to continue.")

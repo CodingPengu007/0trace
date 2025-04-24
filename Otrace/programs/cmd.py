@@ -125,11 +125,18 @@ def line(username, hostname, current_dir, local_dir, main_dir):
         permission = False
 
     while True:
-        show_dir = "/" + os.path.relpath(current_dir, local_dir)
-        if show_dir == f"/home/{username}":
+        if not client_os == "Windows":
+            show_dir = "/" + os.path.relpath(current_dir, local_dir)
+        else:
+            show_dir = "\\" + os.path.relpath(current_dir, local_dir)
+
+        if show_dir == f"/home/{username}" or show_dir == f"\\home\\{username}":
             show_dir = "~"
         elif show_dir == "/.":
             show_dir = "/"
+        elif show_dir == "\\.":
+            show_dir = "\\"
+
         if script_active:
             if script_line <= script_lines:
                 full_cmd = script[script_line].split()
@@ -331,12 +338,6 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     if new_dir == "..":
                         new_dir = os.path.dirname(current_dir)
                     try:
-                        if not os.path.commonpath([new_dir, local_dir]).startswith(
-                            local_dir
-                        ):
-                            print("Permission denied.")
-                            print("")
-                            continue
                         if new_dir == etc_dir:
                             print("Permission denied.")
                             print("")
