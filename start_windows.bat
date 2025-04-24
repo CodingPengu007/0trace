@@ -6,6 +6,7 @@ REM Function to handle errors
 echo %1 1>&2
 exit /b 1
 
+:MAIN
 REM Create virtual environment if it doesn't exist
 if not exist "Otrace_venv\" (
     python -m venv Otrace_venv || call :ERROR_EXIT "Failed to create virtual environment."
