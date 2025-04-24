@@ -466,6 +466,7 @@ try:
     requirements = [
         "bcrypt",
         "requests",
+        "maskpass",
         "textual",
         "textual_textarea",
         "readline",
@@ -485,9 +486,9 @@ try:
             )
             print("(!) You can do this by running the following command:")
             print()
-            if client_os == "nt":
+            if client_os == "Windows":
                 print(f"{venv_dir}/Scripts/activate")
-            elif client_os == "posix":
+            elif client_os == "Linux" or client_os == "MacOS":
                 print(f"source {venv_dir}/bin/activate")
             else:
                 print(
