@@ -480,14 +480,16 @@ try:
             print(f"(!) {package} is not installed.")
             print()
             print(
-                "(!) Please ensure that the virtual environment is activated and all dependencies are installed."
+                "(!) Please ensure that the virtual environment is activated."
             )
             print("(!) You can do this by running the following command:")
             print()
             if client_os == "Windows":
                 print(rf"{venv_dir}\Scripts\activate.bat")
+                print(f"python {main_dir}\main.py")
             elif client_os == "Linux" or client_os == "MacOS":
                 print(f"source {venv_dir}/bin/activate")
+                print(f"python3 {main_dir}/main.py")
             else:
                 print(
                     f"(!) You are using an unknown operating system, please create an issue on GitHub ({github_link})."

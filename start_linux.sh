@@ -24,7 +24,7 @@ required_packages=(
     textual_textarea==0.15.0
     requests
     maskpass
-    readline
+    # readline
 )
 
 for package in "${required_packages[@]}"; do
