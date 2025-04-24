@@ -12,7 +12,7 @@ call Otrace_venv\Scripts\activate.bat
 python.exe -m pip install --upgrade pip
 
 :: Install dependencies
-pip install -r requirements.txt
+pip install bcrypt textual==0.89.1 textual_textarea==0.15.0 requests maskpass
 
 :: Upgrade outdated packages if any
 for /f "delims=" %%i in ('python -m pip list --outdated') do (

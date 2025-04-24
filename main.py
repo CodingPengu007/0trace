@@ -467,8 +467,10 @@ try:
         "maskpass",
         "textual",
         "textual_textarea",
-        "readline",
     ]
+
+    if not client_os == "Windows":
+        requirements.append("readline")
 
     for package in requirements:
         if find_spec(package) is not None:
