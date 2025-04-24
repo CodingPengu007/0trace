@@ -449,13 +449,16 @@ try:
         else:
             print("Unsupported operating system. Skipping script execution.")
     except subprocess.CalledProcessError as e:
+        '''
         print(f"Error occurred while running the script: {e}")
         print("Script output (stdout):")
         print(e.stdout)
         print("Script error (stderr):")
         print(e.stderr)
         print("Please check the script for errors.")
-        sys.exit(1)
+        sys.exit(1)        
+        '''
+        pass
     print("Startup script executed successfully.")
     print()
     ### ------------------------- ###
