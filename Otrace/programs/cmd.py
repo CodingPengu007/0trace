@@ -103,9 +103,13 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                         if os.path.isfile(os.path.join(current_dir, f))
                         and f.startswith(text)
                     ]
-                elif cmd == "rm" and full_cmd[1] == "-rf":  # Suggest files and directories
+                elif (
+                    cmd == "rm" and full_cmd[1] == "-rf"
+                ):  # Suggest files and directories
                     options = [
-                        item for item in os.listdir(current_dir) if item.startswith(text)
+                        item
+                        for item in os.listdir(current_dir)
+                        if item.startswith(text)
                     ]
 
             return options[state] if state < len(options) else None
@@ -136,7 +140,7 @@ def line(username, hostname, current_dir, local_dir, main_dir):
             show_dir = "/"
         elif show_dir == "\\.":
             show_dir = "\\"
-            
+
         if script_active:
             if script_line <= script_lines:
                 full_cmd = script[script_line].split()
@@ -335,27 +339,31 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                     new_dir = os.path.expanduser(full_cmd[1])
                     if not os.path.isabs(new_dir):
                         new_dir = os.path.normpath(os.path.join(current_dir, new_dir))
-                    if new_dir == "..":
-                        new_dir = os.path.dirname(current_dir)
+                    if full_cmd[1] == "..":
+                        new_dir = os.path.normpath(os.path.join(current_dir, ".."))
 
-                    if not os.path.commonpath([os.path.realpath(new_dir), local_dir]).startswith(os.path.realpath(local_dir)):
+                    # Normalize paths for accurate Windows comparison
+                    real_new_dir = os.path.realpath(new_dir)
+                    real_local_dir = os.path.realpath(local_dir)
+                    real_etc_dir = os.path.realpath(etc_dir)
+
+                    if not real_new_dir.startswith(real_local_dir):
                         print("Permission denied.")
                         print("")
                         continue
 
-                    if os.path.realpath(new_dir) == os.path.realpath(etc_dir):
+                    if real_new_dir == real_etc_dir:
                         print("Permission denied.")
                         print("")
                         continue
 
-                    os.chdir(new_dir)
+                    os.chdir(real_new_dir)
                     current_dir = os.getcwd()
                 except FileNotFoundError:
                     print(f"No such file or directory: '{full_cmd[1]}'")
                 except Exception as e:
                     print(f"An error occurred: {e}")
                 skip_line = True
-
 
         elif cmd == "cat":
             if len(full_cmd) != 2:

@@ -452,7 +452,9 @@ try:
         os.system("clear" if os.name == "posix" else "cls")
         print(f"(!) Error occurred while running the script: {e}")
         print("")
-        print(f"(!) There was an error with one of the start scripts, please create an issue on GitHub ({github_link}).")
+        print(
+            f"(!) There was an error with one of the start scripts, please create an issue on GitHub ({github_link})."
+        )
         sys.exit(1)
     print("Startup script executed successfully.")
     print("")
@@ -481,9 +483,7 @@ try:
             print("(!) An error occurred when importing modules!")
             print(f"(!) {package} is not installed.")
             print("")
-            print(
-                "(!) Please ensure that the virtual environment is activated."
-            )
+            print("(!) Please ensure that the virtual environment is activated.")
             print("(!) You can do this by running the following command:")
             print("")
             if client_os == "Windows":

@@ -74,7 +74,7 @@ def signup(main_dir, sudo):
         if not username.strip() or username == "":
             print("")
             input(
-            "| (!) The username should contain at least one non-space character. Press Enter to try again."
+                "| (!) The username should contain at least one non-space character. Press Enter to try again."
             )
             continue
 
@@ -218,7 +218,7 @@ def create_hostname(main_dir):
         if not hostname.strip() or hostname == "":
             print("")
             input(
-            "| (!) The hostname should contain at least one non-space character. Press Enter to try again."
+                "| (!) The hostname should contain at least one non-space character. Press Enter to try again."
             )
             continue
         else:
