@@ -485,7 +485,7 @@ try:
             print("(!) You can do this by running the following command:")
             print()
             if client_os == "Windows":
-                print(f"{venv_dir}/Scripts/activate")
+                print(f"{venv_dir}\Scripts\activate.bat")
             elif client_os == "Linux" or client_os == "MacOS":
                 print(f"source {venv_dir}/bin/activate")
             else:

@@ -8,6 +8,9 @@ if not exist "Otrace_venv" (
 :: Activate the virtual environment
 call Otrace_venv\Scripts\activate.bat
 
+:: Update pip to the latest version
+python.exe -m pip install --upgrade pip
+
 :: Install dependencies
 pip install -r requirements.txt
 
