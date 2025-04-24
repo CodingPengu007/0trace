@@ -20,25 +20,5 @@ pip install --upgrade pip
 if errorlevel 1 call :ERROR_EXIT "Failed to upgrade pip."
 
 REM Install required packages
-set packages=bcrypt textual==0.89.1 textual_textarea==0.15.0 requests maskpass readline
-
-for %%p in (%packages%) do (
-    if "%%p"=="readline" (
-        echo Skipping installation of readline via pip. Ensure any required system dependencies are installed.
-    ) else (
-        pip install %%p
-        if errorlevel 1 call :ERROR_EXIT "Failed to install package: %%p."
-    )
-)
-
-REM Upgrade outdated packages except textual and textual_textarea
-for /f "skip=2 tokens=1" %%a in ('pip list --outdated --format=columns') do (
-    echo %%a | findstr /i /v "textual" | findstr /i /v "textual_textarea" >nul
-    if !errorlevel! == 0 (
-        echo Upgrading package: %%a
-        pip install --upgrade %%a
-        if errorlevel 1 call :ERROR_EXIT "Failed to upgrade package: %%a."
-    )
-)
-
-echo Setup completed successfully.
+pip install bcrypt textual==0.89.1 textual_textarea==0.15.0 requests maskpass
+if errorlevel 1 call :ERROR_EXIT "Failed to install required packages."
