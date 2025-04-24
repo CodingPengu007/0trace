@@ -11,4 +11,12 @@ call Otrace_venv\Scripts\activate.bat
 :: Install dependencies
 pip install -r requirements.txt
 
+:: Upgrade outdated packages if any
+for /f "delims=" %%i in ('python -m pip list --outdated') do (
+    for /f "tokens=1 delims==" %%j in ("%%i") do (
+        echo Upgrading %%j
+        python -m pip install --upgrade %%j || call :ErrorExit "Failed to upgrade some packages."
+    )
+)
+
 echo Setup completed successfully.
