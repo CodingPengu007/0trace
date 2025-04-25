@@ -1,0 +1,57 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "0trace"
+version = "0.0.7.4"
+description = "An immersive hacking simulation game set in a realistic Linux-like environment."
+readme = "README.md"
+requires-python = ">=3.8"
+license = { file = "LICENSE.md" }
+authors = [
+    { name = "CodingPengu007", email = "pengu@sky-network.org" },
+    { name = "lionbaum" },
+    { name = "DonerKebab1231" }
+]
+keywords = ["hacking", "game", "simulation", "linux", "multiplayer", "terminal"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Topic :: Games/Entertainment :: Simulation",
+    "Topic :: Security",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: End Users/Desktop"
+]
+dependencies = [
+    "bcrypt",
+    "textual==0.89.1",
+    "textual_textarea==0.15.0",
+    "requests",
+    "maskpass",
+    "readline"
+]
+
+[project.urls]
+"Homepage" = "https://github.com/CodingPengu007/0trace"
+"Source" = "https://github.com/CodingPengu007/0trace"
+"Bug Tracker" = "https://github.com/CodingPengu007/0trace/issues"
+"Wiki" = "https://github.com/CodingPengu007/0trace/wiki"
+
+[project.optional-dependencies]
+dev = [
+    "ruff",
+    "pre-commit",
+]
+
+[project.scripts]
+0trace = "main:main"
+
+[tool.ruff]
+exclude = [".Otrace_venv"]
+
+[tool.ruff.lint]
+select = ["F401", "FURB"]
+per-file-ignores = {"**/__init__.py" = ["F401"]}

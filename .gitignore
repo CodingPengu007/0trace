@@ -7,3 +7,4 @@ Otrace/cache/
 Otrace/local/opt/
 Otrace/programs/apt/sources
 **/__pycache__/
+/dev_test.py
