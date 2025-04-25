@@ -64,6 +64,10 @@ def main():
     window.geometry("500x850")
     window.configure(bg="#383838")
 
+    icon = PhotoImage(file=os.path.join(current_dir, "assets", "pycache", "settings_icon.png"))
+    window.iconphoto(False, icon)
+
+    window.title("Settings")
 
     canvas = Canvas(
         window,
@@ -144,7 +148,7 @@ def main():
         image=enable_button_image,
         borderwidth=0,
         highlightthickness=0,
-        command=on_enable_button_click,
+        command=lambda: [on_enable_button_click(), window.destroy()],
         relief="flat",
     )
     enable_button.place(x=16.0, y=771.0, width=200.0, height=53.0)
@@ -154,7 +158,7 @@ def main():
         image=disable_button_image,
         borderwidth=0,
         highlightthickness=0,
-        command=on_disable_button_click,
+        command=lambda: [on_disable_button_click(), window.destroy()],
         relief="flat",
     )
     disable_button.place(x=280.0, y=771.0, width=200.0, height=53.0)

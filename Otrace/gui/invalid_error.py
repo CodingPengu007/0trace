@@ -60,6 +60,10 @@ def main():
     window.geometry("500x400")
     window.configure(bg = "#383838")
 
+    icon = PhotoImage(file=os.path.join(current_dir, "assets", "invalid_error", "image_1.png"))
+    window.iconphoto(False, icon)
+
+    window.title("Error")
 
     canvas = Canvas(
         window,
@@ -142,7 +146,7 @@ def main():
         image=button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_1 clicked"),
+        command=lambda: [window.destroy()],
         relief="flat"
     )
     button_1.place(
