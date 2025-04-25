@@ -47,7 +47,7 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar
 import os
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-assets_path = os.path.join(current_dir, "assets", "startup_warning")
+assets_path = os.path.join(current_dir, "assets", "startup_warning_query")
 
 
 def relative_to_assets(path: str) -> Path:
@@ -65,6 +65,10 @@ def main():
     window.geometry("500x400")
     window.configure(bg = "#383838")
 
+    icon = PhotoImage(file=os.path.join(current_dir, "assets", "startup_warning_query", "settings_icon.png"))
+    window.iconphoto(False, icon)
+
+    window.title("Settings")
 
     canvas = Canvas(
         window,
@@ -164,7 +168,7 @@ def main():
         image=yes_button_image,
         borderwidth=0,
         highlightthickness=0,
-        command=on_yes_button_click,
+        command=lambda: [on_yes_button_click(), window.destroy()],
         relief="flat"
     )
     yes_button.place(
@@ -180,7 +184,7 @@ def main():
         image=no_button_image,
         borderwidth=0,
         highlightthickness=0,
-        command=on_no_button_click,
+        command=lambda: [on_no_button_click(), window.destroy()],
         relief="flat"
     )
     no_button.place(

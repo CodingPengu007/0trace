@@ -59,6 +59,10 @@ def main():
     window.geometry("500x400")
     window.configure(bg = "#383838")
 
+    icon = PhotoImage(file=os.path.join(current_dir, "assets", "startup_warning", "image_5.png"))
+    window.iconphoto(False, icon)
+
+    window.title("0trace")
 
     canvas = Canvas(
         window,
@@ -149,7 +153,7 @@ def main():
         image=button_image_1,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("button_1 clicked"),
+        command=lambda: [window.destroy()],
         relief="flat"
     )
     button_1.place(
