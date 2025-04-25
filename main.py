@@ -46,6 +46,7 @@ import sys
 import subprocess
 
 import Otrace.sys.file_mngr as file_mngr
+import Otrace.gui as gui
 
 #################################################################################
 
@@ -97,13 +98,7 @@ try:
         )
         print("")
     elif skip_warning == False:
-        print("--- Welcome to 0trace ---")
-        print("")
-        print("The program is about to start up,")
-        print("please don't interrupt the process.")
-        print("")
-        input("Press enter to continue...")
-        print("")
+        gui.startup_warning.main()
     else:
         print("--- Welcome to 0trace ---")
         print("")
