@@ -52,6 +52,11 @@ assets_path = os.path.join(current_dir, "assets", "pycache")
 def relative_to_assets(path: str) -> Path:
     return assets_path / Path(path)
 
+def on_enable_button_click():
+    return "enable"
+
+def on_disable_button_click():
+    return "disable"
 
 def main():
     window = Tk()
@@ -139,7 +144,7 @@ def main():
         image=enable_button_image,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("enable_button clicked"),
+        command=on_enable_button_click,
         relief="flat",
     )
     enable_button.place(x=16.0, y=771.0, width=200.0, height=53.0)
@@ -149,7 +154,7 @@ def main():
         image=disable_button_image,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("disable_button clicked"),
+        command=on_disable_button_click,
         relief="flat",
     )
     disable_button.place(x=280.0, y=771.0, width=200.0, height=53.0)

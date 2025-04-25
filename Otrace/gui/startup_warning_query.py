@@ -53,6 +53,12 @@ assets_path = os.path.join(current_dir, "assets", "startup_warning")
 def relative_to_assets(path: str) -> Path:
     return assets_path / Path(path)
 
+def on_yes_button_click():
+    return "yes"
+
+def on_no_button_click():
+    return "no"
+
 def main():
     window = Tk()
 
@@ -153,11 +159,12 @@ def main():
 
     yes_button_image = PhotoImage(
         file=relative_to_assets("yes_button.png"))
+
     yes_button = Button(
         image=yes_button_image,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("yes_button clicked"),
+        command=on_yes_button_click,
         relief="flat"
     )
     yes_button.place(
@@ -173,7 +180,7 @@ def main():
         image=no_button_image,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("no_button clicked"),
+        command=on_no_button_click,
         relief="flat"
     )
     no_button.place(

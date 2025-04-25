@@ -53,118 +53,118 @@ assets_path = os.path.join(current_dir, "assets", "startup_warning")
 def relative_to_assets(path: str) -> Path:
     return assets_path / Path(path)
 
+def main():
+    window = Tk()
 
-window = Tk()
-
-window.geometry("500x400")
-window.configure(bg = "#383838")
+    window.geometry("500x400")
+    window.configure(bg = "#383838")
 
 
-canvas = Canvas(
-    window,
-    bg = "#383838",
-    height = 400,
-    width = 500,
-    bd = 0,
-    highlightthickness = 0,
-    relief = "ridge"
-)
+    canvas = Canvas(
+        window,
+        bg = "#383838",
+        height = 400,
+        width = 500,
+        bd = 0,
+        highlightthickness = 0,
+        relief = "ridge"
+    )
 
-canvas.place(x = 0, y = 0)
-canvas.create_rectangle(
-    498.0,
-    -2.0,
-    500.0,
-    400.0,
-    fill="#01D119",
-    outline="")
+    canvas.place(x = 0, y = 0)
+    canvas.create_rectangle(
+        498.0,
+        -2.0,
+        500.0,
+        400.0,
+        fill="#01D119",
+        outline="")
 
-canvas.create_rectangle(
-    0.0,
-    -2.0,
-    2.000000000000057,
-    400.0,
-    fill="#01D119",
-    outline="")
+    canvas.create_rectangle(
+        0.0,
+        -2.0,
+        2.000000000000057,
+        400.0,
+        fill="#01D119",
+        outline="")
 
-canvas.create_rectangle(
-    -2.0,
-    -0.76922607421875,
-    500.0,
-    1.23077392578125,
-    fill="#01D119",
-    outline="")
+    canvas.create_rectangle(
+        -2.0,
+        -0.76922607421875,
+        500.0,
+        1.23077392578125,
+        fill="#01D119",
+        outline="")
 
-canvas.create_rectangle(
-    -2.0,
-    30.0,
-    500.0,
-    32.0,
-    fill="#01D119",
-    outline="")
+    canvas.create_rectangle(
+        -2.0,
+        30.0,
+        500.0,
+        32.0,
+        fill="#01D119",
+        outline="")
 
-canvas.create_rectangle(
-    -2.0,
-    398.0,
-    500.0,
-    400.0,
-    fill="#01D119",
-    outline="")
+    canvas.create_rectangle(
+        -2.0,
+        398.0,
+        500.0,
+        400.0,
+        fill="#01D119",
+        outline="")
 
-image_image_1 = PhotoImage(
-    file=relative_to_assets("image_1.png"))
-image_1 = canvas.create_image(
-    51.0,
-    17.0,
-    image=image_image_1
-)
+    image_image_1 = PhotoImage(
+        file=relative_to_assets("image_1.png"))
+    image_1 = canvas.create_image(
+        51.0,
+        17.0,
+        image=image_image_1
+    )
 
-image_image_2 = PhotoImage(
-    file=relative_to_assets("image_2.png"))
-image_2 = canvas.create_image(
-    481.0,
-    19.0,
-    image=image_image_2
-)
+    image_image_2 = PhotoImage(
+        file=relative_to_assets("image_2.png"))
+    image_2 = canvas.create_image(
+        481.0,
+        19.0,
+        image=image_image_2
+    )
 
-image_image_3 = PhotoImage(
-    file=relative_to_assets("image_3.png"))
-image_3 = canvas.create_image(
-    254.0,
-    57.0,
-    image=image_image_3
-)
+    image_image_3 = PhotoImage(
+        file=relative_to_assets("image_3.png"))
+    image_3 = canvas.create_image(
+        254.0,
+        57.0,
+        image=image_image_3
+    )
 
-image_image_4 = PhotoImage(
-    file=relative_to_assets("image_4.png"))
-image_4 = canvas.create_image(
-    249.0,
-    146.0,
-    image=image_image_4
-)
+    image_image_4 = PhotoImage(
+        file=relative_to_assets("image_4.png"))
+    image_4 = canvas.create_image(
+        249.0,
+        146.0,
+        image=image_image_4
+    )
 
-button_image_1 = PhotoImage(
-    file=relative_to_assets("button_1.png"))
-button_1 = Button(
-    image=button_image_1,
-    borderwidth=0,
-    highlightthickness=0,
-    command=lambda: print("button_1 clicked"),
-    relief="flat"
-)
-button_1.place(
-    x=140.0,
-    y=291.0,
-    width=220.0,
-    height=50.0
-)
+    button_image_1 = PhotoImage(
+        file=relative_to_assets("button_1.png"))
+    button_1 = Button(
+        image=button_image_1,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda: print("button_1 clicked"),
+        relief="flat"
+    )
+    button_1.place(
+        x=140.0,
+        y=291.0,
+        width=220.0,
+        height=50.0
+    )
 
-image_image_5 = PhotoImage(
-    file=relative_to_assets("image_5.png"))
-image_5 = canvas.create_image(
-    101.0,
-    16.0,
-    image=image_image_5
-)
-window.resizable(False, False)
-window.mainloop()
+    image_image_5 = PhotoImage(
+        file=relative_to_assets("image_5.png"))
+    image_5 = canvas.create_image(
+        101.0,
+        16.0,
+        image=image_image_5
+    )
+    window.resizable(False, False)
+    window.mainloop()
