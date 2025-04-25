@@ -44,14 +44,11 @@
 import os
 import sys
 import subprocess
-import time
 
 import Otrace.sys.file_mngr as file_mngr
 import Otrace.gui as gui
 
 #################################################################################
-
-time.sleep(60)
 
 try:
     os.system("cls" if os.name == "nt" else "clear")
