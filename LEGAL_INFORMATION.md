@@ -889,3 +889,13 @@ SOFTWARE.
 ```
 
 ---
+
+### Third-Party Assets from Icons8
+
+We use icons provided by [Icons8](https://icons8.com/) under the free license, which requires attribution.
+All Icons8 icons used in this application are © Icons8 and are subject to their [Terms of Use](https://icons8.com/license).
+
+Icons8 attribution:  
+Icons by [Icons8](https://icons8.com/)
+
+---
