@@ -36,7 +36,7 @@ from pathlib import Path
 
 # from tkinter import *
 # Explicit imports to satisfy Flake8
-from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar # All of this gets not used in this file, but it is the main.py so I wrote the whole legal part down again. :) (Wanna be clean)
+from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar # All of this gets not used in this file, but it is the main file of the program, so we need the legal notice here
 
 
 
