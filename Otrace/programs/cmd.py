@@ -753,6 +753,10 @@ def line(username, hostname, current_dir, local_dir, main_dir):
                                     ["git", "-C", program_path, "pull"], check=True
                                 )
                                 print(f"{program} updated successfully.")
+                            subprocess.run(
+                                ["git", "-C", main_dir, "pull"], check=True
+                            )
+                            print(f"0trace updated successfully.")
                     except Exception as e:
                         print(f"Error upgrading programs: {e}")
                     try:
