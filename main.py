@@ -44,11 +44,14 @@
 import os
 import sys
 import subprocess
+import time
 
 import Otrace.sys.file_mngr as file_mngr
 import Otrace.gui as gui
 
 #################################################################################
+
+time.sleep(60)
 
 try:
     os.system("cls" if os.name == "nt" else "clear")
@@ -410,7 +413,7 @@ try:
             print("")
             if client_os == "Windows":
                 print(rf"{venv_dir}\Scripts\activate.bat")
-                print(f"python {main_dir}\main.py")
+                print(rf"python {main_dir}\main.py")
             elif client_os == "Linux" or client_os == "MacOS":
                 print(f"source {venv_dir}/bin/activate")
                 print(f"python3 {main_dir}/main.py")
