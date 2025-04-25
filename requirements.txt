@@ -1,3 +1,6 @@
 bcrypt
-texteditor
+textual==0.89.1
+textual_textarea==0.15.0
 requests
+maskpass
+readline
