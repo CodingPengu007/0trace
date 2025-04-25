@@ -54,6 +54,17 @@ try:
     skip_warning = False
     if file_mngr.check(
         os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache"
+        )
+    ):
+        file_mngr.folder_create(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache"
+            )
+        )
+
+    if file_mngr.check(
+        os.path.join(
             os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"
         )
     ):
