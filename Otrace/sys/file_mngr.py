@@ -22,11 +22,11 @@ def restore(file_path):
     return lines
 
 
-def check(file_path):
-    if os.path.exists(file_path):
+def check(path):
+    if os.path.exists(path):
         return True
     else:
-        # File doesn't exist
+        # Path doesn't exist
         return False
 
 
