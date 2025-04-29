@@ -195,3 +195,6 @@ def main():
     )
     window.resizable(False, False)
     window.mainloop()
+
+if __name__ == "__main__":
+    main()
