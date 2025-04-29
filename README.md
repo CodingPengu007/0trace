@@ -20,7 +20,7 @@
 
 To run **0trace**, ensure your system meets the following requirements:
 
-- **Python**: Version 3.8 or higher
+- **Python**: Version 3.12 or higher
 - **Python PIP**: Version 25.0.1 or higher (comes with python)
 - **Git**: Version 2.49.0 or higher 
 - **Dependencies**: Install required Python packages using `pip install -r requirements.txt`
@@ -29,175 +29,12 @@ To run **0trace**, ensure your system meets the following requirements:
 
 ---
 
-## ⬇️ Installation Guide for required software
-#### ⚡ Install Git
+## 📦 Installation
 
-##### 🪟 Windows (via Winget)
-```bash
-winget install --id Git.Git -e --source winget
-```
+The installation process is thoroughly detailed and clearly explained in the program’s [Wiki](https://github.com/CodingPengu007/0trace/wiki/2.-%F0%9F%93%A6-Installation).
+It supports a wide range of operating systems, with copy-and-paste commands provided for each.
 
-This will install the latest Git version and make it available in Command Prompt and PowerShell.
-
-##### 🍎 macOS (via Homebrew)
-First, install Homebrew if it’s not already installed:
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-Then install Git:
-```bash
-brew install git
-```
-
-##### 🐧 Linux
-
-###### Ubuntu / Debian
-```bash
-sudo apt update
-sudo apt install git
-```
-
-###### Fedora
-```bash
-sudo dnf install git
-```
-
-###### Arch / Manjaro
-```bash
-sudo pacman -S git
-```
-
-#### ⚡ Install Python 3.13 and Python PIP
-
-##### 🪟 Windows (via Winget)
-```bash
-winget install --id Python.Python.3 -e --source winget
-```
-
-This installs the latest stable Python 3 and adds it to your system PATH.
-
-##### 🍎 macOS (via Homebrew)
-First, install Homebrew if it’s not already installed:
-```bash
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-```
-
-Then install Python 3:
-```bash
-brew install python
-```
-
-##### 🐧 Linux
-
-###### Ubuntu / Debian
-```bash
-sudo apt update
-sudo apt install python3
-```
-
-###### Fedora
-```bash
-sudo dnf install python3
-```
-
-###### Arch / Manjaro
-```bash
-sudo pacman -S python
-```
-
----
-
-## 🔄 Upate required software
-
-##### 🪟 Windows (via Winget)
-```bash
-winget upgrade --id Git.Git -e --source winget
-winget upgrade --id Python.Python.3 -e --source winget
-```
-
-##### 🍎 macOS (via Homebrew)
-```bash
-brew upgrade git
-brew upgrade python
-```
-
-##### 🐧 Linux
-
-###### Ubuntu / Debian
-```bash
-sudo apt update
-sudo apt install --only-upgrade git
-sudo apt install --only-upgrade python3
-```
-
-> 💡 To get the very latest Python versions on Ubuntu, consider using the [deadsnakes PPA](https://launchpad.net/~deadsnakes/+archive/ubuntu/ppa) or compiling from source.
-
-###### Fedora
-```bash
-sudo dnf upgrade git
-sudo dnf upgrade python3
-```
-
-###### Arch / Manjaro
-```bash
-sudo pacman -Syu git python
-```
-
----
-
-## 🛠️ Installation of the program
-
-### Step 1: Clone the Repository
-```bash
-git clone https://github.com/CodingPengu007/0trace.git
-cd 0trace
-```
-
-### Step 2: Start the Program
-
-#### On Linux / macOS
-```bash
-python3 main.py
-```
-
-#### On Windows
-Run the program with Python:
-```bash
-python main.py
-```
-
-### Step 3: Activate the venv and start the program again
-
-#### On Linux / macOS
-```bash
-source Otrace_venv/bin/activate
-python3 main.py
-```
-
-#### On Windows
-Run the program with Python:
-```bash
-Otrace_venv/Scripts/activate
-python main.py
-```
-
----
-
-## 🎮 Gameplay
-
-Launch the game with the following command:
-
-#### On Linux / macOS
-```bash
-python3 main.py
-```
-
-#### On Windows
-Run the program with Python:
-```bash
-python main.py
-```
+Visit the installation page of 0trace here: [🎯](https://github.com/CodingPengu007/0trace/wiki/2.-%F0%9F%93%A6-Installation)
 
 ---
 
@@ -205,9 +42,10 @@ python main.py
 
 Contributions are welcome! Follow these steps to get started:
 
-1. **Fork** the repository.
-2. **Create a new branch** for your feature or bug fix.
-3. **Submit a pull request** with a detailed description.
+1. **Setup a Dev-Enviroment** wich has ruff and pre-commit installed.
+2. **Fork** the repository.
+3. **Create a new branch** for your feature or bug fix.
+4. **Submit a pull request** with a detailed description.
 
 ---
 
@@ -252,6 +90,128 @@ ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
 POSSIBILITY OF SUCH DAMAGE.
 ```
 
+- **bcrypt**:  
+  This project uses the [bcrypt](https://pypi.org/project/bcrypt/) Python module for password hashing.  
+  **License:** Apache Software License 2.0 (Apache-2.0)
+
+  ```
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ```
+
+- **Textual**:  
+  This project uses the [Textual](https://pypi.org/project/textual/) Python framework for building TUI (Text User Interface) applications.  
+  **License:** MIT License
+
+  ```
+  MIT License
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+  ```
+  *(Textual is distributed under the MIT License. See the official [Textual repository](https://github.com/Textualize/textual) for details.)*
+
+- ### requests (Apache License 2.0)
+
+  **Copyright 2024 Kenneth Reitz**
+
+  **Stewardship by the Python Software Foundation since 2019.**
+
+  ```
+  Apache License
+  Version 2.0, January 2004
+  http://www.apache.org/licenses/
+
+  TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+  1. Definitions.
+
+  "License" shall mean the terms and conditions for use, reproduction,
+  and distribution as defined by Sections 1 through 9 of this document.
+
+  [Full Apache 2.0 license text in the LICENSE.md ...]
+
+  END OF TERMS AND CONDITIONS
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  ```
+
+- ### readline (GNU General Public License)
+
+  The `readline` library is licensed under the GNU General Public License (GPL). Please see the full text of the GPL for details.
+
+  ```
+  GNU GENERAL PUBLIC LICENSE Version 3, 29 June 2007
+
+  Copyright (C) 2007 Free Software Foundation, Inc. 
+  Everyone is permitted to copy and distribute verbatim copies
+  of this license document, but changing it is not allowed.
+
+  [The full GPL v3.0 license text in the LICENSE.md ...]
+  ```
+
+- ### maskpass (MIT License)
+
+  **Copyright 2022 Aman Anifer**
+
+  ```
+  MIT License
+
+  Copyright (c) 2022 Aman Anifer
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to deal
+  in the Software without restriction, including without limitation the rights
+  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+  copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in all
+  copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+  SOFTWARE.
+  ```
+
 ---
 
 ## ⚠️ Disclaimer
@@ -264,7 +224,6 @@ This game is for **entertainment purposes only**. Any resemblance to real-world 
 
 #### Special thanks to the following:
 
-- **Parth Jadhav** for creating the **Tkinter Designer** we used to create graphical elements in this project.
 - The **open-source community** for providing invaluable libraries and resources.
 - **Beta Testers** for their feedback and support during development.
 
@@ -279,5 +238,3 @@ This game is for **entertainment purposes only**. Any resemblance to real-world 
 ## 📬 Contact
 
 For questions or support, please open an issue on the [GitHub repository](https://github.com/CodingPengu007/0trace).
-
----
