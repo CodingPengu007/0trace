@@ -46,12 +46,24 @@ import sys
 import subprocess
 
 import Otrace.sys.file_mngr as file_mngr
+import Otrace.gui as gui
 
 #################################################################################
 
 try:
     os.system("cls" if os.name == "nt" else "clear")
     skip_warning = False
+    if file_mngr.check(
+        os.path.join(
+            os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache"
+        )
+    ):
+        file_mngr.folder_create(
+            os.path.join(
+                os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache"
+            )
+        )
+
     if file_mngr.check(
         os.path.join(
             os.path.dirname(os.path.abspath(__file__)), "Otrace", "cache", "warning"
@@ -86,21 +98,10 @@ try:
         )
         print("")
     elif skip_warning == False:
-        print("--- Welcome to 0trace ---")
-        print("")
-        print("The program is about to start up,")
-        print("please don't interrupt the process.")
-        print("")
-        input("Press enter to continue...")
-        print("")
+        gui.startup_warning.main()
     else:
-        print("--- Welcome to 0trace ---")
-        print("")
-        print("The program is about to start up,")
-        print("please don't interrupt the process.")
-        print("")
-        answer = input("Should we warn you again next time? (y/n): ")
-        if answer.lower() == "y":
+        answer = gui.startup_warning_query.main()
+        if answer == "yes":
             with open(
                 os.path.join(
                     os.path.dirname(os.path.abspath(__file__)),
@@ -114,7 +115,7 @@ try:
             print("")
             print("(*) Warning enabled.")
             print("")
-        elif answer.lower() == "n":
+        elif answer == "no":
             try:
                 with open(
                     os.path.join(
@@ -130,21 +131,9 @@ try:
                 print("(*) Warning disabled.")
                 print("")
             except FileNotFoundError:
-                print("")
-                print("(!) Warning not disabled. Error writing to cache.")
-                print("(!) cache will get repaired during startup")
-                print("")
-                print("(*) Warning enabled by default.")
-                print("")
-                input("Press Enter to continue...")
+                gui.cache_error.main()
         else:
-            print("")
-            print("(!) Invalid input. Warning enabled by default.")
-            print("(*) Warning enabled.")
-            print("")
-            print("-> We will ask you again at the next start")
-            print("")
-            input("Press Enter to continue...")
+            gui.invalid_error.main()
 
     os.system("cls" if os.name == "nt" else "clear")
 
@@ -180,32 +169,8 @@ try:
         )
     )
     if empty == True:
-        print("")
-        print(
-            "The __pycache__ directory is used by Python to store compiled bytecode files, which help speed up program execution."
-        )
-        print(
-            "Would you like the program to automatically delete the __pycache__ directory on startup?"
-        )
-        print("")
-        print("Pro:")
-        print(
-            "- Ensures a clean environment by removing potentially outdated or corrupted bytecode files."
-        )
-        print("- Useful during development to avoid issues caused by stale cache.")
-        print("")
-        print("Contra:")
-        print("- Slower startup time as Python will need to recompile bytecode files.")
-        print(
-            "- May not be necessary in production environments where stability is prioritized."
-        )
-        print("")
-        print("(!) We recommend to disable it to prioritize faster startup times. (n)")
-        print("")
-        answer = input(
-            "Do you want to automaticly delete the __pycache__ when the program starts up? (y/n): "
-        )
-        if answer.lower() == "y":
+        answer = gui.pycache.main()
+        if answer == "enable":
             with open(
                 os.path.join(
                     os.path.dirname(os.path.abspath(__file__)),
@@ -219,7 +184,7 @@ try:
             print("")
             print("(*) Automatic deletion of the __pycache__ enabled.")
             print("")
-        if answer.lower() == "n":
+        if answer == "disable":
             try:
                 with open(
                     os.path.join(
@@ -235,14 +200,8 @@ try:
                 print("(*) Automatic deletion of the __pycache__ disabled.")
                 print("")
             except FileNotFoundError:
-                print("")
-                print("(!) Deletion not disabled. Error writing to cache.")
-                print("(!) cache will get repaired during startup")
-                print("")
-                print("(*) Deletion disabled by default.")
-                print("")
-                input("Press Enter to continue...")
-
+                gui.cache_error.main()
+                
     if delete_pycache == True:
         print("")
         print("Deleting __pycache__ as the user configured")
@@ -252,32 +211,8 @@ try:
         print("Won't delete __pycache__ as the user configured")
         print("")
     else:
-        print("")
-        print(
-            "The __pycache__ directory is used by Python to store compiled bytecode files, which help speed up program execution."
-        )
-        print(
-            "Would you like the program to automatically delete the __pycache__ directory on startup?"
-        )
-        print("")
-        print("Pro:")
-        print(
-            "- Ensures a clean environment by removing potentially outdated or corrupted bytecode files."
-        )
-        print("- Useful during development to avoid issues caused by stale cache.")
-        print("")
-        print("Contra:")
-        print("- Slower startup time as Python will need to recompile bytecode files.")
-        print(
-            "- May not be necessary in production environments where stability is prioritized."
-        )
-        print("")
-        print("(!) We recommend to disable it to prioritize faster startup times. (n)")
-        print("")
-        answer = input(
-            "Do you want to automaticly delete the __pycache__ when the program starts up? (y/n): "
-        )
-        if answer.lower() == "y":
+        answer = gui.pycache.main()
+        if answer.lower() == "enable":
             with open(
                 os.path.join(
                     os.path.dirname(os.path.abspath(__file__)),
@@ -291,7 +226,7 @@ try:
             print("")
             print("(*) Automatic deletion of the __pycache__ enabled.")
             print("")
-        if answer.lower() == "n":
+        if answer.lower() == "disable":
             try:
                 with open(
                     os.path.join(
@@ -307,22 +242,9 @@ try:
                 print("(*) Automatic deletion of the __pycache__ disabled.")
                 print("")
             except FileNotFoundError:
-                print("")
-                print("(!) Deletion not disabled. Error writing to cache.")
-                print("(!) cache will get repaired during startup")
-                print("")
-                print("(*) Deletion disabled by default.")
-                print("")
-                input("Press Enter to continue...")
+                gui.cache_error.main()
         else:
-            print("")
-            print("(!) Invalid input. Deletion disabled by default.")
-            print("")
-            print("(*) Deletion disabled.")
-            print("")
-            print("-> We will ask you again at the next start")
-            print("")
-            input("Press Enter to continue...")
+            gui.invalid_error.main()
 
     os.system("cls" if os.name == "nt" else "clear")
     print("Starting up...")
@@ -342,7 +264,7 @@ try:
         client_os = "Unknown"
         script_file_ending = "unknown"
 
-    version = "0.0.7.4"
+    version = "0.0.7.5"
     author = "CodingPengu007"
     program = "0trace"
     publicity = "Closed Early Alpha"
@@ -488,7 +410,7 @@ try:
             print("")
             if client_os == "Windows":
                 print(rf"{venv_dir}\Scripts\activate.bat")
-                print(f"python {main_dir}\main.py")
+                print(rf"python {main_dir}\main.py")
             elif client_os == "Linux" or client_os == "MacOS":
                 print(f"source {venv_dir}/bin/activate")
                 print(f"python3 {main_dir}/main.py")

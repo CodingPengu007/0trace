@@ -2,13 +2,9 @@
 if [ ! -d "Otrace_venv" ]; then
     python3 -m venv Otrace_venv
 
-    # Activate the virtual environment
     source Otrace_venv/bin/activate
-
-    # Install dependencies
     pip install --upgrade pip
 
-    # Install required packages
     required_packages=(
         bcrypt
         textual==0.89.1
@@ -27,8 +23,8 @@ if [ ! -d "Otrace_venv" ]; then
     done
 fi
 
-# Activate the virtual environment
 source Otrace_venv/bin/activate
+pip install --upgrade pip
 
 # Upgrade outdated packages except textual and textual_textarea
 outdated_packages=$(pip list --outdated --format=columns | awk 'NR>2 {print $1}' | grep -Ev '^(textual|textual_textarea)$')
@@ -38,5 +34,3 @@ if [ -n "$outdated_packages" ]; then
 else
     echo "All packages are up to date (excluding textual and textual_textarea)."
 fi
-
-echo "Setup completed successfully."

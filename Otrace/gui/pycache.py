@@ -52,6 +52,11 @@ assets_path = os.path.join(current_dir, "assets", "pycache")
 def relative_to_assets(path: str) -> Path:
     return assets_path / Path(path)
 
+def on_enable_button_click():
+    return "enable"
+
+def on_disable_button_click():
+    return "disable"
 
 def main():
     window = Tk()
@@ -59,6 +64,10 @@ def main():
     window.geometry("500x850")
     window.configure(bg="#383838")
 
+    icon = PhotoImage(file=os.path.join(current_dir, "assets", "pycache", "settings_icon.png"))
+    window.iconphoto(False, icon)
+
+    window.title("Settings")
 
     canvas = Canvas(
         window,
@@ -139,7 +148,7 @@ def main():
         image=enable_button_image,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("enable_button clicked"),
+        command=lambda: [on_enable_button_click(), window.destroy()],
         relief="flat",
     )
     enable_button.place(x=16.0, y=771.0, width=200.0, height=53.0)
@@ -149,7 +158,7 @@ def main():
         image=disable_button_image,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: print("disable_button clicked"),
+        command=lambda: [on_disable_button_click(), window.destroy()],
         relief="flat",
     )
     disable_button.place(x=280.0, y=771.0, width=200.0, height=53.0)
@@ -161,3 +170,6 @@ def main():
     thumbs_up = canvas.create_image(67.0, 320.0, image=image_thumbs_up)
     window.resizable(False, False)
     window.mainloop()
+
+if __name__ == "__main__":
+    main()

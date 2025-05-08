@@ -1,4 +1,3 @@
-
 #################################################################################
 # LEGAL NOTICE AT THE BEGINNING
 #################################################################################
@@ -48,12 +47,17 @@ from tkinter import Tk, Canvas, Entry, Text, Button, PhotoImage, StringVar
 import os
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
-assets_path = os.path.join(current_dir, "assets", "startup_warning")
-
+assets_path = os.path.join(current_dir, "assets", "startup_warning_query")
 
 
 def relative_to_assets(path: str) -> Path:
     return assets_path / Path(path)
+
+def on_yes_button_click():
+    return "yes"
+
+def on_no_button_click():
+    return "no"
 
 def main():
     window = Tk()
@@ -61,10 +65,10 @@ def main():
     window.geometry("500x400")
     window.configure(bg = "#383838")
 
-    icon = PhotoImage(file=os.path.join(current_dir, "assets", "cache_error", "image_1.png"))
+    icon = PhotoImage(file=os.path.join(current_dir, "assets", "startup_warning_query", "settings_icon.png"))
     window.iconphoto(False, icon)
 
-    window.title("Error")
+    window.title("Settings")
 
     canvas = Canvas(
         window,
@@ -79,26 +83,26 @@ def main():
     canvas.place(x = 0, y = 0)
     canvas.create_rectangle(
         498.0,
-        -1.0,
+        -2.0,
         500.0,
-        401.0,
-        fill="#FF0004",
+        400.0,
+        fill="#01D119",
         outline="")
 
     canvas.create_rectangle(
         0.0,
-        -1.0,
+        -2.0,
         2.0,
-        401.0,
-        fill="#FF0004",
+        400.0,
+        fill="#01D119",
         outline="")
 
     canvas.create_rectangle(
         -2.0,
-        0.23077392578125,
+        -0.76922607421875,
         500.0,
-        2.23077392578125,
-        fill="#FF0004",
+        1.23077392578125,
+        fill="#01D119",
         outline="")
 
     canvas.create_rectangle(
@@ -106,7 +110,7 @@ def main():
         30.0,
         500.0,
         32.0,
-        fill="#FF0004",
+        fill="#01D119",
         outline="")
 
     canvas.create_rectangle(
@@ -114,65 +118,81 @@ def main():
         398.0,
         500.0,
         400.0,
-        fill="#FF0004",
+        fill="#01D119",
         outline="")
 
-    canvas.create_text(
-        5.0,
-        1.0,
-        anchor="nw",
-        text="Error",
-        fill="#FF0004",
-        font=("Inter", 24 * -1)
+    image_settings_title = PhotoImage(
+        file=relative_to_assets("settings_title.png"))
+    settings_title = canvas.create_image(
+        51.0,
+        17.0,
+        image=image_settings_title
     )
 
-    image_image_1 = PhotoImage(
-        file=relative_to_assets("image_1.png"))
-    image_1 = canvas.create_image(
-        481.0,
+    image_settings_icon = PhotoImage(
+        file=relative_to_assets("settings_icon.png"))
+    settings_icon = canvas.create_image(
+        116.0,
+        14.84613037109375,
+        image=image_settings_icon
+    )
+
+    image_close_icon = PhotoImage(
+        file=relative_to_assets("close_icon.png"))
+    close_icon = canvas.create_image(
+        482.0,
         18.0,
-        image=image_image_1
+        image=image_close_icon
     )
 
-    image_image_2 = PhotoImage(
-        file=relative_to_assets("image_2.png"))
-    image_2 = canvas.create_image(
-        250.0,
-        58.0,
-        image=image_image_2
+    image_welcome_title = PhotoImage(
+        file=relative_to_assets("welcome_title.png"))
+    welcome_title = canvas.create_image(
+        254.0,
+        55.0,
+        image=image_welcome_title
     )
 
-    image_image_3 = PhotoImage(
-        file=relative_to_assets("image_3.png"))
-    image_3 = canvas.create_image(
-        251.0,
-        183.0,
-        image=image_image_3
+    image_info_text = PhotoImage(
+        file=relative_to_assets("info_text.png"))
+    info_text = canvas.create_image(
+        256.0,
+        194.0,
+        image=image_info_text
     )
 
-    button_image_1 = PhotoImage(
-        file=relative_to_assets("button_1.png"))
-    button_1 = Button(
-        image=button_image_1,
+    yes_button_image = PhotoImage(
+        file=relative_to_assets("yes_button.png"))
+
+    yes_button = Button(
+        image=yes_button_image,
         borderwidth=0,
         highlightthickness=0,
-        command=lambda: [window.destroy()],
+        command=lambda: [on_yes_button_click(), window.destroy()],
         relief="flat"
     )
-    button_1.place(
-        x=140.0,
-        y=291.0,
-        width=220.0,
-        height=50.0
+    yes_button.place(
+        x=36.0,
+        y=323.0,
+        width=200.0,
+        height=53.0
     )
 
-    canvas.create_rectangle(
-        63.0,
-        2.0,
-        93.0,
-        32.0,
-        fill="#FFFFFF",
-        outline="")
+    no_button_image = PhotoImage(
+        file=relative_to_assets("no_button.png"))
+    no_button = Button(
+        image=no_button_image,
+        borderwidth=0,
+        highlightthickness=0,
+        command=lambda: [on_no_button_click(), window.destroy()],
+        relief="flat"
+    )
+    no_button.place(
+        x=263.0,
+        y=323.0,
+        width=200.0,
+        height=53.0
+    )
     window.resizable(False, False)
     window.mainloop()
 
