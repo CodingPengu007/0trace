@@ -170,3 +170,6 @@ def main():
     thumbs_up = canvas.create_image(67.0, 320.0, image=image_thumbs_up)
     window.resizable(False, False)
     window.mainloop()
+
+if __name__ == "__main__":
+    main()
